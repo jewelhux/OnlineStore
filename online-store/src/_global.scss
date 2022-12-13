@@ -1,1 +1,8 @@
-@import "./assets/scss/header.scss"; // Переменные проекта
+
+@import "./assets/scss/variables.scss"; // Переменные проекта
+@import "./assets/scss/zeroing.scss"; // Обнуление стилей проекта
+@import "./assets/scss/technical.scss"; // Технические и общие стили стилей проекта
+
+@import "./assets/scss/header.scss"; // Шапка проекта
+// @import "./assets/scss/footer.scss"; // Подвал проекта
+@import "./assets/scss/main-one.scss"; // Основная секция 1

@@ -1,3 +1,31 @@
+import { stringObject} from './_type'
+
+interface IitemDATA {
+    id: number;
+    title: string;
+    description: string;
+    price: number;
+    discountPercentage: number;
+    rating: number;
+    stock: number;
+    brand: string;
+    category: string;
+    thumbnail: string;
+    images: string[];
+  }
+
+
+  interface IFilter {
+    category: stringObject;
+    brand: stringObject;
+    price: number[];
+    stock: number[];
+}
+
+
+export { IitemDATA, IFilter}
+
+
 // import { option } from './_type'
 
 // interface ISource {
@@ -47,20 +75,3 @@
 //     code: string;
 //     message: string;
 // }
-
-interface IitemDATA {
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    discountPercentage: number;
-    rating: number;
-    stock: number;
-    brand: string;
-    category: string;
-    thumbnail: string;
-    images: string[];
-  }
-
-
-export { IitemDATA }

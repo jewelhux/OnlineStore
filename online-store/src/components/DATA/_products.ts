@@ -1,6 +1,6 @@
 import { IitemDATA } from "../typingTS/_interfaces";
 
-export const products: IitemDATA[] = [
+export const products: Array<IitemDATA> = [
     {
       "id": 1,
       "title": "iPhone 9",

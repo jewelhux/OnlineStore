@@ -8,4 +8,9 @@
 // type callbackVoid = <T>(arg: T) => void;
 
 
-// export { template, option, callbackVoid }
+type stringObject = {
+  [x: string]: boolean;
+}
+
+
+export { stringObject }

@@ -58,13 +58,16 @@ p {
   font-weight: 700;
   line-height: 22.4px;
   color: $mainColor;
-  padding: 5px 2px;
+  padding: 5px 3px;
   text-transform: uppercase;
   border-radius: 25px;
   transition: all 0.5s;
+  background: rgb(242, 242, 242);
+  border: 1px solid rgb(242, 242, 242);
   cursor: pointer;
   &:hover {
     color: #FFF;
+    border: 1px solid rgb(242, 242, 242);;
     background: $mainColor;
   }
   &:active {

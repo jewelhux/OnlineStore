@@ -1,61 +1,85 @@
 .main-one {
-  padding: 50px 0 0 0;
+  padding: 25px 0 25px 0;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
 }
 
-.main-one__image-container {
-  max-width: 400px;
-  height: 400px;
-  margin: 190px auto;
-}
-
-@media (max-width: $md2) {
-  .main-one__image-container {
-    margin: 130px auto;
-  }
-}
-
-.main-one__image-img {
-  width: 100%;
-  height: 100%;
-}
-
-
-@keyframes gradient {
-  0% {
-    filter: invert(11%) sepia(18%) saturate(263%) hue-rotate(314deg) brightness(98%) contrast(80%);
-  }
-  100% {
-    filter: invert(70%) sepia(21%) saturate(3972%) hue-rotate(8deg) brightness(97%) contrast(101%);
-  }
-}
-
-.language {
-  color: #000;
+.main-one__left {
+  padding: 5px;
   display: flex;
   flex-direction: column;
-  row-gap: 7px;
-  max-width: 200px;
-  margin: 0 auto;
+  row-gap: 10px;
 }
 
-.language__list {
-  justify-content: center;
+.filter__item {
   display: flex;
   flex-direction: column;
+  border-radius: 5px;
+  padding: 0 0 20px 0;
+  border: 1px solid black;
+  background-color: rgb(179, 179, 179);
+}
+
+.filter__item-name {
+  align-self: center;
+  margin: 5px;
+}
+
+.filter__item-container {
+  padding: 5px;
+  background-color: #FFF;
+  max-height: 200px;
+  div {
+    padding: 2px 0;
+    display: flex;
+    column-gap: 3px;
+    span {
+      margin-left: auto;
+    }
+  }
+}
+
+.filter__item-container-scroll {
+  overflow-y: scroll;
+}
+
+.filter__stock {
+  display: flex;
   align-items: center;
+  justify-content: center;
+  column-gap: 10px;
 }
 
-.language__change {
-  font-size: 20px;
-  text-align: center;
+.filter__item-data {
+  justify-content: space-around;
 }
 
-.language__item {
-  font-size: 20px;
-  padding: 2px 10px;
-  transition: 0.3s;
-  &:hover {
-    cursor: pointer;
-    color: $secondColor;
+.multi-range {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+input[type=range]  {
+  position: absolute;
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  overflow: hidden;
+  height: 8px;
+  background: #F5F7F6;
+  border-radius: 5px;
+  &:nth-child(2) {
+    background: none;
   }
+}
+
+input[type=range]::-webkit-slider-thumb {
+  background: #FE9013;
+  border-radius: 35%;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  -webkit-appearance: none;
 }

@@ -20,7 +20,7 @@ p {
 }
 
 ._main-container {
-  background-color: $lightPink;
+  background-color: $white;
   overflow: hidden;
   max-width: 100%;
   padding: 0 12px;
@@ -53,17 +53,18 @@ p {
 ._btn {
   display: block;
   font-family: 'Roboto', sans-serif;
-  width: 298px;
-  font-size: 16px;
+  width: 120px;
+  font-size: 14px;
+  font-weight: 700;
   line-height: 22.4px;
-  font-weight: 500;
-  color: #FFF;
-  padding: 16px 5px;
+  color: $mainColor;
+  padding: 5px 2px;
   text-transform: uppercase;
   border-radius: 25px;
   transition: all 0.5s;
   cursor: pointer;
   &:hover {
+    color: #FFF;
     background: $mainColor;
   }
   &:active {

@@ -109,6 +109,13 @@ const config = {
           filename: 'video/[name][ext]'
         },
       },
+      {
+        test: /\.(json)$/i,
+        type: "asset/resource",
+        generator: {
+          filename: 'json/[name][ext]'
+        },
+      },
 
       // Add your rules for custom modules here
       // Learn more about loaders from https://webpack.js.org/loaders/

@@ -22,6 +22,34 @@
     </section>
   </header>
   <main class="page-main-basket _main-container">
+
+    <div class="popup-wrapper popup-wrapper-active">
+      <div class="popup">
+        <div class="popup__block">
+          <img class="popup__close" src="./src/assets/img/png/close.png">
+          <div class="popup__dataInput">
+            <h3 class="popup__persona">Personal details</h3>
+            <input class="_inp popup__dataInput-phone" type="text" placeholder="Phone number">
+            <input class="_inp popup__dataInput-adress" type="text" placeholder="Adress">
+            <input class="_inp popup__dataInput-mail" type="mail" placeholder="E-mail">
+          </div>
+          <div class="popup__creditInput creditInput">
+            <h3 class="creditInput__title">Card Details</h3>
+            <div class="creditInput__cardNumber">
+              <div class="creditInput__image">
+                <img src="./src/assets/img/png/master.png">
+              </div>
+              <input class="_inp creditInput__cardNumber-number" type="text" placeholder="Card number">
+            </div>
+            <div class="creditInput__cardSecret">
+              <input class="_inp creditInput__cardNumber-date" type="text" placeholder="Date">
+              <input class="_inp creditInput__cardNumber-cvv" type="text" placeholder="CVV">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <section class="main-basket _container">
       <div class="main-basket__product product">
         <div class="product__title">

@@ -93,44 +93,45 @@ console.log("80= App.FILTER = ",App.FILTER)
 // console.log("params",params.toString())
 
 const params = new URLSearchParams({
-  brand: 'Apple|Samsung',
-  category:'smartphones|laptops',
+  brand: 'Apple|Samsung/ и другие ',
+  category:'smartphones|laptops / и другие потом будут',
 })
 
 
-window.history.pushState({},'',params.toString())
+window.history.replaceState({},'',`?${params.toString()}`)
+console.log(window.location.search)
 
 
 // const params = new URLSearchParams({ minPrice: '1000', maxPrice: '2000' })
 
-console.log("90 = params =",params.toString())
+// console.log("90 = params =",params.toString())
 
 for (const [key, value] of params.entries()) {
   console.log("100=",key, value)
 }
 
-// for (const value of params.values()) {
-//   console.log("200",value)
-// }
-
-function updateURL() {
-  if (history.pushState) {
-      const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-      const newUrl = baseUrl + '?tyapk=awesome';
-      history.pushState(null, "", newUrl);
-  }
-  else {
-      console.warn('History API не поддерживается');
-  }
+for (const value of params.values()) {
+  console.log("200",value)
 }
 
-window.onpopstate = updateURL;
+// function updateURL() {
+//   if (history.pushState) {
+//       const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+//       const newUrl = baseUrl + '?tyapk=awesome';
+//       history.pushState(null, "", newUrl);
+//   }
+//   else {
+//       console.warn('History API не поддерживается');
+//   }
+// }
+
+// window.onpopstate = updateURL;
 
 // window.history.pushState({},'',params.toString())
 
 
-console.log(window.location.search)
-console.log(window.location.origin)
+// console.log(window.location.search)
+// console.log(window.location.origin)
 
 
 // window.location.assign(

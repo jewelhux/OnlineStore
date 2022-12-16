@@ -92,10 +92,34 @@ console.log("80= App.FILTER = ",App.FILTER)
 
 // console.log("params",params.toString())
 
-const params = new URLSearchParams({
-  brand: 'Apple|Samsung/ и другие ',
-  category:'smartphones|laptops / и другие потом будут',
-})
+const a = {
+brand: ["Apple", "Samsung", "OPPO", "Huawei", "Microsoft"] ,
+category: ["smartphones", "laptops", "fragrances", "skincare", "groceries"]
+}
+
+
+function returnObjForURLSearch(obj: {[x: string]: string[]}) {
+
+  const result: {[x: string]: string} = {}
+  let prop: keyof typeof obj
+  
+  for (prop in obj) {
+    result[prop] = obj[prop].join("|")
+  }
+
+
+  return result
+}
+
+console.log("77",returnObjForURLSearch(a))
+
+console.log("80 = a = ",a)
+
+const params = new URLSearchParams(returnObjForURLSearch(a))
+// const params = new URLSearchParams({
+//   brand: 'Apple|Samsung/ и другие ',
+//   category:'smartphones|laptops / и другие потом будут',
+// })
 
 
 window.history.replaceState({},'',`?${params.toString()}`)

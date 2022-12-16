@@ -72,8 +72,9 @@
 .product__itemBasket {
   color: $mainColor;
   display: flex;
-  column-gap: 25px;
-  justify-content: center;
+  column-gap: 15px;
+  padding: 0 10px;
+  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid $mainColor;
   &:nth-last-child(1) {
@@ -135,7 +136,7 @@
 }
 
 .infoBasket__title {
-  width: 500px;
+  width: 400px;
 }
 
 .basket-data__name {

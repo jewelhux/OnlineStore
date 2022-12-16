@@ -1,4 +1,5 @@
 import { IitemDATA, IFilter } from './typingTS/_interfaces'
+import { stringObject } from './typingTS/_type'; 
 
 import CreateBaseDate from "./_CreateBaseData"
 
@@ -92,6 +93,13 @@ console.log("80= App.FILTER = ",App.FILTER)
 
 // console.log("params",params.toString())
 
+// type ObjectKey<Obj> = keyof Obj;
+
+// interface Ia {
+//   brand: ObjectKey<stringObject>
+//   category: ObjectKey<stringObject>
+// }
+
 const a = {
 brand: ["Apple", "Samsung", "OPPO", "Huawei", "Microsoft"] ,
 category: ["smartphones", "laptops", "fragrances", "skincare", "groceries"]
@@ -113,7 +121,8 @@ function returnObjForURLSearch(obj: {[x: string]: string[]}) {
 
 console.log("77",returnObjForURLSearch(a))
 
-console.log("80 = a = ",a)
+a.brand.push("lg")
+console.log("80 = a = ЗАКНУЛ в строку",a)
 
 const params = new URLSearchParams(returnObjForURLSearch(a))
 // const params = new URLSearchParams({
@@ -122,21 +131,27 @@ const params = new URLSearchParams(returnObjForURLSearch(a))
 // })
 
 
+
 window.history.replaceState({},'',`?${params.toString()}`)
-console.log(window.location.search)
+console.log("window.location.search=",window.location.search)
 
 
 // const params = new URLSearchParams({ minPrice: '1000', maxPrice: '2000' })
 
 // console.log("90 = params =",params.toString())
 
+const ABC:{[x: string]: string[]} = {}
+
 for (const [key, value] of params.entries()) {
   console.log("100=",key, value)
+  ABC[key] = value.split("|")
 }
 
-for (const value of params.values()) {
-  console.log("200",value)
-}
+console.log("ABC ВЕРНУЛ из строки= ",ABC)
+
+// for (const value of params.values()) {
+//   console.log("200",value)
+// }
 
 // function updateURL() {
 //   if (history.pushState) {

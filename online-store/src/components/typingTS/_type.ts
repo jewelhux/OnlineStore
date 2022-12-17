@@ -9,8 +9,12 @@
 
 
 type stringObject = {
-  [x: string]: boolean;
+  [x: string]: string;
+}
+
+type stringArrayObject = {
+  [x: string]: number[];
 }
 
 
-export { stringObject }
+export { stringObject, stringArrayObject }

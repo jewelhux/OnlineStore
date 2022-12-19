@@ -1,4 +1,4 @@
-import CreateFilterData from './_ModelCreateFilterData'
+import CreateFilterData from '../_ModelCreateFilterData'
 // import Router from './router';
 
 class ControllerMain {

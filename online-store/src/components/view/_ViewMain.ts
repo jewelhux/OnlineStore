@@ -1,5 +1,5 @@
-import ControllerMain from "./_ControllerMain";
-import Router from "./router";
+import ControllerMain from "../controller/_ControllerMain";
+import Router from "../router";
 
 class ViewMain {
   _controller: ControllerMain;
@@ -13,9 +13,6 @@ class ViewMain {
 
     this._router.startRouteListenner()
     this._router.handleLocation()
-
-
-
 
     // this._controller.router.startRouteListenner()
     // console.log("this._controller.router.count",this._controller.router.count)

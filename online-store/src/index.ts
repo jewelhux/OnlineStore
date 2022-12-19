@@ -4,11 +4,7 @@ import './components/_add_favicon';
 // import './components/_CreateBaseData';
 // import './components/_ModelCreateFilterData'
 import './components/_add_rangeSlider';
-
-import ViewMain from './components/_ViewMain'
-
-console.log('Проверка')
-console.log('Проверка от JiK')
+import ViewMain from './components/view/_ViewMain'
 
 const App = new ViewMain()
 

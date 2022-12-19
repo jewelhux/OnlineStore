@@ -1,7 +1,7 @@
-import { IitemDATA } from './typingTS/_interfaces'
-import { stringObject } from './typingTS/_type';
+import { IitemDATA } from '../typingTS/_interfaces'
+import { stringObject } from '../typingTS/_type';
 
-import { products } from './DATA/_products'
+import { products } from '../DATA/_products'
 
 class CreateBaseDate {
   protected _data: IitemDATA[];

@@ -1,18 +1,16 @@
 import CustomElement from '../utils/_createCustomElement';
-import basket from '../../assets/img/png/basket.png'
-
-interface IitemDATA {
-  id: number;
-  min: number;
-  max: number;
-}
-
+import ControllerMain from '../controller/_ControllerMain';
+import { stringArrayObject } from '../typingTS/_type';
 
 class ViewMain {
   mainCheckList: HTMLElement
   customElement: CustomElement
+  _controller: ControllerMain;
+  startCategoryData: stringArrayObject
 
   constructor() {
+    this._controller = new ControllerMain();
+    this.startCategoryData = this._controller.startCategoryData;
     this.customElement = new CustomElement();
     this.mainCheckList = this.customElement.createElement('div', { className: 'filter__item-container category__container filter__item-container-scroll'});
 
@@ -20,16 +18,19 @@ class ViewMain {
   }
 
 
-  create() {
+  create(data: stringArrayObject = this.startCategoryData) {
+    console.log(this.startCategoryData)
     const filterCategory = this.customElement.createElement('div', { className: 'filter__item filter__category category filter__item-scroll'});
 
     const filterItemName = this.customElement.createElement('h3', { className: 'filter__item-name category__name', textContent: 'Category'});
     this.customElement.addChildren(filterCategory,[filterItemName, this.mainCheckList]);
 
-    for (let i = 1; i < 4; i++) {
+    for (const key in data) {
       const item = this.customElement.createElement('div');
-      const input = this.customElement.createElement('input', { type: 'checkbox', name: String(i), id: String(i)});
-      const label = this.customElement.createElement('label', { for: String(i), textContent: String(i)});
+      console.log()
+      const input = this.customElement.createElement('input', { type: 'checkbox', id: key});
+      const label = this.customElement.createElement('label', { textContent: key});
+      label.setAttribute('for', key)
       this.customElement.addChildren(item,[input, label]);
       this.customElement.addChildren(this.mainCheckList,[item]);
     }

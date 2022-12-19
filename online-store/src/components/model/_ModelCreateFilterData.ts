@@ -1,26 +1,26 @@
-import { IitemDATA, IFilter } from './typingTS/_interfaces'
-import { stringObject, stringArrayObject } from './typingTS/_type';
+import { IitemDATA, IFilter } from '../typingTS/_interfaces'
+import { stringObject, stringArrayObject } from '../typingTS/_type';
 
 import CreateBaseDate from "./_CreateBaseData"
 
 class CreateFilterData {
   private readonly _baseData: CreateBaseDate;
-  protected readonly _categoryArray: string[];
-  protected _categoryData: stringArrayObject;
-  protected readonly _brandArray: string[];
-  protected _brandData: stringArrayObject;
-  public readonly _serverData: IitemDATA[];
-  public _filtredData: IitemDATA[];
+  private readonly _startCategoryArray: string[];
+  private _startCategoryData: stringArrayObject;
+  private readonly _startBrandArray: string[];
+  private _startBrandData: stringArrayObject;
+  private readonly _startServerData: IitemDATA[];
+  private _filtredData: IitemDATA[];
   public _FILTER: IFilter;
-  public readonly _serverFILTER: IFilter;
+  private readonly _startServerFILTER: IFilter;
 
   constructor() {
     this._baseData = new CreateBaseDate();
-    this._categoryArray = this.baseData.category;
-    this._brandArray = this.baseData.brand;
-    this._serverData = this.baseData.data;
+    this._startCategoryArray = this.baseData.category;
+    this._startBrandArray = this.baseData.brand;
+    this._startServerData = this.baseData.data;
     this._filtredData = this.baseData.data;
-    this._serverFILTER = {
+    this._startServerFILTER = {
       "category": [],
       "brand": [],
       "price": this.baseData.price,
@@ -29,54 +29,56 @@ class CreateFilterData {
       // "stock": [2, 150],
       "search": ['']
     };
-    this._FILTER = JSON.parse(JSON.stringify(this._serverFILTER))
-    this._categoryData = this.getCategoryBrandDData(this.categoryArray, "category");
-    this._brandData = this.getCategoryBrandDData(this.brandArray, "brand");
+    this._FILTER = JSON.parse(JSON.stringify(this._startServerFILTER))
+    this._startCategoryData = this.getCategoryAndBrandData(this.startCategoryArray, "category");
+    this._startBrandData = this.getCategoryAndBrandData(this.startBrandArray, "brand");
   }
-
+// ссылка на класс Базы данных
   public get baseData() {
     return this._baseData
   }
-
-  public get categoryArray() {
-    return this._categoryArray
+// возвращает стартовый массив категорий
+  public get startCategoryArray() { 
+    return this._startCategoryArray
   }
-
-  public get categoryData() {
-    this._categoryData = this.getCategoryBrandDData(this.categoryArray, "category");
-    return this._categoryData
+// возвращает стартовый Объект категорий
+  public get startCategoryData() {
+    this._startCategoryData = this.getCategoryAndBrandData(this.startCategoryArray, "category");
+    return this._startCategoryData
   }
-
-  public get brandArray() {
-    return this._brandArray
+// возвращает стартовый массив брендов
+  public get startBrandArray() {
+    return this._startBrandArray
   }
-
-  public get brandData() {
-    this._brandData = this.getCategoryBrandDData(this.brandArray, "brand");
-    return this._brandData
+// возвращает стартовый Объект категорий
+  public get startBrandData() {
+    this._startBrandData = this.getCategoryAndBrandData(this.startBrandArray, "brand");
+    return this._startBrandData
   }
-
+// возвращает стартовый Объект c данными ПРОДУКТА
   public get serverData() {
-    return this._serverData
+    return this._startServerData
   }
-
+// возвращает отфильтрованный Объект c данными ПРОДУКТА
   public get filtredData() {
+    this.updateFiltredData();
     return this._filtredData
   }
-
-  public get serverFILTER() {
-    return this._serverFILTER
+// возвращает стартовый Объект Фильтра
+  public get startServerFILTER() {
+    return this._startServerFILTER
   }
-
+// возвращает измененный Объект Фильтра
   public get FILTER() {
     return this._FILTER
   }
-
-  private getCategoryBrandDData(obj: string[], key: "brand" | "category") {
+// подметод для формирования стартовых Объектов категорий и бренда а также измененных
+// меняет по измененному filtredData
+  private getCategoryAndBrandData(obj: string[], key: "brand" | "category", filtredData:IitemDATA[] = this.serverData) {
     const result: stringArrayObject = {}
 
     obj.forEach((categoryValue) => {
-      this.filtredData.forEach((product) => {
+      filtredData.forEach((product) => {
         if (!result[categoryValue]) result[categoryValue] = [0, 0]
         if (product[key] === categoryValue) result[categoryValue][0] += 1
       })
@@ -91,7 +93,7 @@ class CreateFilterData {
 
     return result
   }
-
+// медод обновляющий отфильтрованный Объект c данными ПРОДУКТА по измененному Объекту Фильтра
   updateFiltredData(): IitemDATA[] {
     let resultfilterData: IitemDATA[] = this.serverData.slice()
     resultfilterData = resultfilterData.filter((product) => {
@@ -142,13 +144,14 @@ class CreateFilterData {
     })
 
     this._filtredData = resultfilterData
-    this.categoryData
-    this.brandData
+    // this.startCategoryData
+    // this.startBrandData
     return this._filtredData
   }
-
+// Метод очищающий Объект фильтра до стартового
+// и обновляющий отфильтрованный Объект c данными ПРОДУКТА
   clearFILTER() {
-    this._FILTER = JSON.parse(JSON.stringify(this._serverFILTER))
+    this._FILTER = JSON.parse(JSON.stringify(this._startServerFILTER))
     this.updateFiltredData()
   }
 

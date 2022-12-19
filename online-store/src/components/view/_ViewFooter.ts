@@ -1,14 +1,22 @@
 import ControllerMain from "../controller/_ControllerMain";
+import { stringArrayObject } from '../typingTS/_type'
 import Router from "../router";
 
 class ViewFooter {
   _controller: ControllerMain;
   _router: Router;
   root: HTMLElement;
+  startCategoryData: stringArrayObject
 
   constructor() {
     this.root = document.body;
     this._controller = new ControllerMain();
+    this.startCategoryData = this._controller.startCategoryData
+
+
+    // this.root.onclick = () => {console.log(this.startCategoryData)}
+
+
     this._router = new Router()
 
     this._router.startRouteListenner()
@@ -18,7 +26,7 @@ class ViewFooter {
     // console.log("this._controller.router.count",this._controller.router.count)
   }
 
-  create() {
+  createFooter() {
 
     const footer: HTMLElement = document.createElement("footer")
 
@@ -43,7 +51,7 @@ class ViewFooter {
   </section>
 </footer>`
 
-footer.onclick = () => {this._router.pushState('/product')}
+    footer.onclick = () => { this._router.pushState('/product') }
 
     this.root.append(footer)
   }
@@ -53,7 +61,7 @@ footer.onclick = () => {this._router.pushState('/product')}
   }
 
   init() {
-    this.create()
+    this.createFooter()
     // this._controller.router.startRouteListenner()
 
   }

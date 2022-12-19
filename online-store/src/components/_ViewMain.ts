@@ -46,7 +46,7 @@ class ViewMain {
   </section>
 </footer>`
 
-footer.onclick = () => {this._router.pushState('/')}
+footer.onclick = () => {this._router.pushState('/product')}
 
     this.root.append(footer)
   }

@@ -65,8 +65,10 @@ class Router {
 
   pushState(path:string) {
 
-    window.history.pushState({}, '', path)
-    window.location.reload()
+    window.location.assign(`${window.location.origin}${path}`)
+
+    // window.history.pushState({}, '', path)
+    // window.location.reload()
   }
 
 

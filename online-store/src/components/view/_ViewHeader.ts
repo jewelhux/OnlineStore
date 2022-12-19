@@ -1,7 +1,7 @@
 import CustomElement from '../utils/_createCustomElement';
 import basket from '../../assets/img/png/basket.png'
 
-class Header {
+class ViewHeader {
   headerTotalPrice: HTMLElement
   headerBasket: HTMLElement
   headerBasketCount: HTMLElement
@@ -56,4 +56,4 @@ class Header {
 
 }
 
-export default Header
+export default ViewHeader

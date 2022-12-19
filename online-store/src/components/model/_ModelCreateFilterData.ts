@@ -1,5 +1,5 @@
-import { IitemDATA, IFilter } from './typingTS/_interfaces'
-import { stringObject, stringArrayObject } from './typingTS/_type';
+import { IitemDATA, IFilter } from '../typingTS/_interfaces'
+import { stringObject, stringArrayObject } from '../typingTS/_type';
 
 import CreateBaseDate from "./_CreateBaseData"
 

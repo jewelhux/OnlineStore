@@ -1,4 +1,4 @@
-import CreateFilterData from '../_ModelCreateFilterData'
+import CreateFilterData from '../model/_ModelCreateFilterData'
 import { stringArrayObject } from '../typingTS/_type'
 // import Router from './router';
 

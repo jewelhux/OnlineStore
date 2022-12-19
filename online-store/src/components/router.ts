@@ -5,12 +5,8 @@ class Router {
       routesPage: (x: string) => void;
     }
   };
-  count: number;
 
   constructor() {
-    this.count = 0;
-
-
 
     this.routes = {
       '/page404': {

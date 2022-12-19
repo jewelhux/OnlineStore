@@ -3,12 +3,14 @@ import basket from '../../assets/img/png/basket.png'
 
 class Header {
   headerTotalPrice: HTMLElement
+  headerBasket: HTMLElement
   headerBasketCount: HTMLElement
   customElement: CustomElement
 
   constructor() {
     this.customElement = new CustomElement();
     this.headerTotalPrice = this.customElement.createElement('span', { className: 'header__total-span', textContent: '0'});
+    this.headerBasket = this.customElement.createElement('div', { className: 'header__basket'});
     this.headerBasketCount = this.customElement.createElement('span', { className: 'header__basket-count', textContent: '0'});
 
     this.createHeader();
@@ -26,8 +28,7 @@ class Header {
   // Основные секции header
   const headerLogo = this.customElement.createElement('a', { className: 'header__logo logo', href: '#'});
   const headerTotal = this.customElement.createElement('p', { className: 'header__total', textContent: 'Total: $'});
-  const headerBasket = this.customElement.createElement('div', { className: 'header__basket'});
-  this.customElement.addChildren(headerContainer,[headerLogo, headerTotal, headerBasket])
+  this.customElement.addChildren(headerContainer,[headerLogo, headerTotal, this.headerBasket])
 
   // Заполнение headerLogo
   const logoTitle = this.customElement.createElement('h1', { className: 'logo__title', textContent: 'Online Store'});
@@ -36,7 +37,7 @@ class Header {
   this.customElement.addChildren(headerTotal,[this.headerTotalPrice]);
   // Заполнение headerBasket
   const headerBasketImg = this.customElement.createElement('img', { className: 'logo__title', src: basket});
-  this.customElement.addChildren(headerBasket,[headerBasketImg, this.headerBasketCount]);
+  this.customElement.addChildren(this.headerBasket,[headerBasketImg, this.headerBasketCount]);
 
   document.body.prepend(HEADER)
   }

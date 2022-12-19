@@ -20,6 +20,7 @@ const config = {
 
   output: {
     path: path.resolve(__dirname, "dist"),
+    publicPath:'/',
     clean: true,
     filename: '[name].[contenthash].js',
     assetModuleFilename: 'assets/[name][ext]',
@@ -30,6 +31,7 @@ const config = {
   devServer: {
     open: true,
     host: "localhost",
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({

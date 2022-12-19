@@ -155,75 +155,113 @@ class CreateFilterData {
 }
 
 export default CreateFilterData
-const App = new CreateFilterData()
 
 
-function returnObjForURLSearch(obj: IFilter) {
-  const result: stringObject = {}
-  let prop: keyof typeof obj
-  for (prop in obj) {
-    result[prop] = obj[prop].join("|")
-  }
-  return result
-}
+// const App = new CreateFilterData()
+
+
+// function returnObjForURLSearch(obj: IFilter) {
+//   const result: stringObject = {}
+//   let prop: keyof typeof obj
+//   for (prop in obj) {
+//     result[prop] = obj[prop].join("|")
+//   }
+//   return result
+// }
 
 // console.log("77", returnObjForURLSearch(App.FILTER))
 
 
-const params = new URLSearchParams(returnObjForURLSearch(App.FILTER))
+// const params = new URLSearchParams(returnObjForURLSearch(App.FILTER))
 
 
-window.history.replaceState({}, '', `?${params.toString()}`)
+// // window.history.pushState({}, '', `?${params.toString()}`)
+// window.history.pushState({}, '', `?id=${2}`)
+// // window.history.pushState({}, '', `/watch1?${params.toString()}`)
+// // window.history.pushState({}, '', `/watch2?${params.toString()}`)
+// // window.history.pushState({}, '', `/watch3?${params.toString()}`)
 // console.log("80 =window.location.search =", window.location.search)
 
 
-const ABC: { [x: string]: string[] } = {}
+// const ABC: { [x: string]: string[] } = {}
 
-for (const [key, value] of params.entries()) {
-  // console.log("100=", key, value)
-  ABC[key] = value.split("|")
-}
+// for (const [key, value] of params.entries()) {
+//   // console.log("100=", key, value)
+//   ABC[key] = value.split("|")
+// }
 
 // console.log("ABC ВЕРНУЛ из строки= ", ABC)
 
 
 
 
-// console.log("10",App.serverData)
-console.log("20", App.filtredData)
-console.log("30",App.serverFILTER)
-console.log("40", App.FILTER)
+// // console.log("10",App.serverData)
+// console.log("20", App.filtredData)
+// console.log("30",App.serverFILTER)
+// console.log("40", App.FILTER)
+
+// // App.clearFILTER()
+
+// App.FILTER.category.push("smartphones")
+// // App.FILTER.search[0] = "Lo"
+// App.updateFiltredData()
+// // App.categoryData()
+
+// // console.log("50",App.serverData)
+// console.log("60", App.filtredData)
+// // console.log("70",App.serverFILTER)
+// console.log("80 App.FILTER =", App.FILTER)
+
+// // App.clearFILTER()
+
+// // console.log("90",App.serverData)
+// console.log("100", App.filtredData)
+// // console.log("110",App.serverFILTER)
+// console.log("120", App.FILTER)
+
+
+// // console.log("App.baseData.brand", App.baseData.brand)
+// // console.log("App.categoryArray", App.categoryArray)
+// console.log("App.brandData", App.brandData)
+// console.log("App.categoryData", App.categoryData)
+
 
 // App.clearFILTER()
 
-App.FILTER.category.push("smartphones")
-App.FILTER.search[0] = "Lo"
-App.updateFiltredData()
-// App.categoryData()
-
-// console.log("50",App.serverData)
-console.log("60", App.filtredData)
-// console.log("70",App.serverFILTER)
-console.log("80 App.FILTER =", App.FILTER)
-
-// App.clearFILTER()
-
-// console.log("90",App.serverData)
-console.log("100", App.filtredData)
-// console.log("110",App.serverFILTER)
-console.log("120", App.FILTER)
+// console.log("App.brandData", App.brandData)
+// console.log("App.categoryData", App.categoryData)
 
 
-// console.log("App.baseData.brand", App.baseData.brand)
-// console.log("App.categoryArray", App.categoryArray)
-console.log("App.brandData", App.brandData)
-console.log("App.categoryData", App.categoryData)
 
 
-App.clearFILTER()
 
-console.log("App.brandData", App.brandData)
-console.log("App.categoryData", App.categoryData)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,14 +1,25 @@
 import ControllerMain from "../controller/_ControllerMain";
+import { stringArrayObject } from '../typingTS/_type'
 import Router from "../router";
 
 class ViewMain {
   _controller: ControllerMain;
   _router: Router;
   root: HTMLElement;
+  startCategoryData: stringArrayObject
 
   constructor() {
     this.root = document.body;
     this._controller = new ControllerMain();
+    this.startCategoryData = this._controller.startCategoryData
+
+
+    // this.root.onclick = () => {console.log(this.startCategoryData)}
+
+
+
+
+
     this._router = new Router()
 
     this._router.startRouteListenner()
@@ -43,7 +54,7 @@ class ViewMain {
   </section>
 </footer>`
 
-footer.onclick = () => {this._router.pushState('/product')}
+    footer.onclick = () => { this._router.pushState('/product') }
 
     this.root.append(footer)
   }

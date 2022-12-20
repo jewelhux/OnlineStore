@@ -36,6 +36,11 @@ class CreateFilterData {
     this._filtredCategoryData = this.getCategoryAndBrandData(this.startCategoryArray, "category", this.filtredData);
     this._startBrandData = this.getCategoryAndBrandData(this.startBrandArray, "brand");
     this._filtredBrandData = this.getCategoryAndBrandData(this.startBrandArray, "brand", this.filtredData);
+
+
+    this.FILTER.category.push("smartphones")
+
+console.log("this._FILTER",this._FILTER)
   }
 // ссылка на класс Базы данных
   public get baseData() {
@@ -88,25 +93,40 @@ class CreateFilterData {
   }
 // подметод для формирования стартовых Объектов категорий и бренда а также измененных
 // меняет по измененному filtredData
-  private getCategoryAndBrandData(obj: string[], key: "brand" | "category", filtredData:IitemDATA[] = this.startServerData) {
+  private getCategoryAndBrandData(obj: string[],
+                                  key: "brand" | "category",
+                                  filtredData:IitemDATA[] = this.startServerData,
+                                  
+                                  filter = this._FILTER) {
     const result: stringArrayObject = {}
 
     obj.forEach((categoryValue) => {
       filtredData.forEach((product) => {
-        if (!result[categoryValue]) result[categoryValue] = [0, 0]
+        if (!result[categoryValue]) result[categoryValue] = [0, 0, 0]
         if (product[key] === categoryValue) result[categoryValue][0] += 1
       })
     })
 
     obj.forEach((categoryValue) => {
       this.startServerData.forEach((product) => {
-        if (!result[categoryValue]) result[categoryValue] = [0, 0]
+        if (!result[categoryValue]) result[categoryValue] = [0, 0, 0]
         if (product[key] === categoryValue) result[categoryValue][1] += 1
       })
     })
 
+    console.log("result",result)
+    filter.category.forEach((item) => {
+      
+      console.log("result[item]",result[item])
+    
+    //  result[item][0] +=1
+    })
+
     return result
   }
+
+
+
 // медод обновляющий отфильтрованный Объект c данными ПРОДУКТА по измененному Объекту Фильтра
   updateFiltredData(): IitemDATA[] {
     let resultfilterData: IitemDATA[] = this.startServerData.slice()

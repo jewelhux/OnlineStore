@@ -34,7 +34,7 @@ class ViewMain {
 
     for (const key in data) {
       const item = this.customElement.createElement('div');
-      console.log()
+      // console.log()
       const input = this.customElement.createElement('input', { type: 'checkbox', id: key});
       const label = this.customElement.createElement('label', { textContent: key});
       label.setAttribute('for', key)

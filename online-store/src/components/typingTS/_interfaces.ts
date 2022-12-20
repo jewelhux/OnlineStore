@@ -22,6 +22,7 @@ interface IitemDATA {
     stock: number[];
     search: string[];
 }
+  // interface IFilter { [x: string]: string[] }
 
 
 export { IitemDATA, IFilter}

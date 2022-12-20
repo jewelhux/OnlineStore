@@ -50,7 +50,7 @@ class ControllerMain {
     console.log("this.FILTER",this.FILTER)
     this.a = this._formatURL.createURLSearchParams(this.FILTER)
     console.log("200000",this._formatURL.createURLSearchParams(this.FILTER).toString())
-    // console.log(this._formatURL.createObjectFromURLSearchParams(this.a))
+    console.log(this._formatURL.createObjectFromURLSearchParams(this.a))
   }
 
 

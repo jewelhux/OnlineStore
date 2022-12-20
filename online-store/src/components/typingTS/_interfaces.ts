@@ -20,7 +20,7 @@ interface IitemDATA {
     brand: string[];
     price: number[];
     stock: number[];
-    search: string[];
+    search: string;
 }
 
 

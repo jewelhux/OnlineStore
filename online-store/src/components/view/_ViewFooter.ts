@@ -1,6 +1,7 @@
 import ControllerMain from "../controller/_ControllerMain";
 import { stringArrayObject } from '../typingTS/_type'
 import Router from "../router";
+import { FOOTER } from '../utils/const';
 
 class ViewFooter {
   _controller: ControllerMain;
@@ -27,10 +28,7 @@ class ViewFooter {
   }
 
   createFooter() {
-
-    const footer: HTMLElement = document.createElement("footer")
-
-    footer.innerHTML = `<footer class="page-footer _main-container">
+    FOOTER.innerHTML = `<footer class="page-footer _main-container">
   <section class="footer _container">
     <div class="footer__item github">
       <div class="footer__link-container">
@@ -51,9 +49,7 @@ class ViewFooter {
   </section>
 </footer>`
 
-    footer.onclick = () => { this._router.pushState('/product') }
-
-    this.root.append(footer)
+    FOOTER.onclick = () => { this._router.pushState('/product') }
   }
 
   createMain() {

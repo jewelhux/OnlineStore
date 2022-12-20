@@ -1,5 +1,6 @@
 import CustomElement from '../utils/_createCustomElement';
-import basket from '../../assets/img/png/basket.png'
+import basket from '../../assets/img/png/basket.png';
+import { HEADER } from '../utils/const';
 
 class ViewHeader {
   headerTotalPrice: HTMLElement
@@ -19,8 +20,6 @@ class ViewHeader {
 
 
   createHeader() {
-  const HEADER = this.customElement.createElement('header', { className: 'page-header _main-container'});
-
   //Header контейнер
   const headerContainer = this.customElement.createElement('section', { className: 'header _container'});
   this.customElement.addChildren(HEADER,[headerContainer])

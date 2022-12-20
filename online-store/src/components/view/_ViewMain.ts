@@ -5,6 +5,14 @@ import { IitemDATA} from '../typingTS/_interfaces'
 import { itemFilterCheckbox } from '../utils/utils';
 import { MAIN } from '../utils/const';
 
+// 1. Вынести в конструктор инпуты слайдеров и текст с количеством
+// 2. Разделить методы для create еа отдельные категории
+// 3. Отрисовать девок по данным this.startServerData
+// 4. Отрисовать поиск, сортировку по умолчанию
+// 5.1 Повесить слушатель на кнопку ADD CARD, который вызывает метод this.addCardInBasket(условно, покеа пустой)
+// 5.2 Повесить слушатель на всю карточку, который вызывает this.showPageProduct(условно, покеа пустой), туда он передаст свой e.target, а this.showPageProduct вызоввет this._controller.showProduct(e.target)
+// 6. Вынести в конструктор кнопку ADD и Всю карточку
+
 class ViewMain {
   buttonReset: HTMLElement
   buttonCopy: HTMLElement
@@ -14,13 +22,17 @@ class ViewMain {
   _controller: ControllerMain;
   startCategoryData: stringArrayObject
   startBrandData: stringArrayObject
+  startPriceOfFILTER: number[];
   startServerData: IitemDATA[]
 
   constructor() {
     this._controller = new ControllerMain();
+
     this.startCategoryData = this._controller.startCategoryData;
     this.startBrandData = this._controller.startBrandData;
+    this.startPriceOfFILTER = this._controller.startPriceOfFILTER;
     this.startServerData = this._controller.startServerData;
+
     this.customElement = new CustomElement();
 
     this.buttonReset = this.customElement.createElement('button', { className: 'stock__reset _btn', textContent: 'Reset Filter'}); // button Reset
@@ -29,10 +41,10 @@ class ViewMain {
     this.filterBrandMain = this.customElement.createElement('div', { className: 'filter__item-container brand__container filter__item-container-scroll'}); // Brand
 
     this.create();
+    console.log(this.startServerData)
   }
 
-
-  create(dataFilterCategory: stringArrayObject = this.startCategoryData, dataFilterBrand: stringArrayObject = this.startBrandData) {
+  create(dataFilterCategory: stringArrayObject = this.startCategoryData, dataFilterBrand: stringArrayObject = this.startBrandData, dataFilterPrice: number[] = this.startPriceOfFILTER) {
     // Создание основной секции
     const pageMain = this.customElement.createElement('div', { className: 'page-main-one _main-container'});
     const mainOne = this.customElement.createElement('div', { className: 'main-one _container'});
@@ -79,15 +91,15 @@ class ViewMain {
     const itemPriceInputContainer = this.customElement.createElement('div', { className: 'range-slider'});
     this.customElement.addChildren(filterPriceContainer,[itemPriceNumberContainer, itemPriceInputContainer]);
 
-    const itemPriceNumberFrom = this.customElement.createElement('div', { className: 'item-price__from', textContent: '0'});
+    const itemPriceNumberFrom = this.customElement.createElement('div', { className: 'item-price__from', textContent: `${dataFilterPrice[0]}`});
     const itemPriceNumberMid = this.customElement.createElement('div', { textContent: '⟷'});
-    const itemPriceNumberTo = this.customElement.createElement('div', { className: 'item-price__to', textContent: '100'});
+    const itemPriceNumberTo = this.customElement.createElement('div', { className: 'item-price__to', textContent: `${dataFilterPrice[1]}`});
     this.customElement.addChildren(itemPriceNumberContainer,[itemPriceNumberFrom, itemPriceNumberMid, itemPriceNumberTo]);
 
-    const itemPriceInputOne = this.customElement.createElement('input', { type: 'range', step: '1', min: '0', max:'100', id:'slider1'});
-    itemPriceInputOne.setAttribute('value', '0')
-    const itemPriceInputTwo = this.customElement.createElement('input', { type: 'range', step: '1', min: '0', max:'100', id:'slider2'});
-    itemPriceInputTwo.setAttribute('value', '100')
+    const itemPriceInputOne = this.customElement.createElement('input', { type: 'range', step: '1', min: `${dataFilterPrice[0]}`, max:`${dataFilterPrice[1]}`, id:'slider1'});
+    itemPriceInputOne.setAttribute('value', `${dataFilterPrice[0]}`)
+    const itemPriceInputTwo = this.customElement.createElement('input', { type: 'range', step: '1', min: `${dataFilterPrice[0]}`, max:`${dataFilterPrice[1]}`, id:'slider2'});
+    itemPriceInputTwo.setAttribute('value', `${dataFilterPrice[1]}`)
     this.customElement.addChildren(itemPriceInputContainer,[itemPriceInputOne, itemPriceInputTwo]);
     
     // const main = document.querySelector('main') as HTMLElement ;

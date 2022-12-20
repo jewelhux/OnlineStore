@@ -29,6 +29,7 @@ class ViewMain {
     this.filterBrandMain = this.customElement.createElement('div', { className: 'filter__item-container brand__container filter__item-container-scroll'}); // Brand
 
     this.create();
+    this.headerListeners()
   }
 
 
@@ -103,10 +104,25 @@ class ViewMain {
     this.filterBrandMain.addEventListener('click', this.onheaderBasketClick);
   }
 
-  private onheaderBasketClick = () => {
-    console.log('123');
+  private onheaderBasketClick = (e:Event) => {
+    console.log(e);
   }
 
 }
 
 export default ViewMain
+
+
+// const divclick = document.querySelector(".filter__item-container") as HTMLElement;
+
+// if (divclick) {
+
+//   divclick.addEventListener('click', (e: Event) => {
+
+//     const target = e.target as HTMLElement;
+
+//     if (target.getAttribute('type') === "checkbox") {
+//       console.log(e)
+//     }
+
+//   })}

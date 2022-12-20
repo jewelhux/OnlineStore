@@ -12,5 +12,5 @@ const header = new ViewHeader();
 const main = new ViewMain();
 
 
-// const App = new ViewMain()
-// App.init()
+const App = new ViewFooter()
+App.init()

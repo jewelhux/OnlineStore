@@ -55,11 +55,8 @@ class CreateFilterData {
 
     // this.setSearchOfFILTER('iPhone 9')
     // this.setFILTERcategory('groceries')
-    this.setPriceOfFILTER([600,900])
+    this.setPriceOfFILTER([500,900])
     // this.setStockOfFILTER([30,100])
-    
-  
-
     // this.updateFILTER_Price_Stock()
 
     this._startCategoryData = this.getCategoryAndBrandData(this.startCategoryArray, "category");

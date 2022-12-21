@@ -2,14 +2,15 @@ import CustomElement from '../utils/_createCustomElement';
 import ControllerMain from '../controller/_ControllerMain';
 import { stringArrayObject } from '../typingTS/_type';
 import { IitemDATA } from '../typingTS/_interfaces'
-import { itemFilterCheckbox } from '../utils/utils';
+// import { itemFilterCheckbox } from '../utils/utils';
 import { MAIN } from '../utils/const';
 
 class ViewMainitemCard {
   customElement: CustomElement;
   _controller: ControllerMain;
+  // root: HTMLBodyElement;
 
-  PageMainItemCard: HHTMLElement;
+  PageMainItemCard: HTMLElement;
 
   // buttonReset: HTMLElement;
   // buttonCopy: HTMLElement;
@@ -35,6 +36,7 @@ class ViewMainitemCard {
   startServerData: IitemDATA[];
 
   constructor() {
+    // this.root = document.getElementsByTag('body');
     this._controller = new ControllerMain();
     this.customElement = new CustomElement();
 
@@ -45,8 +47,11 @@ class ViewMainitemCard {
     // this.startPriceOfFILTER = this._controller.startPriceOfFILTER;
     // this.startStockOfFILTER = this._controller.startStockOfFILTER;
     this.startServerData = this._controller.startServerData;
+    // this.create()
 
+    // MAIN.prepend(this.PageMainItemCard)
 
+    // this.root.append(this.PageMainItemCard)
     // this.buttonReset = this.customElement.createElement('button', { className: 'stock__reset _btn', textContent: 'Reset Filter'}); // button Reset
     // this.buttonCopy = this.customElement.createElement('button', { className: 'stock__copy _btn', textContent: 'Copy Link'}); // button Copy
     // this.filterCategoryMain = this.customElement.createElement('div', { className: 'filter__item-container category__container filter__item-container-scroll'}); // Category
@@ -81,9 +86,9 @@ class ViewMainitemCard {
 
     const crumbsOne = this.customElement.createElement('p', { className: 'crumbs__one', textContent: 'Store' });
     const paragraf = this.customElement.createElement('p', { textContent: '>>' });
-    const crumbsTwo = this.customElement.createElement('p', { className: 'crumbs__two', textContent: 'Smarthones' });
-    const crumbsThree = this.customElement.createElement('p', { className: 'crumbs__three', textContent: 'Apple' });
-    const crumbsFour = this.customElement.createElement('p', { className: 'crumbs__four', textContent: 'Iphone 9' });
+    const crumbsTwo = this.customElement.createElement('p', { className: 'crumbs__two', textContent: `${product.category}` });
+    const crumbsThree = this.customElement.createElement('p', { className: 'crumbs__three', textContent: `${product.brand}` });
+    const crumbsFour = this.customElement.createElement('p', { className: 'crumbs__four', textContent: `${product.title}` });
 
     this.customElement.addChildren(itemCardCrumbs, [crumbsOne, paragraf, crumbsTwo, paragraf, crumbsThree, paragraf, crumbsFour]);
 
@@ -119,11 +124,62 @@ class ViewMainitemCard {
     this.customElement.addChildren(itemCardMainPhoto, [itemCardImagePhotoImg]);
     this.customElement.addChildren(itemCardImagePhoto, [itemCardImagePhoto]);
 
-
-
-
     const itemCardBlock2 = this.customElement.createElement('div', { className: 'itemCard__block2' });
 
+    const itemCardInformation = this.customElement.createElement('div', { className: 'itemCard__information' });
+
+    const itemCardDataDescription = this.customElement.createElement('p', {
+      className: 'itemCard-data__description',
+      textContent: `Description: ${product.description}`
+    });
+    const itemCardDataDiscount = this.customElement.createElement('p', {
+      className: 'itemCard-data__discount',
+      textContent: `Discount: ${product.discountPercentage}`
+    });
+    const itemCardDataRating = this.customElement.createElement('p', {
+      className: 'itemCard-data__rating',
+      textContent: `Rating: ${product.rating}`
+    });
+    const itemCardDataStock = this.customElement.createElement('p', {
+      className: 'itemCard-data__stock',
+      textContent: `Stock: ${product.stock}`
+    });
+    const itemCardDataBrand = this.customElement.createElement('p', {
+      className: 'itemCard-data__brand',
+      textContent: `Description: ${product.brand}`
+    });
+    const itemCardDataCategory = this.customElement.createElement('p', {
+      className: 'itemCard-data__category',
+      textContent: `Category: ${product.category}`
+    });
+
+
+    this.customElement.addChildren(itemCardInformation, [itemCardDataDescription, itemCardDataDiscount,
+      itemCardDataRating, itemCardDataStock, itemCardDataBrand, itemCardDataCategory
+    ]);
+
+
+
+
+    const itemCardSummary = this.customElement.createElement('div', { className: 'itemCard__summary' });
+
+    const itemCardDataPrice = this.customElement.createElement('p', {
+      className: 'itemCard-data__price',
+      textContent: `Price: $ ${product.price}`
+    });
+
+    const cardBtnButton = this.customElement.createElement('button', { className: 'card__btn-button _btn',   textContent: 'Add to Cart' });
+
+// ******************************************** ТУТ 2 ОДИНАКОВЫХ ЭЛЕМЕНТА ПОЧЕМУ?
+
+    const cardBtnButton1234567890 = this.customElement.createElement('button', { className: 'card__btn-button _btn',   textContent: 'Buy now' });
+
+
+
+    this.customElement.addChildren(itemCardSummary, [itemCardDataPrice, cardBtnButton, cardBtnButton1234567890]);
+
+
+    this.customElement.addChildren(itemCardBlock2, [itemCardInformation, itemCardSummary]);
 
     this.customElement.addChildren(itemCardBlock1, [itemCardGalery, itemCardMainPhoto]);
     this.customElement.addChildren(itemCardContainer, [itemCardBlock1, itemCardBlock2]);
@@ -131,7 +187,6 @@ class ViewMainitemCard {
     this.customElement.addChildren(mainItemCard, [itemCardCrumbs, itemCardMain]);
 
   }
-
 
   // create() {
   //   // Создание основной секции
@@ -286,5 +341,8 @@ class ViewMainitemCard {
   // }
 
 }
+
+
+
 
 export default ViewMainitemCard

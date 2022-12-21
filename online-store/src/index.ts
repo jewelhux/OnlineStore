@@ -8,6 +8,9 @@ import './components/_add_rangeSlider';
 import ViewFooter from './components/view/_ViewFooter';
 import ViewHeader from './components/view/_ViewHeader'; // ВРЕМЕННО ДЛЯ ТЕСТА
 import ViewMain from './components/view/_ViewMain'; // ВРЕМЕННО ДЛЯ ТЕСТА
+import ViewMainitemCard from './components/view/_ViewMain_itemCard';
+
+const MainitemCard = new ViewMainitemCard()
 
 const header = new ViewHeader();
 const main = new ViewMain();

@@ -54,8 +54,8 @@ class CreateFilterData {
     this._searchOfFILTER = this._FILTER.search
 
 
-    // this.setSearchOfFILTER('iPhone 9')
-    this.setFILTERcategory('groceries')
+    this.setSearchOfFILTER('iPhone 9')
+    // this.setFILTERcategory('groceries')
     // this.setPriceOfFILTER([500,900])
     // this.setStockOfFILTER([30,100])
     // this.updateFILTER_Price_Stock()

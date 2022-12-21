@@ -26,6 +26,11 @@ class ViewMain {
   itemStockInputTwo: HTMLElement;
   filterCategoryMain: HTMLElement;
   filterBrandMain: HTMLElement;
+  viewSort: HTMLElement;
+  viewSearch: HTMLElement;
+  findCount: HTMLElement;
+  viewBlock: HTMLElement;
+  viewList: HTMLElement;
   customElement: CustomElement;
   _controller: ControllerMain;
   startCategoryData: stringArrayObject;
@@ -59,6 +64,12 @@ class ViewMain {
     this.itemStockNumberTo = this.customElement.createElement('div', { className: 'item-stock-slider__to'}); // Stock Text Max
     this.itemStockInputOne = this.customElement.createElement('input', { type: 'range', step: '1', id:'slider3'}); // Stock Input One
     this.itemStockInputTwo = this.customElement.createElement('input', { type: 'range', step: '1', id:'slider4'}); // Stock Input Two
+    //------Right Top------//
+    this.viewSort = this.customElement.createElement('input', { className: 'view__sort', name: 'sort', placeholder: 'Sorting'}); 
+    this.findCount = this.customElement.createElement('span', { className: 'view__find-count-span', textContent: '100' });
+    this.viewSearch = this.customElement.createElement('input', { className: 'view__search', type:'search', placeholder: 'Search product' });
+    this.viewBlock = this.customElement.createElement('div', { className: 'visible__item viewBlock'});
+    this.viewList = this.customElement.createElement('div', { className: 'visible__item viewList'});
 
     this.create();
   }
@@ -66,7 +77,7 @@ class ViewMain {
   create() {
     // Создание основной секции
     const pageMain = this.customElement.createElement('div', { className: 'page-main-one _main-container'});
-    const mainOne = this.customElement.createElement('div', { className: 'main-one _container'});
+    const mainOne = this.customElement.createElement('section', { className: 'main-one _container'});
     this.customElement.addChildren(pageMain,[mainOne]);
 
     // Создание ЛЕВОЙ СЕКЦИИ!!!
@@ -89,7 +100,35 @@ class ViewMain {
 
     // Создание Stock
     this.customElement.addChildren(mainLeft,[this.createStockBlock()]);
-    
+
+
+    // Создание ПРАВОЙ СЕКЦИИ!!!
+    const mainRight = this.customElement.createElement('div', { className: 'main-one__right right'});
+    this.customElement.addChildren(mainOne,[mainRight]);
+
+    // Создание верхней правой секции (поиск, сортировка, количество, вид карточек)
+    const rightView = this.customElement.createElement('div', { className: 'right__view view'});
+    this.customElement.addChildren(mainRight,[rightView]);
+
+    // Сортировка
+    this.viewSort.setAttribute('list','sorting');
+    const dataListSort = this.customElement.createElement('datalist', { id: "sorting"});
+    const optionSortABC = this.customElement.createElement('option', { value: "SortABC"});
+    const optionSortPrice = this.customElement.createElement('option', { value: "SortPrice"});
+    const optionSortRating = this.customElement.createElement('option', { value: "SortRating"});
+    this.customElement.addChildren(dataListSort,[optionSortABC, optionSortPrice, optionSortRating]);
+
+    //Число найденных товров
+    const viewFindCount = this.customElement.createElement('p', { className: 'view__find-count', textContent: 'Found:'});
+    this.customElement.addChildren(viewFindCount,[this.findCount]);
+
+    //Вид карточек
+    const viewVisible = this.customElement.createElement('div', { className: 'view__visible visible'});
+    this.customElement.addChildren(viewVisible,[this.viewBlock, this.viewList]);
+
+    // Добавление в правый вернхнюю правую секцию
+    this.customElement.addChildren(rightView,[this.viewSort, viewFindCount, this.viewSearch, viewVisible]);
+
     // Добавление всего в основной main
     this.customElement.addChildren(MAIN,[pageMain]);
   }

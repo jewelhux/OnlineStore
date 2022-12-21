@@ -21,6 +21,7 @@ interface IitemDATA {
     price: number[];
     stock: number[];
     search: string[];
+    sort: string[]
 }
   // interface IFilter { [x: string]: string[] }
 

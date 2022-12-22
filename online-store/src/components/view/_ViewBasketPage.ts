@@ -3,7 +3,7 @@ import ControllerMain from '../controller/_ControllerMain';
 import { stringArrayObject } from '../typingTS/_type';
 import { IitemDATA} from '../typingTS/_interfaces'
 import { createElement } from '../utils/utils';
-import { MAIN } from '../utils/const';
+// import { MAIN } from '../utils/const';
 
 class ViewMainPage {
   buttonReset: HTMLElement;
@@ -128,7 +128,7 @@ class ViewMainPage {
     this.customElement.addChildren(this.cardList,[...this.renderItemCard()]);
     this.customElement.addChildren(mainRight,[this.cardList]);
     // Добавление всего в основной main
-    this.customElement.addChildren(MAIN,[pageMain]);
+    // this.customElement.addChildren(MAIN,[pageMain]);
   }
 
   // Создание Category

@@ -310,3 +310,19 @@
   display: flex;
   column-gap: 100px;
 }
+
+.product__itemsView {
+  display: flex;
+}
+
+.product__items-inputView {
+  font-size: 18px;
+  font-weight: 700;
+  color: $mainColor;
+  padding: 5px;
+  align-self: center;
+  width: 35px;
+  height: 30px;
+  outline: none;
+  border-radius: 5px;
+}

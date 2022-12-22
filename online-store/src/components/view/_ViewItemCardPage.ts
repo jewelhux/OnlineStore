@@ -3,7 +3,7 @@ import ControllerMain from '../controller/_ControllerMain';
 import { stringArrayObject } from '../typingTS/_type';
 import { IitemDATA } from '../typingTS/_interfaces';
 import { createElement } from '../utils/utils';
-import { MAIN } from '../utils/const';
+// import { MAIN } from '../utils/const';
 
 class ViewItemCardPage {
   customElement: CustomElement;
@@ -31,7 +31,7 @@ class ViewItemCardPage {
 
   create() {
     this.customElement.addChildren(this.pageMainItemCard, [this.renderCardBlock()]);
-    this.customElement.addChildren(MAIN, [this.pageMainItemCard]);
+    // this.customElement.addChildren(MAIN, [this.pageMainItemCard]);
   }
 
   renderCardBlock(product: IitemDATA = this.startServerData[0]): HTMLElement {

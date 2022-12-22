@@ -1,6 +1,5 @@
 import CustomElement from '../utils/_createCustomElement';
 import basket from '../../assets/img/png/basket.png';
-// import { HEADER } from '../utils/const';
 
 class ViewHeader {
   headerTotalPrice: HTMLElement
@@ -15,7 +14,6 @@ class ViewHeader {
     this.headerBasket = this.customElement.createElement('div', { className: 'header__basket' });
     this.headerBasketCount = this.customElement.createElement('span', { className: 'header__basket-count', textContent: '0' });
 
-    this.createHeader();
     this.headerListeners();
     this.EVENT = {
       clickOnBacket: new Event('clickOnBacket', { bubbles: true })}
@@ -42,7 +40,7 @@ class ViewHeader {
     // Заполнение headerTotal
     this.customElement.addChildren(headerTotal, [this.headerTotalPrice]);
     // Заполнение headerBasket
-    const headerBasketImg = this.customElement.createElement('img', { className: 'logo__title', src: basket });
+    const headerBasketImg = this.customElement.createElement('img', { src: basket  });
     this.customElement.addChildren(this.headerBasket, [headerBasketImg, this.headerBasketCount]);
 
     // document.body.prepend(HEADER)

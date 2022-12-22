@@ -56,8 +56,6 @@ class ControllerMain {
     this.FOOTER = this.customElement.createElement('footer', {className: "page-footer _main-container"});
     this.customElement.addChildren(this.BODY, [this.HEADER,this.MAIN,this.FOOTER])
 
-
-
     this.MODEL = new CreateFilterData()
     this.ViewHEADER = new ViewHeader()
 
@@ -93,7 +91,7 @@ class ControllerMain {
     this.HEADER.append(this.ViewHEADER.createHeader())
 
     // для проверки прокидывания значения в корзину
-    this.ViewHEADER.updateheaderBasketCount(7)
+    this.ViewHEADER.updateheaderBasketCount(7);
   }
 
 

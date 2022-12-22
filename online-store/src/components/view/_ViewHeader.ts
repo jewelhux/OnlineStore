@@ -41,6 +41,7 @@ class ViewHeader {
     this.customElement.addChildren(headerTotal, [this.headerTotalPrice]);
     // Заполнение headerBasket
     const headerBasketImg = this.customElement.createElement('img', { src: basket  });
+    this.headerBasket.innerHTML = ''
     this.customElement.addChildren(this.headerBasket, [headerBasketImg, this.headerBasketCount]);
 
     // document.body.prepend(HEADER)

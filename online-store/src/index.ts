@@ -17,9 +17,6 @@ import './components/_add_favicon';
 // const viewItemCardPage = new ViewItemCardPage(); // Запустит отрисовку страницы карточки товара
 // const viewFooter = new ViewFooter();
 
-
-
-
 import ControllerMain from './components/controller/_ControllerMain'
 // import CreateFilterData from './components/model/_ModelCreateFilterData'
 // import ViewHeader from './components/model/_ModelCreateFilterData'

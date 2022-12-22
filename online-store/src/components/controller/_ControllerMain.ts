@@ -8,6 +8,7 @@ import CreateFilterData from '../model/_ModelCreateFilterData'
 // VIEWS
 
 import ViewHeader from '../view/_ViewHeader';
+import ViewFooter from '../view/_ViewFooter';
 
 import CustomElement from '../utils/_createCustomElement';
 
@@ -19,9 +20,8 @@ class ControllerMain {
   customElement: CustomElement
 
   MODEL: CreateFilterData;
-  ViewHEADER: ViewHeader
-
-
+  ViewHEADER: ViewHeader;
+  ViewFOOTER: ViewFooter;
 
   _formatURL: FormatURL;
 
@@ -56,10 +56,11 @@ class ControllerMain {
     this.FOOTER = this.customElement.createElement('footer', {className: "page-footer _main-container"});
     this.customElement.addChildren(this.BODY, [this.HEADER,this.MAIN,this.FOOTER])
 
-    this.MODEL = new CreateFilterData()
-    this.ViewHEADER = new ViewHeader()
+    this.MODEL = new CreateFilterData();
+    this.ViewHEADER = new ViewHeader();
+    this.ViewFOOTER = new ViewFooter();
 
-    this._formatURL = new FormatURL()
+    this._formatURL = new FormatURL();
 
     this.FILTER = this.MODEL.FILTER
     this.startCategoryData = this.MODEL.startCategoryData
@@ -88,7 +89,8 @@ class ControllerMain {
 
 
   init() {
-    this.HEADER.append(this.ViewHEADER.createHeader())
+    this.HEADER.append(this.ViewHEADER.create())
+    this.FOOTER.append(this.ViewFOOTER.create())
 
     // для проверки прокидывания значения в корзину
     this.ViewHEADER.updateheaderBasketCount(7)
@@ -98,16 +100,16 @@ class ControllerMain {
       this.ViewHEADER.updateheaderBasketCount(100)
     })
 
-  setTimeout(() => {
-    this.ViewHEADER.updateheaderBasketCount(0)
-    this.HEADER.innerHTML=''
-  }, 5000);
+  // setTimeout(() => {
+  //   this.ViewHEADER.updateheaderBasketCount(0)
+  //   this.HEADER.innerHTML=''
+  // }, 5000);
 
 
-  setTimeout(() => {
+  // setTimeout(() => {
 
-    this.HEADER.prepend(this.ViewHEADER.createHeader())
-  }, 10000);
+  //   this.HEADER.prepend(this.ViewHEADER.createHeader())
+  // }, 10000);
 
   }
 

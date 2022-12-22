@@ -16,15 +16,12 @@ class ViewHeader {
 
     this.headerListeners();
     this.EVENT = {
-      clickOnBacket: new Event('clickOnBacket', { bubbles: true })}
-
-    // startLi
-
-
+      clickOnBacket: new Event('clickOnBacket', { bubbles: true })
+    }
   }
 
 
-  createHeader() {
+  create() {
     //Header контейнер
     const headerContainer = this.customElement.createElement('section', { className: 'header _container' });
     // this.customElement.addChildren(HEADER,[headerContainer])

@@ -5,15 +5,14 @@ import './components/_add_favicon';
 // import './components/_CreateBaseData';
 // import './components/_ModelCreateFilterData'
 import './components/_add_rangeSlider';
+
 import ViewFooter from './components/view/_ViewFooter';
 import ViewHeader from './components/view/_ViewHeader'; // ВРЕМЕННО ДЛЯ ТЕСТА
 import ViewMain from './components/view/_ViewMain'; // ВРЕМЕННО ДЛЯ ТЕСТА
-import ViewMainitemCard from './components/view/_ViewMain_itemCard';
+import ViewItemCardPage from './components/view/_ViewItemCardPage';
 
-const MainitemCard = new ViewMainitemCard()
-
-const header = new ViewHeader();
-const main = new ViewMain();
-
-const App = new ViewFooter()
-App.init()
+// Отрисовка
+const viewHeader = new ViewHeader();
+const viewMain = new ViewMain(); // Запустит отрисовку основной секции main\
+const viewItemCardPage = new ViewItemCardPage(); // Запустит отрисовку страницы карточки товара
+const viewFooter = new ViewFooter();

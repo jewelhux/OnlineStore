@@ -94,9 +94,34 @@ class ControllerMain {
 
     // для проверки прокидывания значения в корзину
     this.ViewHEADER.updateheaderBasketCount(7)
+    // проверка ловли евента со вью хедера
+    this.BODY.addEventListener('clickOnBacket', (e)=>{
+      console.log("eventfromMain = ",e)
+      this.ViewHEADER.updateheaderBasketCount(100)
+    })
+
+  setTimeout(() => {
+    this.ViewHEADER.updateheaderBasketCount(0)
+    this.HEADER.innerHTML=''
+  }, 5000);
+
+
+  setTimeout(() => {
+
+    this.HEADER.prepend(this.ViewHEADER.createHeader())
+  }, 10000);
+
   }
+
+
 
 
 }
 
 export default ControllerMain
+
+
+
+export function processOrder(time: number): Promise<void> {
+  return new Promise((res) => setTimeout(res, time));
+}

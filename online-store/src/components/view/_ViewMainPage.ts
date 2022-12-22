@@ -5,15 +5,7 @@ import { IitemDATA} from '../typingTS/_interfaces'
 import { createElement } from '../utils/utils';
 import { MAIN } from '../utils/const';
 
-// 1. Вынести в конструктор инпуты слайдеров и текст с количеством
-// 2. Разделить методы для create еа отдельные категории
-// 3. Отрисовать девок по данным this.startServerData
-// 4. Отрисовать поиск, сортировку по умолчанию
-// 5.1 Повесить слушатель на кнопку ADD CARD, который вызывает метод this.addCardInBasket(условно, покеа пустой)
-// 5.2 Повесить слушатель на всю карточку, который вызывает this.showPageProduct(условно, покеа пустой), туда он передаст свой e.target, а this.showPageProduct вызоввет this._controller.showProduct(e.target)
-// 6. Вынести в конструктор кнопку ADD и Всю карточку !!! КНОПКУ АДД НЕ ВЫНЕСТИ
-
-class ViewMain {
+class ViewMainPage {
   buttonReset: HTMLElement;
   buttonCopy: HTMLElement;
   itemPriceNumberFrom: HTMLElement;
@@ -74,7 +66,7 @@ class ViewMain {
     //------Right Bottom------//
     this.cardList = this.customElement.createElement('div', { className: 'right__list cardlist'}); // Контейнер с карточками
 
-    this.create();
+    // this.create();
   }
 
   create() {
@@ -93,16 +85,16 @@ class ViewMain {
     this.customElement.addChildren(containerButtons,[this.buttonReset, this.buttonCopy]);
     
     //Добавление Category
-    this.customElement.addChildren(mainLeft,[this.createCategoryBlock()]);
+    this.customElement.addChildren(mainLeft,[this.renderCategoryBlock()]);
 
     // Добавление Brand 
-    this.customElement.addChildren(mainLeft,[this.createBrandBlock()]);
+    this.customElement.addChildren(mainLeft,[this.renderBrandBlock()]);
 
     // Создание Price
-    this.customElement.addChildren(mainLeft,[this.createPriceBlock()]);
+    this.customElement.addChildren(mainLeft,[this.renderPriceBlock()]);
 
     // Создание Stock
-    this.customElement.addChildren(mainLeft,[this.createStockBlock()]);
+    this.customElement.addChildren(mainLeft,[this.renderStockBlock()]);
 
 
     // Создание ПРАВОЙ ВЕРХНЕЙ СЕКЦИИ!!!
@@ -133,14 +125,14 @@ class ViewMain {
     this.customElement.addChildren(rightView,[this.viewSort, viewFindCount, this.viewSearch, viewVisible]);
 
     // Создание ПРАВОЙ НИЖНЕЙ СЕКЦИИ!!!
-    this.customElement.addChildren(this.cardList,[...this.createItemCard()]);
+    this.customElement.addChildren(this.cardList,[...this.renderItemCard()]);
     this.customElement.addChildren(mainRight,[this.cardList]);
     // Добавление всего в основной main
     this.customElement.addChildren(MAIN,[pageMain]);
   }
 
   // Создание Category
-  createCategoryBlock(dataFilterCategory: stringArrayObject = this.startCategoryData):HTMLElement {
+  renderCategoryBlock(dataFilterCategory: stringArrayObject = this.startCategoryData):HTMLElement {
     const filterCategory = this.customElement.createElement('div', { className: 'filter__item filter__category category filter__item-scroll'});
     const filterCategoryItemName = this.customElement.createElement('h3', { className: 'filter__item-name category__name', textContent: 'Category'});
     this.customElement.addChildren(filterCategory,[filterCategoryItemName, this.filterCategoryMain]);
@@ -153,7 +145,7 @@ class ViewMain {
   }
 
   // Создание Brand
-  createBrandBlock(dataFilterBrand: stringArrayObject = this.startBrandData):HTMLElement {
+  renderBrandBlock(dataFilterBrand: stringArrayObject = this.startBrandData):HTMLElement {
     const filterBrand = this.customElement.createElement('div', { className: 'filter__item filter__brand brand filter__item-scroll'});
     const filterBrandItemName = this.customElement.createElement('h3', { className: 'filter__item-name brand__name', textContent: 'Brand'});
     this.customElement.addChildren(filterBrand,[filterBrandItemName, this.filterBrandMain]);
@@ -166,7 +158,7 @@ class ViewMain {
   }
 
   // Создание Price
-  createPriceBlock(dataFilterPrice: number[] = this.startPriceOfFILTER):HTMLElement {
+  renderPriceBlock(dataFilterPrice: number[] = this.startPriceOfFILTER):HTMLElement {
     const filterPrice = this.customElement.createElement('div', { className: 'filter__item filter__price price'});
     const filterPriceItemName = this.customElement.createElement('h3', { className: 'filter__item-name price__name', textContent: 'Price'});
     const filterPriceContainer = this.customElement.createElement('div', { className: 'filter__item-container price__container'});
@@ -195,7 +187,7 @@ class ViewMain {
   }
 
   // Создание Stock
-  createStockBlock(dataFilterStock: number[] = this.startStockOfFILTER):HTMLElement {
+  renderStockBlock(dataFilterStock: number[] = this.startStockOfFILTER):HTMLElement {
     const filterStock = this.customElement.createElement('div', { className: 'filter__item filter__stock-slider stock-slider'});
     const filterStockItemName = this.customElement.createElement('h3', { className: 'filter__item-name stock-slider__name', textContent: 'Stock'});
     const filterStockContainer = this.customElement.createElement('div', { className: 'filter__item-container stock-slider__container'});
@@ -224,7 +216,7 @@ class ViewMain {
   }
 
   // Создание ItemCard (девок)
-  createItemCard(dataServerItem:IitemDATA[] = this.startServerData) {
+  renderItemCard(dataServerItem:IitemDATA[] = this.startServerData) {
     const itemContainer: HTMLElement[] = [];
 
     for (const item of dataServerItem) {
@@ -296,4 +288,4 @@ class ViewMain {
 
 }
 
-export default ViewMain
+export default ViewMainPage

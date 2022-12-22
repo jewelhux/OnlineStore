@@ -1,6 +1,6 @@
 import ControllerMain from "../controller/_ControllerMain";
 import { stringArrayObject } from '../typingTS/_type'
-import Router from "../router";
+
 import { createElement } from '../utils/utils';
 
 class ViewFooter {

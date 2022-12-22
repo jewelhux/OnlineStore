@@ -49,8 +49,8 @@ class CreateFilterData {
     this._FILTER.price = this.baseData.price
     this._FILTER.stock = this.baseData.stock,
 
-    console.log("this._FILTER",this._FILTER)
-    console.log("state",state)
+    // console.log("this._FILTER",this._FILTER)
+    // console.log("state",state)
 
     this._startPriceOfFILTER = this._startServerFILTER.price
     this._startStockOfFILTER = this._startServerFILTER.stock
@@ -61,7 +61,7 @@ class CreateFilterData {
     this._searchOfFILTER = this._FILTER.search
 
 
-    this.setSearchOfFILTER('iPhone 9')
+    // this.setSearchOfFILTER('iPhone 9')
     // this.setFILTERcategory('groceries')
     // this.setPriceOfFILTER([500,900])
     // this.setStockOfFILTER([30,100])
@@ -73,10 +73,10 @@ class CreateFilterData {
     this._filtredBrandData = this.getCategoryAndBrandData(this.startBrandArray, "brand", this.filtredData);
 
 
-    console.log("222 this.FILTER", this.FILTER)
-    console.log("333 filtredData =====", this.filtredData)
-    console.log("444 this.filtredCategoryData", this.filtredCategoryData)
-    console.log("555 this.filtredBrandData", this.filtredBrandData)
+    // console.log("222 this.FILTER", this.FILTER)
+    // console.log("333 filtredData =====", this.filtredData)
+    // console.log("444 this.filtredCategoryData", this.filtredCategoryData)
+    // console.log("555 this.filtredBrandData", this.filtredBrandData)
   }
   // ссылка на класс Базы данных
   public get baseData() {

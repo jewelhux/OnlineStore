@@ -16,3 +16,18 @@ const viewHeader = new ViewHeader();
 const viewMain = new ViewMain(); // Запустит отрисовку основной секции main\
 const viewItemCardPage = new ViewItemCardPage(); // Запустит отрисовку страницы карточки товара
 const viewFooter = new ViewFooter();
+
+
+
+
+// import { ControllerMain } from './components/controller/_ControllerMain'
+// import { CreateFilterData } from './components/model/_ModelCreateFilterData'
+// import { ViewHeader } from './components/model/_ModelCreateFilterData'
+
+// import { Controller } from "./src/controller/index.js"
+// import { Model } from "./src/model/index.js"
+// import { View } from "./src/view/index.js"
+
+// const APP = new ControllerMain(new CreateFilterData(), new View(), "users")
+
+// APP.start()

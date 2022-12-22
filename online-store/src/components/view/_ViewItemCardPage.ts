@@ -10,6 +10,8 @@ class ViewItemCardPage {
   _controller: ControllerMain;
 
   pageMainItemCard: HTMLElement;
+  itemCardImagePhotoImg: HTMLElement
+
   startServerData: IitemDATA[];
 
   constructor() {
@@ -20,15 +22,19 @@ class ViewItemCardPage {
     this.startServerData = this._controller.startServerData;
 
     console.log(this.startServerData[0].images)
+
+    this.itemCardImagePhotoImg = this.customElement.createElement('img', { className: 'itemCard__imagePhoto-img' });
+
+
     this.create();
   }
 
   create() {
-    this.customElement.addChildren(this.pageMainItemCard,[this.renderCardBlock()]);
-    this.customElement.addChildren(MAIN,[this.pageMainItemCard]);
+    this.customElement.addChildren(this.pageMainItemCard, [this.renderCardBlock()]);
+    this.customElement.addChildren(MAIN, [this.pageMainItemCard]);
   }
 
-  renderCardBlock(product: IitemDATA = this.startServerData[0]):HTMLElement {
+  renderCardBlock(product: IitemDATA = this.startServerData[0]): HTMLElement {
     // Создание основной секции
     const mainItemCard = this.customElement.createElement('section', { className: 'main-itemCard _container itemCard' })
     this.customElement.addChildren(this.pageMainItemCard, [mainItemCard]);
@@ -54,7 +60,7 @@ class ViewItemCardPage {
     const itemCardContainer = this.customElement.createElement('div', { className: 'itemCard__container' });
 
     this.customElement.addChildren(itemCardMain, [itemCardName, itemCardContainer]);
-    
+
     // Заполнение itemCardContainer
     const itemCardBlock1 = this.customElement.createElement('div', { className: 'itemCard__block1' });
     const itemCardBlock2 = this.customElement.createElement('div', { className: 'itemCard__block2' });
@@ -69,14 +75,16 @@ class ViewItemCardPage {
     // Заполнение itemCardGalery
     for (const key in product.images) {
       const itemCardImage = this.itemFilterCheckbox(product.images[key]); // Функция получение разметки определенной карточки
-      this.customElement.addChildren(itemCardGalery,[itemCardImage]);
+      itemCardImage.addEventListener('click', (e) => this.changeItemCardImagePhotoImg(e))
+      this.customElement.addChildren(itemCardGalery, [itemCardImage]);
     }
 
     // Заполнение itemCardMainPhoto
     const itemCardImagePhoto = this.customElement.createElement('div', { className: 'itemCard__imagePhoto' });
-    const itemCardImagePhotoImg = this.customElement.createElement('img', { className: 'itemCard__imagePhoto-img', src: product.images[0] });
+    this.itemCardImagePhotoImg.setAttribute('src', product.images[0])
+    // const itemCardImagePhotoImg = this.customElement.createElement('img', { className: 'itemCard__imagePhoto-img', src: product.images[0] });
 
-    this.customElement.addChildren(itemCardImagePhoto, [itemCardImagePhotoImg]);
+    this.customElement.addChildren(itemCardImagePhoto, [this.itemCardImagePhotoImg]);
     this.customElement.addChildren(itemCardMainPhoto, [itemCardImagePhoto]);
 
     // Заполнение itemCardBlock2
@@ -117,10 +125,11 @@ class ViewItemCardPage {
     ]);
 
     // Заполнение itemCardSummary
-    const itemCardDataPrice = this.customElement.createElement('p', { className: 'itemCard-data__price', textContent: `Price: $ ${product.price}`
+    const itemCardDataPrice = this.customElement.createElement('p', {
+      className: 'itemCard-data__price', textContent: `Price: $ ${product.price}`
     });
-    const cardBtnButtonAdd = this.customElement.createElement('button', { className: 'card__btn-button _btn button-add',   textContent: 'Add to Cart' });
-    const cardBtnButtonBuy = this.customElement.createElement('button', { className: 'card__btn-button _btn button-buy',   textContent: 'Buy now' });
+    const cardBtnButtonAdd = this.customElement.createElement('button', { className: 'card__btn-button _btn button-add', textContent: 'Add to Cart' });
+    const cardBtnButtonBuy = this.customElement.createElement('button', { className: 'card__btn-button _btn button-buy', textContent: 'Buy now' });
     this.customElement.addChildren(itemCardSummary, [itemCardDataPrice, cardBtnButtonAdd, cardBtnButtonBuy]);
 
     return mainItemCard
@@ -130,8 +139,18 @@ class ViewItemCardPage {
     const temp = `<div class="itemCard__imageGalery">
     <img class="itemCard__imageGalery-img" src="${src}">
     </div>`
-  
+
     return createElement(temp)
+  }
+
+
+  changeItemCardImagePhotoImg(e: Event) {
+    const target = e.target as HTMLElement
+    if (target) {
+      const newSrc = target.getAttribute('src')
+      if (newSrc) this.itemCardImagePhotoImg.setAttribute('src', newSrc)
+    }
+
   }
 }
 

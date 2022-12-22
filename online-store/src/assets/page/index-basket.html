@@ -23,7 +23,7 @@
   </header>
   <main>
     <div class="page-main-basket _main-container">
-      <div class="popup-wrapper popup-wrapper-active">
+      <div class="popup-wrapper">
         <div class="popup">
           <div class="popup__block">
             <img class="popup__close" src="./src/assets/img/png/close.png">
@@ -54,7 +54,10 @@
         <div class="main-basket__product product">
           <div class="product__title">
             <h3 class="product__name">Product in Cart</h3>
-            <p class="product__items-name">Items: <span class="product__items-count">4</span></p>
+            <div class="product__itemsView">
+              <p class="product__items-name">Items:</p>
+              <input class="product__items-inputView" type="text" value="4">
+            </div>
             <div class="product__pages">
               <p class="product__items-pages">Pages:</p>
               <button class="product__pages-btnPrev product__pages-btn">&lt;</button>

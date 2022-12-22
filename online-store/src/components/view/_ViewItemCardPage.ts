@@ -33,8 +33,8 @@ class ViewItemCardPage {
   create() {
     // Отрисовка контейнера (для попапа и секции)
     const pageMainBasket = this.customElement.createElement('section', { className: 'page-main-itemCard _main-container' });
-    const popupWrapper = this.customElement.createElement('section', { className: 'popup-wrapper' });
-    const mainBasket = this.customElement.createElement('section', { className: 'page-main-itemCard _main-container' });
+    const popupWrapper = this.customElement.createElement('div', { className: 'popup-wrapper' });
+    const mainBasket = this.customElement.createElement('div', { className: 'page-main-itemCard _main-container' });
     this.customElement.addChildren(pageMainBasket, [popupWrapper, mainBasket]);
 
     // Отрисовка mainBasket
@@ -59,9 +59,25 @@ class ViewItemCardPage {
     const productItemsPages = this.customElement.createElement('p', { className: 'product__items-pages', textContent: 'Pages:'});
     this.customElement.addChildren(productPages, [productItemsPages, this.pagesButtonPrev, this.pagesCurrent, this.pagesButtonNext]);
 
+    // Отрисовка Листа товаров корзины
+    this.customElement.addChildren(this.productList,[...this.renderProductCard()]);
+
     this.customElement.addChildren(MAIN,[pageMainBasket]);
   }
 
+  // Создание ItemCard корзины
+  renderProductCard(dataServerItem:IitemDATA[] = this.startServerData) {
+    const itemContainer: HTMLElement[] = [];
+    const test:IitemDATA[] = dataServerItem.slice(0, 3)
+
+    for (const item of test) {
+      const itemBasket = this.customElement.createElement('div', { className: 'product__itemBasket itemBasket'});
+
+      itemContainer.push(itemBasket)
+    }
+
+    return itemContainer
+  }
 }
 
 export default ViewItemCardPage

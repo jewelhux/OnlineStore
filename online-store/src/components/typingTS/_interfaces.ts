@@ -20,8 +20,10 @@ interface IitemDATA {
     brand: string[];
     price: number[];
     stock: number[];
-    search: string;
+    search: string[];
+    sort: string[]
 }
+  // interface IFilter { [x: string]: string[] }
 
 
 export { IitemDATA, IFilter}

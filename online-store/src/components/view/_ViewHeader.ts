@@ -1,6 +1,6 @@
 import CustomElement from '../utils/_createCustomElement';
 import basket from '../../assets/img/png/basket.png';
-import { HEADER } from '../utils/const';
+// import { HEADER } from '../utils/const';
 
 class ViewHeader {
   headerTotalPrice: HTMLElement
@@ -22,7 +22,7 @@ class ViewHeader {
   createHeader() {
   //Header контейнер
   const headerContainer = this.customElement.createElement('section', { className: 'header _container'});
-  this.customElement.addChildren(HEADER,[headerContainer])
+  // this.customElement.addChildren(HEADER,[headerContainer])
   
   // Основные секции header
   const headerLogo = this.customElement.createElement('a', { className: 'header__logo logo', href: '#'});
@@ -38,7 +38,8 @@ class ViewHeader {
   const headerBasketImg = this.customElement.createElement('img', { className: 'logo__title', src: basket});
   this.customElement.addChildren(this.headerBasket,[headerBasketImg, this.headerBasketCount]);
 
-  document.body.prepend(HEADER)
+  // document.body.prepend(HEADER)
+  return headerContainer
   }
 
   updateheaderBasketCount(count: number = 0) {

@@ -85,16 +85,16 @@ class ViewMainPage {
     this.customElement.addChildren(containerButtons,[this.buttonReset, this.buttonCopy]);
     
     //Добавление Category
-    this.customElement.addChildren(mainLeft,[this.createCategoryBlock()]);
+    this.customElement.addChildren(mainLeft,[this.renderCategoryBlock()]);
 
     // Добавление Brand 
-    this.customElement.addChildren(mainLeft,[this.createBrandBlock()]);
+    this.customElement.addChildren(mainLeft,[this.renderBrandBlock()]);
 
     // Создание Price
-    this.customElement.addChildren(mainLeft,[this.createPriceBlock()]);
+    this.customElement.addChildren(mainLeft,[this.renderPriceBlock()]);
 
     // Создание Stock
-    this.customElement.addChildren(mainLeft,[this.createStockBlock()]);
+    this.customElement.addChildren(mainLeft,[this.renderStockBlock()]);
 
 
     // Создание ПРАВОЙ ВЕРХНЕЙ СЕКЦИИ!!!
@@ -125,14 +125,14 @@ class ViewMainPage {
     this.customElement.addChildren(rightView,[this.viewSort, viewFindCount, this.viewSearch, viewVisible]);
 
     // Создание ПРАВОЙ НИЖНЕЙ СЕКЦИИ!!!
-    this.customElement.addChildren(this.cardList,[...this.createItemCard()]);
+    this.customElement.addChildren(this.cardList,[...this.renderItemCard()]);
     this.customElement.addChildren(mainRight,[this.cardList]);
     // Добавление всего в основной main
     this.customElement.addChildren(MAIN,[pageMain]);
   }
 
   // Создание Category
-  createCategoryBlock(dataFilterCategory: stringArrayObject = this.startCategoryData):HTMLElement {
+  renderCategoryBlock(dataFilterCategory: stringArrayObject = this.startCategoryData):HTMLElement {
     const filterCategory = this.customElement.createElement('div', { className: 'filter__item filter__category category filter__item-scroll'});
     const filterCategoryItemName = this.customElement.createElement('h3', { className: 'filter__item-name category__name', textContent: 'Category'});
     this.customElement.addChildren(filterCategory,[filterCategoryItemName, this.filterCategoryMain]);
@@ -145,7 +145,7 @@ class ViewMainPage {
   }
 
   // Создание Brand
-  createBrandBlock(dataFilterBrand: stringArrayObject = this.startBrandData):HTMLElement {
+  renderBrandBlock(dataFilterBrand: stringArrayObject = this.startBrandData):HTMLElement {
     const filterBrand = this.customElement.createElement('div', { className: 'filter__item filter__brand brand filter__item-scroll'});
     const filterBrandItemName = this.customElement.createElement('h3', { className: 'filter__item-name brand__name', textContent: 'Brand'});
     this.customElement.addChildren(filterBrand,[filterBrandItemName, this.filterBrandMain]);
@@ -158,7 +158,7 @@ class ViewMainPage {
   }
 
   // Создание Price
-  createPriceBlock(dataFilterPrice: number[] = this.startPriceOfFILTER):HTMLElement {
+  renderPriceBlock(dataFilterPrice: number[] = this.startPriceOfFILTER):HTMLElement {
     const filterPrice = this.customElement.createElement('div', { className: 'filter__item filter__price price'});
     const filterPriceItemName = this.customElement.createElement('h3', { className: 'filter__item-name price__name', textContent: 'Price'});
     const filterPriceContainer = this.customElement.createElement('div', { className: 'filter__item-container price__container'});
@@ -187,7 +187,7 @@ class ViewMainPage {
   }
 
   // Создание Stock
-  createStockBlock(dataFilterStock: number[] = this.startStockOfFILTER):HTMLElement {
+  renderStockBlock(dataFilterStock: number[] = this.startStockOfFILTER):HTMLElement {
     const filterStock = this.customElement.createElement('div', { className: 'filter__item filter__stock-slider stock-slider'});
     const filterStockItemName = this.customElement.createElement('h3', { className: 'filter__item-name stock-slider__name', textContent: 'Stock'});
     const filterStockContainer = this.customElement.createElement('div', { className: 'filter__item-container stock-slider__container'});
@@ -216,7 +216,7 @@ class ViewMainPage {
   }
 
   // Создание ItemCard (девок)
-  createItemCard(dataServerItem:IitemDATA[] = this.startServerData) {
+  renderItemCard(dataServerItem:IitemDATA[] = this.startServerData) {
     const itemContainer: HTMLElement[] = [];
 
     for (const item of dataServerItem) {

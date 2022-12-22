@@ -1,7 +1,7 @@
 import ControllerMain from "../controller/_ControllerMain";
 import { stringArrayObject } from '../typingTS/_type'
 import Router from "../router";
-import { FOOTER } from '../utils/const';
+// import { FOOTER } from '../utils/const';
 
 class ViewFooter {
   _controller: ControllerMain;
@@ -18,43 +18,43 @@ class ViewFooter {
     this._router.startRouteListenner()
     this._router.handleLocation()
 
-    this.createFooter();
+    // this.createFooter();
   }
 
-  createFooter() {
-    FOOTER.innerHTML = `<footer class="page-footer _main-container">
-  <section class="footer _container">
-    <div class="footer__item github">
-      <div class="footer__link-container">
-        <div class="footer__link-container-item">
-          <a href="https://github.com/Jik789" class="footer__link footer__github"></a>
-          <p class="footer__author">JiK789</p>
-        </div>
-        <div class="footer__link-container-item">
-          <a href="https://github.com/syderi" class="footer__link footer__github"></a>
-          <p class="footer__author">Syderi</p>
-        </div>
-      </div>
-    </div>
-    <p class="footer__item date-relese">2022</p>
-    <div class="footer__item rsschool">
-      <a href="https://rs.school/index.html" class="footer__link footer__rsschool"></a>
-    </div>
-  </section>
-</footer>`
+//   createFooter() {
+//     FOOTER.innerHTML = `<footer class="page-footer _main-container">
+//   <section class="footer _container">
+//     <div class="footer__item github">
+//       <div class="footer__link-container">
+//         <div class="footer__link-container-item">
+//           <a href="https://github.com/Jik789" class="footer__link footer__github"></a>
+//           <p class="footer__author">JiK789</p>
+//         </div>
+//         <div class="footer__link-container-item">
+//           <a href="https://github.com/syderi" class="footer__link footer__github"></a>
+//           <p class="footer__author">Syderi</p>
+//         </div>
+//       </div>
+//     </div>
+//     <p class="footer__item date-relese">2022</p>
+//     <div class="footer__item rsschool">
+//       <a href="https://rs.school/index.html" class="footer__link footer__rsschool"></a>
+//     </div>
+//   </section>
+// </footer>`
 
-    FOOTER.onclick = () => { this._router.pushState('/product') }
-  }
+//     FOOTER.onclick = () => { this._router.pushState('/product') }
+//   }
 
   createMain() {
     console.log("1")
   }
 
-  init() {
-    this.createFooter()
-    // this._controller.router.startRouteListenner()
+  // init() {
+  //   this.createFooter()
+  //   // this._controller.router.startRouteListenner()
 
-  }
+  // }
 
 }
 

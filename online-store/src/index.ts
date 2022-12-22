@@ -25,4 +25,9 @@ import ControllerMain from './components/controller/_ControllerMain'
 const APP = new ControllerMain()
 APP.init()
 
+
+//TESTING
+// import ViewBasketPage from './components/view/_ViewBasketPage';
+// const test = new ViewBasketPage();
+
 // APP.start()

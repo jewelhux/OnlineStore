@@ -13,6 +13,7 @@ class ViewBasketPage {
   pagesButtonNext: HTMLElement;
   pagesCurrent: HTMLElement;
   productList: HTMLElement;
+  summaryInfo: HTMLElement;
   productItemsInputView: HTMLElement;
   startServerData: IitemDATA[];
 
@@ -25,6 +26,8 @@ class ViewBasketPage {
     this.pagesButtonPrev = this.customElement.createElement('button', { className: 'product__pages-btnPrev product__pages-btn', textContent: '-' }); // Кнопка странички ПРЕДЫДУЩАЯ
     this.pagesButtonNext = this.customElement.createElement('button', { className: 'product__pages-btnNext product__pages-btn', textContent: '+' }); // Кнопка странички СЛЕДУЮЩАЯ
     this.pagesCurrent = this.customElement.createElement('p', { className: 'product__pages-current', textContent: '2'  }); // Лист карточек
+    this.summaryInfo = this.customElement.createElement('div', { className: 'summary__info summaryInfo' }); // Итоговая информация
+
     this.startServerData = this._controller.startServerData;
 
     this.create();
@@ -32,14 +35,15 @@ class ViewBasketPage {
 
   create() {
     // Отрисовка контейнера (для попапа и секции)
-    const pageMainBasket = this.customElement.createElement('section', { className: 'page-main-itemCard _main-container' });
+    const pageMainBasket = this.customElement.createElement('section', { className: 'page-main-basket _main-container' });
     const popupWrapper = this.customElement.createElement('div', { className: 'popup-wrapper' });
-    const mainBasket = this.customElement.createElement('div', { className: 'page-main-itemCard _main-container' });
+    const mainBasket = this.customElement.createElement('section', { className: 'main-basket _container' });
     this.customElement.addChildren(pageMainBasket, [popupWrapper, mainBasket]);
 
     // Отрисовка mainBasket
     const mainBasketProduct = this.customElement.createElement('div', { className: 'main-basket__product product' });
-    this.customElement.addChildren(mainBasket, [mainBasketProduct]);
+    const mainBasketSummary = this.customElement.createElement('div', { className: 'main-basket__product product' });
+    this.customElement.addChildren(mainBasket, [mainBasketProduct, mainBasketSummary]);
 
     // Отрисовка mainBasketProduct
     const productTitle = this.customElement.createElement('div', { className: 'product__title' });
@@ -62,7 +66,15 @@ class ViewBasketPage {
     // Отрисовка Листа товаров корзины
     this.customElement.addChildren(this.productList,[...this.renderProductCard()]);
 
-    // this.customElement.addChildren(MAIN,[pageMainBasket]);
+    // Отрисовка mainBasketSummary
+    const summaryName = this.customElement.createElement('h3', { className: 'summary__name', textContent: 'Summary' });
+    this.customElement.addChildren(mainBasketSummary,[summaryName, this.summaryInfo]);
+
+    // Отрисовка summaryInfo
+    this.customElement.addChildren(this.summaryInfo,[...this.renderSummary()]);
+
+    // const test = document.querySelector('main') as HTMLElement;
+    // this.customElement.addChildren(test,[pageMainBasket]);
   }
 
   // Создание ItemCard корзины
@@ -71,11 +83,55 @@ class ViewBasketPage {
     const test:IitemDATA[] = dataServerItem.slice(0, 3)
 
     for (const item of test) {
+      // Обертка карточки
       const itemBasket = this.customElement.createElement('div', { className: 'product__itemBasket itemBasket'});
+
+      // Создание itemBasket
+      const itemNumberBasket = this.customElement.createElement('div', { className: 'itemBasket__numberBasket', textContent:'1'});
+      const itemImageBasket = this.customElement.createElement('div', { className: 'infoBasket__image'});
+      const itemDataBasket = this.customElement.createElement('div', { className: 'infoBasket__title basket-data'});
+      const itemSummaryBasket = this.customElement.createElement('div', { className: 'itemBasket__summaryBasket summaryBasket'});
+      this.customElement.addChildren(itemBasket,[itemNumberBasket, itemImageBasket, itemDataBasket, itemSummaryBasket]);
+
+      // Создание itemImageBasket
+      const itemImageBasketIMG = this.customElement.createElement('img', { className: 'infoBasket__image-img', src: `${item.images[0]}`});
+      this.customElement.addChildren(itemImageBasket,[itemImageBasketIMG]);
+
+      // Создание itemDataBasket
+      const basketDataName = this.customElement.createElement('p', { textContent: `Name: ${item.title}`});
+      const basketDataDescription = this.customElement.createElement('p', { textContent: `Description: ${item.description}`});
+      const basketDataRating = this.customElement.createElement('p', { textContent: `Rating: ${item.rating}`});
+      const basketDataDiscount = this.customElement.createElement('p', { textContent: `Discount: ${item.discountPercentage}%`});
+      this.customElement.addChildren(itemDataBasket,[basketDataName, basketDataDescription, basketDataRating, basketDataDiscount]);
+
+      // Создание itemSummaryBasket
+      const basketDataStock = this.customElement.createElement('p', { className: 'basket-data__name', textContent: `Stock: ${item.stock}`});
+      const itemDataCount = this.customElement.createElement('div', { className: 'basket-data__count'});
+      const itemDataTotal = this.customElement.createElement('p', { className: 'basket-data__name', textContent: `Total: $${item.price}`});
+      this.customElement.addChildren(itemSummaryBasket,[basketDataStock, itemDataCount, itemDataTotal]);
+
+      // Создание itemDataCount
+      const basketDataBtnMinus =  this.customElement.createElement('button', { className: 'basket-data__count-btnMinus basket-data__count-btn', textContent: '-' });
+      const itemDataCurrent = this.customElement.createElement('p', { className: 'basket-data__count-current', textContent: '9'});
+      const basketDataBtnPlus =  this.customElement.createElement('button', { className: 'basket-data__count-btnPlus basket-data__count-btn', textContent: '+' });
+      this.customElement.addChildren(itemDataCount,[basketDataBtnMinus, itemDataCurrent, basketDataBtnPlus]);
 
       itemContainer.push(itemBasket)
     }
 
+    return itemContainer
+  }
+
+  renderSummary() {
+    const itemContainer: HTMLElement[] = [];
+
+    const summaryInfoDataProducts =  this.customElement.createElement('p', { className: 'summaryInfo-data__products', textContent: 'Products: 6' });
+    const summaryInfoDataTotal =  this.customElement.createElement('p', { className: 'summaryInfo__total', textContent: 'Total: $10.000' });
+    const summaryInfoDataSearch =  this.customElement.createElement('input', { className: 'summaryInfo__search',type:'search', placeholder: 'Search promocode' });
+    const summaryInfoDataProme =  this.customElement.createElement('p', { className: 'summaryInfo__name', textContent: 'Test promo: Jik, Sydery' });
+    const summaryInfoDataButton =  this.customElement.createElement('button', { className: 'card__btn-button _btn', textContent: 'Buy now' });
+    
+    itemContainer.push(summaryInfoDataProducts, summaryInfoDataTotal, summaryInfoDataSearch, summaryInfoDataProme, summaryInfoDataButton)
     return itemContainer
   }
 

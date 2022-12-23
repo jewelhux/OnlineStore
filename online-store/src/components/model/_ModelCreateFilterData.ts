@@ -93,8 +93,6 @@ class CreateFilterData {
        this.FILTER.stock = [...this.baseData.stock];
     }
 
-
-
     let resultfilterData: IitemDATA[] = this.startServerData.slice()
     // console.log("769 =resultfilterData", resultfilterData)
     // console.log("770 =this.FILTER", this.FILTER)
@@ -176,7 +174,7 @@ class CreateFilterData {
 
   // обновляем мин и мак цены и количества товара в FILTER
   updateFILTER_Price_Stock(data: IitemDATA[] = this.filtredData) {
-    console.log("DDDDDDDDDDthis.filtredData", this.filtredData)
+    // console.log("DDDDDDDDDDthis.filtredData", this.filtredData)
     const price: number[] = []
     const stock: number[] = []
 
@@ -203,27 +201,27 @@ class CreateFilterData {
       }, stock).sort((a, b) => a - b)
         .filter((item, index, arr) => index === 0 || index === (arr.length - 1))
     }
-    console.log("DDDDDDDDDDthis._FILTER.stock", this._FILTER.stock)
-    console.log("DDDDDDDDDDDthis._FILTER.price", this._FILTER.price)
+    // console.log("DDDDDDDDDDthis._FILTER.stock", this._FILTER.stock)
+    // console.log("DDDDDDDDDDDthis._FILTER.price", this._FILTER.price)
 
 
   }
 
   // метод добавления и удаления значений в FILTER.category
   setFILTERCategory(data: string) {
-    console.log("START setFILTERCategory", this.FILTER)
+    // console.log("START setFILTERCategory", this.FILTER)
     const index = this._FILTER.category.indexOf(data);
     if (index !== -1) {
       this._FILTER.category.splice(index, 1);
     } else {
       this._FILTER.category.push(data)
-      console.log("this._FILTER.category.push(data)", this._FILTER.category)
+      // console.log("this._FILTER.category.push(data)", this._FILTER.category)
     }
-    console.log("middle setFILTERCategory", this.FILTER)
+    // console.log("middle setFILTERCategory", this.FILTER)
     this.updateFiltredData()
     // this.updateFILTER_Price_Stock()
-    console.log("FINISH setFILTERCategory", this.FILTER)
-    console.log("FINISH setFILTERCategory", this.FILTER)
+    // console.log("FINISH setFILTERCategory", this.FILTER)
+    // console.log("FINISH setFILTERCategory", this.FILTER)
 
   }
 
@@ -259,6 +257,33 @@ class CreateFilterData {
     this._FILTER.search[0] = data;
     this.updateFiltredData()
     // this.updateFILTER_Price_Stock()
+  }
+
+
+
+
+  // this._startServerFILTER =
+  // {
+  //   "category": [],
+  //   "brand": [],
+  //   "price": this.baseData.price,
+  //   "stock": this.baseData.stock,
+  //   // "price": [10, 1749],
+  //   // "stock": [2, 150],
+  //   "search": [''],
+  //   "sort": [''],
+  // };
+
+
+
+  setFILTER(filter:IFilter) {
+this.FILTER.brand = [...filter.brand]
+this.FILTER.category = [...filter.category]
+this.FILTER.price = filter.price.length ? [...filter.price] : [...this.baseData.price]
+this.FILTER.stock = filter.stock.length? [...filter.stock] : [...this.baseData.stock]
+this.FILTER.search = filter.search.length ? [...filter.search] : ['']
+this.FILTER.sort = filter.sort.length ? [...filter.sort] : ['']
+this.updateFiltredData()
   }
 
   // возвращает стартовый массив категорий

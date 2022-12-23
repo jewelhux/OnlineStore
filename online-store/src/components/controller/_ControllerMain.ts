@@ -18,6 +18,7 @@ import FormatURL from '../utils/_formatUrl';
 // import Router from '../router';
 
 class ControllerMain {
+
   routes: {
     [key: string]: {
       name: string;
@@ -53,32 +54,7 @@ class ControllerMain {
   readonly stockOfFILTER: number[];
   readonly searchOfFILTER: string[];
 
-  // ROUTER: Router;
-
-  // a: URLSearchParams
-
   constructor() {
-
-    this.routes = {
-      '/page404': {
-        name: 'Page not found',
-        routesPage: this.routesFuntion
-      },
-      '/product': {
-        name: 'Product details',
-        routesPage: this.routesFuntion
-      },
-      '/basket': {
-        name: 'Backet',
-        routesPage: this.routesFuntion
-      },
-      '/': {
-        name: 'Home',
-        routesPage: this.routesFuntion
-      },
-    };
-
-
 
     this.customElement = new CustomElement();
     this.BODY = document.body
@@ -122,62 +98,59 @@ class ControllerMain {
 
     this.ListenersController()
 
-
-  }
-
-  ListenersController() {
-    // проверка ловли евента со вью хедера
-    this.BODY.addEventListener('clickOnBacket', (e) => {
-
-
-      // console.log('START window.location.href===', window.location.href)
-      console.log('START FILTER===', this.MODEL.FILTER)
-      this.MODEL.setFILTERCategory('smartphones')
-      this.MODEL.setFILTERBrand('Apple')
-      console.log('AFTERCHANGE this.MODEL.FILTER===', this.MODEL.FILTER)
-      // console.log("eventfromMain = ",e)
-      this.ViewHEADER.updateheaderBasketCount(100)
-      const b = this._formatURL.createURLSearchParams(this.MODEL.FILTER)
-      const a = Math.ceil(Math.random() * 1000)
-      window.history.pushState({}, '', `/main/?${b}#${a}`)
-
-      // console.log('AFTER pushState window.location.href===', window.location.href)
-      // console.log('window.location.pathname===', window.location.pathname)
-      // console.log('window.location.search===', window.location.search)
-
-    
-      const query = new URLSearchParams(window.location.search);
-      // console.log('query',query.toString())
-  
-  
-
-      const Q = this._formatURL.createObjectFromURLSearchParams(query)
-      console.log('QQQQQQQQQQQQQQQQQQ', Q)
-
-
-      // this.handleLocation()
-    })
-
-// Ловля клика по Инпутам категорий из Мейна
-
-this.MAIN.addEventListener('clickOnCategoryMain', (e) => {
-  const target = e.target as HTMLElement;
-  console.log('eeeeeee', target.id)
-  this.MODEL.setFILTERCategory(target.id)
-  console.log('XXXX', this.MODEL.FILTER)
-  console.log('PRODUCT', this.MODEL.filtredData)
-
-this.ViewMainPAGE.updateCardList(this.MODEL.filtredData)
-this.ViewMainPAGE.updateBrandBlock(this.MODEL.filtredBrandData)
-this.ViewMainPAGE.updateCategoryBlock(this.MODEL.filtredCategoryData)
-
-
-})
+    this.routes = {
+      '/page404': {
+        name: 'Page not found',
+        routesPage: this.routesFuntion.bind(this)
+      },
+      '/product': {
+        name: 'Product details',
+        routesPage: this.routesFuntion.bind(this)
+      },
+      '/basket': {
+        name: 'Backet',
+        routesPage: this.routesFuntion.bind(this)
+      },
+      '/': {
+        name: 'Home',
+        routesPage: this.renderMainPageFromRouter.bind(this)
+      },
+    };
 
 
   }
 
+  // Конец конструктора
 
+
+
+  renderMainPageFromRouter(name: string) {
+    document.title = `Store - ${name}`;
+    console.log('2222===', this.FILTER)
+    // this.returnStateFilter()
+    // // this.MAIN.innerHTML = ''
+
+    const query = new URLSearchParams(window.location.search);
+    console.log("query",query.toString().length)
+    // if (query.toString().length) {
+          const filter = this._formatURL.createObjectFromURLSearchParams(query)
+    console.log('8888=', this.FILTER)
+    console.log('9999=', filter)
+    this.MODEL.setFILTER(filter)
+    console.log('AAAA=', this.FILTER)
+    console.log('A1A1A1A1=', this.MODEL.startServerFILTER)
+    this.rerenderMainPageComponents()
+
+    if( String(this.FILTER) === String(this.MODEL.startServerFILTER)) {
+      console.log('УРААААА5555555555555555')
+          // window.history.pushState({}, '', ``)
+    }
+    // window.history.pushState({}, '', ``)
+    // } else {
+      // this.MAIN.innerHTML = ''
+      // this.MAIN.append(this.ViewMainPAGE.create())
+  // }
+}
 
   routesFuntion(name: string) {
     document.title = `Store - ${name}`;
@@ -199,38 +172,108 @@ this.ViewMainPAGE.updateCategoryBlock(this.MODEL.filtredCategoryData)
   }
 
   startRouteListenner() {
-    window.onpopstate = this.handleLocation;
+    window.onpopstate = (event: PopStateEvent) => {
+      event.preventDefault()
+      this.handleLocation()
+    };
     // console.log('Start startRouteListenner')
   }
 
-  pushState(path: string) {
-    // window.location.assign(`${window.location.origin}${path}`)
-
-    // window.history.pushState({}, '', path)
-    // window.location.reload()
-  }
-
   handleLocation() {
-
-
-
-
-    // console.log('this.routes========', this.routes)
-    // console.log('eeeeeeeeeee',e)
-    // e.preventDefault()
-    // const href = window.location.href
-    // console.log("href ===", href)
-    const path = window.location.pathname;
+    console.log('1111', this.FILTER)
+    // console.log("this.routes===", this.routes)
+    const path = window.location.pathname.toString();
     // console.log("path 111===", path)
-    // console.log('this.routes[path]', this.routes[path])
     const route = this.routes[path] || this.routes['/page404'];
-    // console.log("route", route)
+    // console.log("route===", route)
     route.routesPage(route.name);
-    // document.title = `Store - ${route.name}`;
-    // preventDefault()
-    // window.history.pushState({}, '', path)
+
   }
 
+  pushStateFilter(filter = this.MODEL.FILTER) {
+    const params = this._formatURL.createURLSearchParams(filter)
+
+    if( JSON.stringify(this.FILTER) === JSON.stringify(this.MODEL.startServerFILTER)) {
+          window.history.replaceState({}, '', '/')
+    } else {
+      window.history.pushState({}, '', `?${params}`)
+    }
+
+    // window.location.assign(`${window.location.origin}${path}`)
+  }
+
+
+
+
+  ListenersController() {
+    // проверка ловли евента со вью хедера
+    this.BODY.addEventListener('clickOnBacket', (e) => {
+
+
+      // console.log('START window.location.href===', window.location.href)
+      // console.log('START FILTER===', this.MODEL.FILTER)
+      this.MODEL.setFILTERCategory('smartphones')
+      this.MODEL.setFILTERBrand('Apple')
+      // console.log('AFTERCHANGE this.MODEL.FILTER===', this.MODEL.FILTER)
+      // console.log("eventfromMain = ",e)
+      this.ViewHEADER.updateheaderBasketCount(100)
+      const b = this._formatURL.createURLSearchParams(this.MODEL.FILTER)
+      const a = Math.ceil(Math.random() * 1000)
+      window.history.pushState({}, '', `/main/?${b}#${a}`)
+
+      // console.log('AFTER pushState window.location.href===', window.location.href)
+      // console.log('window.location.pathname===', window.location.pathname)
+      // console.log('window.location.search===', window.location.search)
+
+
+      const query = new URLSearchParams(window.location.search);
+      // console.log('query',query.toString())
+
+
+
+      const Q = this._formatURL.createObjectFromURLSearchParams(query)
+      console.log('QQQQQQQQQQQQQQQQQQ', Q)
+
+
+      // this.handleLocation()
+    })
+
+    // Ловля клика по Инпутам категорий из Мейна
+
+    this.MAIN.addEventListener('clickOnCategoryMain', (e) => {
+      const target = e.target as HTMLElement;
+      // console.log('eeeeeee', target.id)
+      this.MODEL.setFILTERCategory(target.id)
+      console.log('3333', this.FILTER)
+      // console.log('PRODUCT', this.MODEL.filtredData)
+
+      this.rerenderMainPageComponents()
+      this.pushStateFilter()
+    })
+
+    this.MAIN.addEventListener('clickOnBrandMain', (e) => {
+      const target = e.target as HTMLElement;
+      this.MODEL.setFILTERBrand(target.id)
+      console.log('6666', this.FILTER)
+      this.rerenderMainPageComponents()
+      this.pushStateFilter()
+    })
+
+
+  }
+
+  rerenderMainPageComponents() {
+
+    this.ViewMainPAGE.updateCardList(this.MODEL.filtredData)
+    this.ViewMainPAGE.updateBrandBlock(this.MODEL.filtredBrandData)
+    this.ViewMainPAGE.updateCategoryBlock(this.MODEL.filtredCategoryData)
+  }
+
+  // rerenderMainPageComponentsStart() {
+  //   this.ViewMainPAGE.updateCardList(this.MODEL.startServerData)
+  //   this.ViewMainPAGE.updateBrandBlock(this.MODEL.startBrandData)
+  //   this.ViewMainPAGE.updateCategoryBlock(this.MODEL.startCategoryData)
+  // }
 
 
   init() {
@@ -248,22 +291,13 @@ this.ViewMainPAGE.updateCategoryBlock(this.MODEL.filtredCategoryData)
 
 
 
-
-
-
-
-
   }
-
-
 
 
 }
 
 export default ControllerMain
 
-
-
-export function processOrder(time: number): Promise<void> {
-  return new Promise((res) => setTimeout(res, time));
-}
+// export function processOrder(time: number): Promise<void> {
+//   return new Promise((res) => setTimeout(res, time));
+// }

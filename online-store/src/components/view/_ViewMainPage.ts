@@ -80,6 +80,13 @@ class ViewMainPage {
         target.dispatchEvent(this.EVENT.clickOnCategoryMain)
       }
     })
+    
+    this.filterBrandMain.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.getAttribute('type') === "checkbox") {
+        target.dispatchEvent(this.EVENT.clickOnBrandMain)
+      }
+    })
   }
 
   create(startServerData: IitemDATA[] = this.startServerData, 
@@ -307,8 +314,8 @@ class ViewMainPage {
 
   itemFilterCheckbox(name: string, data: number[]): HTMLElement {
     const temp = `<div class = 'filterCheckbox'>
-      <input type="checkbox" id=${name} ${!data[2] ? '' : 'checked'}>
-      <label for=${name}>${name}</label>
+      <input type="checkbox" id='${name}' ${!data[2] ? '' : 'checked'}>
+      <label for='${name}'>${name}</label>
       <div>(${data[0]}/${data[1]})</div>
     </div>`
 

@@ -62,7 +62,7 @@ class CreateFilterData {
 
 
     // this.setSearchOfFILTER('iPhone 9')
-    // this.setFILTERcategory('groceries')
+    // this.setFILTERCategory('groceries')
     // this.setPriceOfFILTER([500,900])
     // this.setStockOfFILTER([30,100])
     // this.updateFILTER_Price_Stock()
@@ -115,12 +115,26 @@ class CreateFilterData {
   }
 
   // метод добавления и удаления значений в FILTER.category
-  setFILTERcategory(data: string) {
+  setFILTERCategory(data: string) {
     const index = this._FILTER.category.indexOf(data);
     if (index !== -1) {
       this._FILTER.category.splice(index, 1);
     } else {
       this._FILTER.category.push(data)
+    }
+    // this.updateFILTER_Price_Stock()
+    this.updateFiltredData()
+    this.updateFILTER_Price_Stock()
+
+  }
+
+  // метод добавления и удаления значений в FILTER.brand
+  setFILTERBrand(data: string) {
+    const index = this._FILTER.brand.indexOf(data);
+    if (index !== -1) {
+      this._FILTER.brand.splice(index, 1);
+    } else {
+      this._FILTER.brand.push(data)
     }
     // this.updateFILTER_Price_Stock()
     this.updateFiltredData()

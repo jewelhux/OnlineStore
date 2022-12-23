@@ -26,7 +26,7 @@ class FormatURL {
   // const result1: IFilter ={}
 
 
-  strTonumbder(obj: { [x: string]: string[] }) {
+  private strTonumbder(obj: { [x: string]: string[] }) {
     const result: IFilter = {
       "category": [],
       "brand": [],

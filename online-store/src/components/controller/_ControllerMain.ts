@@ -152,7 +152,7 @@ class ControllerMain {
 
 
 
-    
+
     console.log('this.routes========', this.routes)
     // console.log('eeeeeeeeeee',e)
     // e.preventDefault()
@@ -182,12 +182,26 @@ class ControllerMain {
     this.ViewHEADER.updateheaderBasketCount(7)
     // проверка ловли евента со вью хедера
     this.BODY.addEventListener('clickOnBacket', (e) => {
+
+      this.MODEL.setFILTERCategory('smartphones')
+      this.MODEL.setFILTERBrand('Apple')
       // console.log("eventfromMain = ",e)
       this.ViewHEADER.updateheaderBasketCount(100)
-      const a = Math.ceil(Math.random()*1000)
-      window.history.pushState({}, '', `/card/${a}`)
-      console.log('window.location.pathname===',window.location.pathname)
-      this.handleLocation()
+      const b = this._formatURL.createURLSearchParams(this.MODEL.FILTER)
+      const a = Math.ceil(Math.random() * 1000)
+      window.history.pushState({}, '', `/main/?${b}#${a}`)
+      console.log('window.location.pathname===', window.location.pathname)
+
+    
+      const query = new URLSearchParams(window.location.search);
+  
+  
+
+      const Q = this._formatURL.createObjectFromURLSearchParams(query)
+      console.log('QQQQQQQQQQQQQQQQQQ', Q)
+
+
+      // this.handleLocation()
     })
   }
 

@@ -106,8 +106,9 @@ class ControllerMain {
     this.stockOfFILTER = this.MODEL.stockOfFILTER
     this.searchOfFILTER = this.MODEL.searchOfFILTER
 
-
     this.ViewMainPAGE = new ViewMainPage(this.startServerData, this.startCategoryData, this.startBrandData, this.startPriceOfFILTER, this.startStockOfFILTER);
+
+
     // this.ROUTER = new Router()
 
     // this.router.startRouteListenner()
@@ -118,7 +119,61 @@ class ControllerMain {
     // this.a = this._formatURL.createURLSearchParams(this.FILTER)
     // console.log("200000", this._formatURL.createURLSearchParams(this.FILTER).toString())
     // console.log(this._formatURL.createObjectFromURLSearchParams(this.a))
+
+    this.ListenersController()
+
+
   }
+
+  ListenersController() {
+    // проверка ловли евента со вью хедера
+    this.BODY.addEventListener('clickOnBacket', (e) => {
+
+
+      // console.log('START window.location.href===', window.location.href)
+      console.log('START FILTER===', this.MODEL.FILTER)
+      this.MODEL.setFILTERCategory('smartphones')
+      this.MODEL.setFILTERBrand('Apple')
+      console.log('AFTERCHANGE this.MODEL.FILTER===', this.MODEL.FILTER)
+      // console.log("eventfromMain = ",e)
+      this.ViewHEADER.updateheaderBasketCount(100)
+      const b = this._formatURL.createURLSearchParams(this.MODEL.FILTER)
+      const a = Math.ceil(Math.random() * 1000)
+      window.history.pushState({}, '', `/main/?${b}#${a}`)
+
+      // console.log('AFTER pushState window.location.href===', window.location.href)
+      // console.log('window.location.pathname===', window.location.pathname)
+      // console.log('window.location.search===', window.location.search)
+
+    
+      const query = new URLSearchParams(window.location.search);
+      // console.log('query',query.toString())
+  
+  
+
+      const Q = this._formatURL.createObjectFromURLSearchParams(query)
+      console.log('QQQQQQQQQQQQQQQQQQ', Q)
+
+
+      // this.handleLocation()
+    })
+
+// Ловля клика по Инпутам категорий из Мейна
+
+this.MAIN.addEventListener('clickOnCategoryMain', (e) => {
+  const target = e.target as HTMLElement;
+  console.log('eeeeeee', target.id)
+  this.MODEL.setFILTERCategory(target.id)
+  console.log('XXXX', this.MODEL.FILTER)
+  console.log('PRODUCT', this.MODEL.filtredData)
+
+this.ViewMainPAGE.updateCardList(this.MODEL.filtredData)
+
+})
+
+
+  }
+
 
 
   routesFuntion(name: string) {
@@ -142,7 +197,7 @@ class ControllerMain {
 
   startRouteListenner() {
     window.onpopstate = this.handleLocation;
-    console.log('Start startRouteListenner')
+    // console.log('Start startRouteListenner')
   }
 
   pushState(path: string) {
@@ -157,16 +212,16 @@ class ControllerMain {
 
 
 
-    console.log('this.routes========', this.routes)
+    // console.log('this.routes========', this.routes)
     // console.log('eeeeeeeeeee',e)
     // e.preventDefault()
     // const href = window.location.href
     // console.log("href ===", href)
     const path = window.location.pathname;
-    console.log("path 111===", path)
+    // console.log("path 111===", path)
     // console.log('this.routes[path]', this.routes[path])
     const route = this.routes[path] || this.routes['/page404'];
-    console.log("route", route)
+    // console.log("route", route)
     route.routesPage(route.name);
     // document.title = `Store - ${route.name}`;
     // preventDefault()
@@ -181,33 +236,20 @@ class ControllerMain {
     this.handleLocation();
     this.HEADER.append(this.ViewHEADER.create())
     this.MAIN.append(this.ViewMainPAGE.create())
+    // document.body.replaceChild(mainTwoInit, statePage);
+    // this.MAIN.replaceChild(this.ViewMainPAGE.create())
     this.FOOTER.append(this.ViewFOOTER.create())
 
     // для проверки прокидывания значения в корзину
     this.ViewHEADER.updateheaderBasketCount(7)
-    // проверка ловли евента со вью хедера
-    this.BODY.addEventListener('clickOnBacket', (e) => {
-
-      this.MODEL.setFILTERCategory('smartphones')
-      this.MODEL.setFILTERBrand('Apple')
-      // console.log("eventfromMain = ",e)
-      this.ViewHEADER.updateheaderBasketCount(100)
-      const b = this._formatURL.createURLSearchParams(this.MODEL.FILTER)
-      const a = Math.ceil(Math.random() * 1000)
-      window.history.pushState({}, '', `/main/?${b}#${a}`)
-      console.log('window.location.pathname===', window.location.pathname)
-
-    
-      const query = new URLSearchParams(window.location.search);
-  
-  
-
-      const Q = this._formatURL.createObjectFromURLSearchParams(query)
-      console.log('QQQQQQQQQQQQQQQQQQ', Q)
 
 
-      // this.handleLocation()
-    })
+
+
+
+
+
+
   }
 
 

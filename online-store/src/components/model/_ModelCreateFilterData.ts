@@ -169,8 +169,7 @@ class CreateFilterData {
 
     this._filtredData = resultfilterData
 
-    // this.startCategoryData
-    // this.startBrandData
+
     return this._filtredData
   }
 
@@ -210,7 +209,6 @@ class CreateFilterData {
 
   }
 
-
   // метод добавления и удаления значений в FILTER.category
   setFILTERCategory(data: string) {
     console.log("START setFILTERCategory", this.FILTER)
@@ -223,7 +221,7 @@ class CreateFilterData {
     }
     console.log("middle setFILTERCategory", this.FILTER)
     this.updateFiltredData()
-    this.updateFILTER_Price_Stock()
+    // this.updateFILTER_Price_Stock()
     console.log("FINISH setFILTERCategory", this.FILTER)
     console.log("FINISH setFILTERCategory", this.FILTER)
 
@@ -239,7 +237,7 @@ class CreateFilterData {
     }
 
     this.updateFiltredData()
-    this.updateFILTER_Price_Stock()
+    // this.updateFILTER_Price_Stock()
 
   }
 
@@ -247,20 +245,20 @@ class CreateFilterData {
   setPriceOfFILTER(data: number[] = this.startServerFILTER.price) {
     this._FILTER.price = data;
     this.updateFiltredData()
-    this.updateFILTER_Price_Stock()
+    // this.updateFILTER_Price_Stock()
   }
   // метод Установки массива колличества товара фильтра
   setStockOfFILTER(data: number[] = this.startServerFILTER.stock) {
     this._FILTER.stock = data;
     this.updateFiltredData()
-    this.updateFILTER_Price_Stock()
+    // this.updateFILTER_Price_Stock()
   }
 
   // метод Установки поиска товара фильтра
   setSearchOfFILTER(data: string = this.startServerFILTER.search[0]) {
     this._FILTER.search[0] = data;
     this.updateFiltredData()
-    this.updateFILTER_Price_Stock()
+    // this.updateFILTER_Price_Stock()
   }
 
   // возвращает стартовый массив категорий
@@ -317,7 +315,6 @@ class CreateFilterData {
     // this.updateFILTER_Price_Stock()
     return this._FILTER
   }
-
 
   // возвращает массив цен из стартовогоФильтра
   public get startPriceOfFILTER() {

@@ -25,21 +25,21 @@ class ViewMainPage {
   viewList: HTMLElement;
   cardList: HTMLElement;
   customElement: CustomElement;
-  _controller: ControllerMain;
+  // _controller: ControllerMain;
   startCategoryData: stringArrayObject;
   startBrandData: stringArrayObject;
   startPriceOfFILTER: number[];
   startStockOfFILTER: number[];
   startServerData: IitemDATA[];
 
-  constructor() {
-    this._controller = new ControllerMain();
+  constructor(startServerData: IitemDATA[], startCategoryData: stringArrayObject, startBrandData: stringArrayObject, startPriceOfFILTER: number[], startStockOfFILTER: number[]) {
+    // this._controller = new ControllerMain();
 
-    this.startCategoryData = this._controller.startCategoryData;
-    this.startBrandData = this._controller.startBrandData;
-    this.startPriceOfFILTER = this._controller.startPriceOfFILTER;
-    this.startStockOfFILTER = this._controller.startStockOfFILTER;
-    this.startServerData = this._controller.startServerData;
+    this.startServerData = startServerData;
+    this.startCategoryData = startCategoryData;
+    this.startBrandData = startBrandData;
+    this.startPriceOfFILTER = startPriceOfFILTER;
+    this.startStockOfFILTER = startStockOfFILTER;
 
     this.customElement = new CustomElement();
 
@@ -65,8 +65,6 @@ class ViewMainPage {
     this.viewList = this.customElement.createElement('div', { className: 'visible__item viewList'}); // Вид для строчной модели
     //------Right Bottom------//
     this.cardList = this.customElement.createElement('div', { className: 'right__list cardlist'}); // Контейнер с карточками
-
-    // this.create();
   }
 
   create() {
@@ -127,8 +125,8 @@ class ViewMainPage {
     // Создание ПРАВОЙ НИЖНЕЙ СЕКЦИИ!!!
     this.customElement.addChildren(this.cardList,[...this.renderItemCard()]);
     this.customElement.addChildren(mainRight,[this.cardList]);
-    // Добавление всего в основной main
-    // this.customElement.addChildren(MAIN,[pageMain]);
+    
+    return pageMain
   }
 
   // Создание Category

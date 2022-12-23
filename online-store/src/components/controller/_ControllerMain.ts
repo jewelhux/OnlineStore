@@ -8,6 +8,7 @@ import CreateFilterData from '../model/_ModelCreateFilterData'
 // VIEWS
 
 import ViewHeader from '../view/_ViewHeader';
+import ViewMainPage from '../view/_ViewMainPage';
 import ViewFooter from '../view/_ViewFooter';
 
 import CustomElement from '../utils/_createCustomElement';
@@ -28,6 +29,7 @@ class ControllerMain {
 
   MODEL: CreateFilterData;
   ViewHEADER: ViewHeader;
+  ViewMainPAGE: ViewMainPage;
   ViewFOOTER: ViewFooter;
 
   _formatURL: FormatURL;
@@ -104,6 +106,8 @@ class ControllerMain {
     this.stockOfFILTER = this.MODEL.stockOfFILTER
     this.searchOfFILTER = this.MODEL.searchOfFILTER
 
+
+    this.ViewMainPAGE = new ViewMainPage(this.startServerData, this.startCategoryData, this.startBrandData, this.startPriceOfFILTER, this.startStockOfFILTER);
     // this.ROUTER = new Router()
 
     // this.router.startRouteListenner()
@@ -176,6 +180,7 @@ class ControllerMain {
     this.startRouteListenner();
     this.handleLocation();
     this.HEADER.append(this.ViewHEADER.create())
+    this.MAIN.append(this.ViewMainPAGE.create())
     this.FOOTER.append(this.ViewFOOTER.create())
 
     // для проверки прокидывания значения в корзину

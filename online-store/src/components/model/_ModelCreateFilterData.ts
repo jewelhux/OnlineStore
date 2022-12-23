@@ -34,7 +34,7 @@ class CreateFilterData {
 
     this._filtredData = this.baseData.data;
 
-    this._startServerFILTER = 
+    this._startServerFILTER =
     {
       "category": [],
       "brand": [],
@@ -43,16 +43,16 @@ class CreateFilterData {
       // "price": [10, 1749],
       // "stock": [2, 150],
       "search": [''],
-      "sort":[''],
+      "sort": [''],
     };
     this._FILTER = state
-    this._FILTER.price = this.baseData.price
-    this._FILTER.stock = this.baseData.stock,
+    this._FILTER.price = [...this.baseData.price]
+    this._FILTER.stock = [...this.baseData.stock],
 
-    // console.log("this._FILTER",this._FILTER)
-    // console.log("state",state)
+      // console.log("this._FILTER",this._FILTER)
+      // console.log("state",state)
 
-    this._startPriceOfFILTER = this._startServerFILTER.price
+      this._startPriceOfFILTER = this._startServerFILTER.price
     this._startStockOfFILTER = this._startServerFILTER.stock
     this._startSearchOfFILTER = this._startServerFILTER.search
 
@@ -83,8 +83,101 @@ class CreateFilterData {
     return this._baseData
   }
 
+  // медод обновляющий отфильтрованный Объект c данными ПРОДУКТА по измененному FILTER
+  updateFiltredData(): IitemDATA[] {
+    if (this.FILTER.brand.length === 0
+      && this.FILTER.category.length === 0
+      && this.FILTER.sort[0] === ''
+      && this.FILTER.search[0] === '') {
+       this.FILTER.price = [...this.baseData.price];
+       this.FILTER.stock = [...this.baseData.stock];
+    }
+
+
+
+    let resultfilterData: IitemDATA[] = this.startServerData.slice()
+    // console.log("769 =resultfilterData", resultfilterData)
+    // console.log("770 =this.FILTER", this.FILTER)
+    resultfilterData = resultfilterData.filter((product) => {
+      if (this.FILTER.category.length === 0) return true
+      if (this.FILTER.category.includes(product.category)) return true
+      return false
+    })
+    // console.log("771 =resultfilterData", resultfilterData)
+
+    resultfilterData = resultfilterData.filter((product) => {
+      if (this.FILTER.brand.length === 0) return true
+      if (this.FILTER.brand.includes(product.brand)) return true
+      return false
+    })
+    // console.log("772 =resultfilterData", resultfilterData)
+
+    resultfilterData = resultfilterData.filter((product) => {
+      this.FILTER.price.sort((a, b) => a - b)
+      if ((this.FILTER.price[1] - this.FILTER.price[0]) === (this.startServerFILTER.price[1] - this.startServerFILTER.price[0])) return true
+      if (this.FILTER.price[0] <= product.price && product.price <= this.FILTER.price[1]) {
+        return true
+      }
+      return false
+    })
+    // console.log("773 =resultfilterData", resultfilterData)
+
+
+    resultfilterData = resultfilterData.filter((product) => {
+      this.FILTER.stock.sort((a, b) => a - b)
+      if ((this.FILTER.stock[1] - this.FILTER.stock[0]) === (this.startServerFILTER.stock[1] - this.startServerFILTER.stock[0])) return true
+      if (this.FILTER.stock[0] <= product.stock && product.stock <= this.FILTER.stock[1]) {
+        return true
+      }
+      return false
+    })
+    // console.log("774 =resultfilterData", resultfilterData)
+
+    resultfilterData = resultfilterData.filter((product) => {
+
+      const text = this.FILTER.search[0]
+
+      if (text === '') return true
+      if (product.title.toLocaleLowerCase().includes(text.toLocaleLowerCase()) ||
+        product.description.toLocaleLowerCase().includes(text.toLocaleLowerCase()) ||
+        product.price.toString().includes(text) ||
+        product.discountPercentage.toString().includes(text) ||
+        product.rating.toString().includes(text) ||
+        product.stock.toString().includes(text) ||
+        product.brand.toLocaleLowerCase().includes(text.toLocaleLowerCase()) ||
+        product.category.toLocaleLowerCase().includes(text.toLocaleLowerCase())
+      ) { return true }
+      return false
+    })
+    // console.log("777 =resultfilterData", resultfilterData)
+
+
+    resultfilterData.sort((product1, product2) => product1.title.toLowerCase() > product2.title.toLowerCase() ? 1 : -1)
+    if (this.FILTER.sort[0] === "CBA") { resultfilterData.reverse() }
+    if (this.FILTER.sort[0] === "Sort by Price low") {
+      resultfilterData.sort((product1, product2) => product1.price - product2.price)
+    }
+    if (this.FILTER.sort[0] === "Sort by Price up") {
+      resultfilterData.sort((product1, product2) => product2.price - product1.price)
+    }
+    if (this.FILTER.sort[0] === "Sort by Rating low") {
+      resultfilterData.sort((product1, product2) => product1.rating - product2.rating)
+    }
+    if (this.FILTER.sort[0] === "Sort by Rating up") {
+      resultfilterData.sort((product1, product2) => product2.rating - product1.rating)
+    }
+
+    this._filtredData = resultfilterData
+
+    // this.startCategoryData
+    // this.startBrandData
+    return this._filtredData
+  }
+
+
   // обновляем мин и мак цены и количества товара в FILTER
   updateFILTER_Price_Stock(data: IitemDATA[] = this.filtredData) {
+    console.log("DDDDDDDDDDthis.filtredData", this.filtredData)
     const price: number[] = []
     const stock: number[] = []
 
@@ -95,36 +188,44 @@ class CreateFilterData {
       // this._FILTER.stock = [0,0]
 
     } else if (data.length === 1) {
-      console.log("new Array(2).fill(data[0].price)",new Array(2).fill(data[0].price))
+      // console.log("new Array(2).fill(data[0].price)",new Array(2).fill(data[0].price))
       this._FILTER.price = new Array(2).fill(data[0].price)
       this._FILTER.stock = new Array(2).fill(data[0].stock)
     } else {
-    this._FILTER.price = data.reduce((res, product) => {
-      res.push(product.price)
-      return res
-    }, price).sort((a, b) => a - b)
-      .filter((item, index, arr) => index === 0 || index === (arr.length - 1))
+      this._FILTER.price = data.reduce((res, product) => {
+        res.push(product.price)
+        return res
+      }, price).sort((a, b) => a - b)
+        .filter((item, index, arr) => index === 0 || index === (arr.length - 1))
 
-    this._FILTER.stock = data.reduce((res, product) => {
-      res.push(product.stock)
-      return res
-    }, stock).sort((a, b) => a - b)
-      .filter((item, index, arr) => index === 0 || index === (arr.length - 1))
+      this._FILTER.stock = data.reduce((res, product) => {
+        res.push(product.stock)
+        return res
+      }, stock).sort((a, b) => a - b)
+        .filter((item, index, arr) => index === 0 || index === (arr.length - 1))
     }
+    console.log("DDDDDDDDDDthis._FILTER.stock", this._FILTER.stock)
+    console.log("DDDDDDDDDDDthis._FILTER.price", this._FILTER.price)
+
 
   }
 
+
   // метод добавления и удаления значений в FILTER.category
   setFILTERCategory(data: string) {
+    console.log("START setFILTERCategory", this.FILTER)
     const index = this._FILTER.category.indexOf(data);
     if (index !== -1) {
       this._FILTER.category.splice(index, 1);
     } else {
       this._FILTER.category.push(data)
+      console.log("this._FILTER.category.push(data)", this._FILTER.category)
     }
-    // this.updateFILTER_Price_Stock()
+    console.log("middle setFILTERCategory", this.FILTER)
     this.updateFiltredData()
     this.updateFILTER_Price_Stock()
+    console.log("FINISH setFILTERCategory", this.FILTER)
+    console.log("FINISH setFILTERCategory", this.FILTER)
 
   }
 
@@ -136,7 +237,7 @@ class CreateFilterData {
     } else {
       this._FILTER.brand.push(data)
     }
-    // this.updateFILTER_Price_Stock()
+
     this.updateFiltredData()
     this.updateFILTER_Price_Stock()
 
@@ -213,6 +314,7 @@ class CreateFilterData {
 
   // возвращает измененный Объект Фильтра
   public get FILTER() {
+    // this.updateFILTER_Price_Stock()
     return this._FILTER
   }
 
@@ -285,94 +387,15 @@ class CreateFilterData {
     return result
   }
 
-  // медод обновляющий отфильтрованный Объект c данными ПРОДУКТА по измененному FILTER
-  updateFiltredData(): IitemDATA[] {
-    let resultfilterData: IitemDATA[] = this.startServerData.slice()
-    // console.log("769 =resultfilterData", resultfilterData)
-    // console.log("770 =this.FILTER", this.FILTER)
-    resultfilterData = resultfilterData.filter((product) => {
-      if (this.FILTER.category.length === 0) return true
-      if (this.FILTER.category.includes(product.category)) return true
-      return false
-    })
-    // console.log("771 =resultfilterData", resultfilterData)
 
-    resultfilterData = resultfilterData.filter((product) => {
-      if (this.FILTER.brand.length === 0) return true
-      if (this.FILTER.brand.includes(product.brand)) return true
-      return false
-    })
-    // console.log("772 =resultfilterData", resultfilterData)
-
-    resultfilterData = resultfilterData.filter((product) => {
-      this.FILTER.price.sort((a, b) => a - b)
-      if ((this.FILTER.price[1] - this.FILTER.price[0]) === (this.startServerFILTER.price[1] - this.startServerFILTER.price[0])) return true
-      if (this.FILTER.price[0] <= product.price && product.price <= this.FILTER.price[1]) {
-        return true
-      }
-      return false
-    })
-    // console.log("773 =resultfilterData", resultfilterData)
-
-
-    resultfilterData = resultfilterData.filter((product) => {
-      this.FILTER.stock.sort((a, b) => a - b)
-      if ((this.FILTER.stock[1] - this.FILTER.stock[0]) === (this.startServerFILTER.stock[1] - this.startServerFILTER.stock[0])) return true
-      if (this.FILTER.stock[0] <= product.stock && product.stock <= this.FILTER.stock[1]) {
-        return true
-      }
-      return false
-    })
-    // console.log("774 =resultfilterData", resultfilterData)
-
-    resultfilterData = resultfilterData.filter((product) => {
-
-      const text = this.FILTER.search[0]
-
-      if (text === '') return true
-      if (product.title.toLocaleLowerCase().includes(text.toLocaleLowerCase()) ||
-        product.description.toLocaleLowerCase().includes(text.toLocaleLowerCase()) ||
-        product.price.toString().includes(text) ||
-        product.discountPercentage.toString().includes(text) ||
-        product.rating.toString().includes(text) ||
-        product.stock.toString().includes(text) ||
-        product.brand.toLocaleLowerCase().includes(text.toLocaleLowerCase()) ||
-        product.category.toLocaleLowerCase().includes(text.toLocaleLowerCase())
-      ) { return true }
-      return false
-    })
-    // console.log("777 =resultfilterData", resultfilterData)
-
-  
-    resultfilterData.sort((product1, product2) => product1.title.toLowerCase() > product2.title.toLowerCase() ? 1:-1)
-    if (this.FILTER.sort[0] === "CBA") {resultfilterData.reverse()}
-    if (this.FILTER.sort[0] === "Sort by Price low")  {
-      resultfilterData.sort((product1, product2) => product1.price - product2.price)
-    }
-    if (this.FILTER.sort[0] === "Sort by Price up") {
-      resultfilterData.sort((product1, product2) => product2.price - product1.price)
-    }
-    if (this.FILTER.sort[0] === "Sort by Rating low") {
-      resultfilterData.sort((product1, product2) => product1.rating - product2.rating)
-    }
-    if (this.FILTER.sort[0] === "Sort by Rating up") {
-      resultfilterData.sort((product1, product2) => product2.rating - product1.rating)
-    }
-
-    this._filtredData = resultfilterData
-
-    // this.startCategoryData
-    // this.startBrandData
-    return this._filtredData
-  }
   // Метод очищающий Объект фильтра до стартового
   // и обновляющий отфильтрованный Объект c данными ПРОДУКТА
   clearFILTER() {
     this._FILTER.category = []
     this._FILTER.brand = []
-    this._FILTER.price = this.baseData.price,
-    this._FILTER.stock = this.baseData.stock,
-    this._FILTER.search = ['']
+    this._FILTER.price = [...this.baseData.price],
+      this._FILTER.stock = [...this.baseData.stock],
+      this._FILTER.search = ['']
     this._FILTER.sort = ['']
 
     // this._FILTER = JSON.parse(JSON.stringify(this._startServerFILTER))

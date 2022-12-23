@@ -138,7 +138,7 @@ class ControllerMain {
 
   startRouteListenner() {
     window.onpopstate = this.handleLocation;
-    console.log('Start startRouteListenner')
+    // console.log('Start startRouteListenner')
   }
 
   pushState(path: string) {
@@ -153,16 +153,16 @@ class ControllerMain {
 
 
 
-    console.log('this.routes========', this.routes)
+    // console.log('this.routes========', this.routes)
     // console.log('eeeeeeeeeee',e)
     // e.preventDefault()
     // const href = window.location.href
     // console.log("href ===", href)
     const path = window.location.pathname;
-    console.log("path 111===", path)
+    // console.log("path 111===", path)
     // console.log('this.routes[path]', this.routes[path])
     const route = this.routes[path] || this.routes['/page404'];
-    console.log("route", route)
+    // console.log("route", route)
     route.routesPage(route.name);
     // document.title = `Store - ${route.name}`;
     // preventDefault()
@@ -183,17 +183,25 @@ class ControllerMain {
     // проверка ловли евента со вью хедера
     this.BODY.addEventListener('clickOnBacket', (e) => {
 
+
+      // console.log('START window.location.href===', window.location.href)
+      console.log('START FILTER===', this.MODEL.FILTER)
       this.MODEL.setFILTERCategory('smartphones')
       this.MODEL.setFILTERBrand('Apple')
+      console.log('AFTERCHANGE this.MODEL.FILTER===', this.MODEL.FILTER)
       // console.log("eventfromMain = ",e)
       this.ViewHEADER.updateheaderBasketCount(100)
       const b = this._formatURL.createURLSearchParams(this.MODEL.FILTER)
       const a = Math.ceil(Math.random() * 1000)
       window.history.pushState({}, '', `/main/?${b}#${a}`)
-      console.log('window.location.pathname===', window.location.pathname)
+
+      // console.log('AFTER pushState window.location.href===', window.location.href)
+      // console.log('window.location.pathname===', window.location.pathname)
+      // console.log('window.location.search===', window.location.search)
 
     
       const query = new URLSearchParams(window.location.search);
+      // console.log('query',query.toString())
   
   
 

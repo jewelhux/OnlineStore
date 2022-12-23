@@ -168,6 +168,9 @@ this.MAIN.addEventListener('clickOnCategoryMain', (e) => {
   console.log('PRODUCT', this.MODEL.filtredData)
 
 this.ViewMainPAGE.updateCardList(this.MODEL.filtredData)
+this.ViewMainPAGE.updateBrandBlock(this.MODEL.filtredBrandData)
+this.ViewMainPAGE.updateCategoryBlock(this.MODEL.filtredCategoryData)
+
 
 })
 

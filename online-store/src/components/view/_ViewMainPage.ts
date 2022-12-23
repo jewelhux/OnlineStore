@@ -34,8 +34,6 @@ class ViewMainPage {
   EVENT: { [x: string]: Event }
 
   constructor(startServerData: IitemDATA[], startCategoryData: stringArrayObject, startBrandData: stringArrayObject, startPriceOfFILTER: number[], startStockOfFILTER: number[]) {
-    // this._controller = new ControllerMain();
-
     this.startServerData = startServerData;
     this.startCategoryData = startCategoryData;
     this.startBrandData = startBrandData;
@@ -47,9 +45,8 @@ class ViewMainPage {
     this.buttonReset = this.customElement.createElement('button', { className: 'stock__reset _btn', textContent: 'Reset Filter' }); // button Reset
     this.buttonCopy = this.customElement.createElement('button', { className: 'stock__copy _btn', textContent: 'Copy Link' }); // button Copy
 
-    this.filterCategoryMain = this.customElement.createElement('div', { className: 'filter__item-container category__container filter__item-container-scroll' }); // Category
-    this.filterBrandMain = this.customElement.createElement('div', { className: 'filter__item-container brand__container filter__item-container-scroll' }); // Brand
-
+    this.filterCategoryMain = this.customElement.createElement('div', { className: 'filter__item filter__category category filter__item-scroll' }); // Category
+    this.filterBrandMain = this.customElement.createElement('div', { className: 'filter__item filter__brand brand filter__item-scroll' }); // Brand
     //------Price------//
     this.itemPriceNumberFrom = this.customElement.createElement('div', { className: 'item-price__from' }); // Price Text Min
     this.itemPriceNumberTo = this.customElement.createElement('div', { className: 'item-price__to' }); // Price Text Max
@@ -67,7 +64,6 @@ class ViewMainPage {
     this.viewBlock = this.customElement.createElement('div', { className: 'visible__item viewBlock' }); // Вид для блочной модели
     this.viewList = this.customElement.createElement('div', { className: 'visible__item viewList' }); // Вид для строчной модели
     //------Right Bottom------//
-
     this.cardList = this.customElement.createElement('div', { className: 'right__list cardlist' }); // Контейнер с карточками
 
     this.EVENT = {
@@ -77,10 +73,7 @@ class ViewMainPage {
     this.headerListenersMain();
   }
 
-
-
   headerListenersMain() {
-
     this.filterCategoryMain.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       if (target.getAttribute('type') === "checkbox") {
@@ -89,9 +82,11 @@ class ViewMainPage {
     })
   }
 
-
-
-  create() {
+  create(startServerData: IitemDATA[] = this.startServerData, 
+    startCategoryData: stringArrayObject = this.startCategoryData,
+    startBrandData: stringArrayObject = this.startBrandData,
+    startPriceOfFILTER: number[] = this.startPriceOfFILTER, 
+    startStockOfFILTER: number[] = this.startStockOfFILTER) {
     // Создание основной секции
     const pageMain = this.customElement.createElement('div', { className: 'page-main-one _main-container' });
     const mainOne = this.customElement.createElement('section', { className: 'main-one _container' });
@@ -107,17 +102,19 @@ class ViewMainPage {
     this.customElement.addChildren(containerButtons, [this.buttonReset, this.buttonCopy]);
 
     //Добавление Category
-    this.customElement.addChildren(mainLeft, [this.renderCategoryBlock()]);
+    this.customElement.addChildren(this.filterCategoryMain, [...this.renderCategoryBlock(startCategoryData)]);
 
     // Добавление Brand 
-    this.customElement.addChildren(mainLeft, [this.renderBrandBlock()]);
+    this.customElement.addChildren(this.filterBrandMain, [...this.renderCategoryBlock(startBrandData)]);
+    
+    // Добавление всего в левую часть
+    this.customElement.addChildren(mainLeft, [this.filterCategoryMain, this.filterBrandMain]);
 
     // Создание Price
-    this.customElement.addChildren(mainLeft, [this.renderPriceBlock()]);
+    this.customElement.addChildren(mainLeft, [this.renderPriceBlock(startPriceOfFILTER)]);
 
     // Создание Stock
-    this.customElement.addChildren(mainLeft, [this.renderStockBlock()]);
-
+    this.customElement.addChildren(mainLeft, [this.renderStockBlock(startStockOfFILTER)]);
 
     // Создание ПРАВОЙ ВЕРХНЕЙ СЕКЦИИ!!!
     const mainRight = this.customElement.createElement('div', { className: 'main-one__right right' });
@@ -147,36 +144,42 @@ class ViewMainPage {
     this.customElement.addChildren(rightView, [this.viewSort, viewFindCount, this.viewSearch, viewVisible]);
 
     // Создание ПРАВОЙ НИЖНЕЙ СЕКЦИИ!!!
-    this.customElement.addChildren(this.cardList, [...this.renderItemCard()]);
+    this.customElement.addChildren(this.cardList, [...this.renderItemCard(startServerData)]);
     this.customElement.addChildren(mainRight, [this.cardList]);
 
     return pageMain
   }
 
   // Создание Category
-  renderCategoryBlock(dataFilterCategory: stringArrayObject = this.startCategoryData): HTMLElement {
-    const filterCategory = this.customElement.createElement('div', { className: 'filter__item filter__category category filter__item-scroll' });
+  renderCategoryBlock(dataFilterCategory: stringArrayObject = this.startCategoryData): HTMLElement[] {
+    const itemContainer: HTMLElement[] = [];
+
     const filterCategoryItemName = this.customElement.createElement('h3', { className: 'filter__item-name category__name', textContent: 'Category' });
-    this.customElement.addChildren(filterCategory, [filterCategoryItemName, this.filterCategoryMain]);
+    const filterCategory = this.customElement.createElement('div', { className: 'filter__item-container category__container filter__item-container-scroll' });
+    
     for (const key in dataFilterCategory) {
       const itemCategory = this.itemFilterCheckbox(key, dataFilterCategory[key]); // Функция получение разметки определенного чекбокса
-      this.customElement.addChildren(this.filterCategoryMain, [itemCategory]);
+      this.customElement.addChildren(filterCategory, [itemCategory]);
     }
 
-    return filterCategory
+    itemContainer.push(filterCategoryItemName, filterCategory)
+    return itemContainer
   }
 
   // Создание Brand
-  renderBrandBlock(dataFilterBrand: stringArrayObject = this.startBrandData): HTMLElement {
-    const filterBrand = this.customElement.createElement('div', { className: 'filter__item filter__brand brand filter__item-scroll' });
+  renderBrandBlock(dataFilterBrand: stringArrayObject = this.startBrandData): HTMLElement[] {
+    const itemContainer: HTMLElement[] = [];
+
     const filterBrandItemName = this.customElement.createElement('h3', { className: 'filter__item-name brand__name', textContent: 'Brand' });
-    this.customElement.addChildren(filterBrand, [filterBrandItemName, this.filterBrandMain]);
+    const filterCategory = this.customElement.createElement('div', { className: 'filter__item-container brand__container filter__item-container-scroll' });
+    
     for (const key in dataFilterBrand) {
       const itemBrand = this.itemFilterCheckbox(key, dataFilterBrand[key]); // Функция получение разметки определенного чекбокса
-      this.customElement.addChildren(this.filterBrandMain, [itemBrand]);
+      this.customElement.addChildren(filterCategory, [itemBrand]);
     }
 
-    return filterBrand
+    itemContainer.push(filterBrandItemName, filterCategory)
+    return itemContainer
   }
 
   // Создание Price
@@ -285,6 +288,15 @@ class ViewMainPage {
     this.customElement.addChildren(this.cardList, [...this.renderItemCard(data)]);
   }
 
+  updateCategoryBlock(data: stringArrayObject = this.startCategoryData) {
+    this.filterCategoryMain.innerHTML = ''
+    this.customElement.addChildren(this.filterCategoryMain, [...this.renderCategoryBlock(data)]);
+  }
+
+  updateBrandBlock(data: stringArrayObject = this.startBrandData) {
+    this.filterBrandMain.innerHTML = ''
+    this.customElement.addChildren(this.filterBrandMain, [...this.renderBrandBlock(data)]);
+  }
 
   mainListeners(): void {
     this.filterCategoryMain.addEventListener('click', this.onMainFc);
@@ -292,7 +304,7 @@ class ViewMainPage {
   }
 
   itemFilterCheckbox(name: string, data: number[]): HTMLElement {
-    const temp = `<div>
+    const temp = `<div class = 'filterCheckbox'>
       <input type="checkbox" id=${name} ${!data[2] ? '' : 'checked'}>
       <label for=${name}>${name}</label>
       <div>(${data[0]}/${data[1]})</div>

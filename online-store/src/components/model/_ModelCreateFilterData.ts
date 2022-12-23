@@ -49,8 +49,8 @@ class CreateFilterData {
     this._FILTER.price = this.baseData.price
     this._FILTER.stock = this.baseData.stock,
 
-    console.log("this._FILTER",this._FILTER)
-    console.log("state",state)
+    // console.log("this._FILTER",this._FILTER)
+    // console.log("state",state)
 
     this._startPriceOfFILTER = this._startServerFILTER.price
     this._startStockOfFILTER = this._startServerFILTER.stock
@@ -61,8 +61,8 @@ class CreateFilterData {
     this._searchOfFILTER = this._FILTER.search
 
 
-    this.setSearchOfFILTER('iPhone 9')
-    // this.setFILTERcategory('groceries')
+    // this.setSearchOfFILTER('iPhone 9')
+    // this.setFILTERCategory('groceries')
     // this.setPriceOfFILTER([500,900])
     // this.setStockOfFILTER([30,100])
     // this.updateFILTER_Price_Stock()
@@ -73,10 +73,10 @@ class CreateFilterData {
     this._filtredBrandData = this.getCategoryAndBrandData(this.startBrandArray, "brand", this.filtredData);
 
 
-    console.log("222 this.FILTER", this.FILTER)
-    console.log("333 filtredData =====", this.filtredData)
-    console.log("444 this.filtredCategoryData", this.filtredCategoryData)
-    console.log("555 this.filtredBrandData", this.filtredBrandData)
+    // console.log("222 this.FILTER", this.FILTER)
+    // console.log("333 filtredData =====", this.filtredData)
+    // console.log("444 this.filtredCategoryData", this.filtredCategoryData)
+    // console.log("555 this.filtredBrandData", this.filtredBrandData)
   }
   // ссылка на класс Базы данных
   public get baseData() {
@@ -115,12 +115,26 @@ class CreateFilterData {
   }
 
   // метод добавления и удаления значений в FILTER.category
-  setFILTERcategory(data: string) {
+  setFILTERCategory(data: string) {
     const index = this._FILTER.category.indexOf(data);
     if (index !== -1) {
       this._FILTER.category.splice(index, 1);
     } else {
       this._FILTER.category.push(data)
+    }
+    // this.updateFILTER_Price_Stock()
+    this.updateFiltredData()
+    this.updateFILTER_Price_Stock()
+
+  }
+
+  // метод добавления и удаления значений в FILTER.brand
+  setFILTERBrand(data: string) {
+    const index = this._FILTER.brand.indexOf(data);
+    if (index !== -1) {
+      this._FILTER.brand.splice(index, 1);
+    } else {
+      this._FILTER.brand.push(data)
     }
     // this.updateFILTER_Price_Stock()
     this.updateFiltredData()

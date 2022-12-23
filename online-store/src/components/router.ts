@@ -17,6 +17,10 @@ class Router {
         name: 'Product details',
         routesPage: this.routesFuntion
       },
+      '/basket': {
+        name: 'Product details',
+        routesPage: this.routesFuntion
+      },
       '/': {
         name: 'Home',
         routesPage: this.routesFuntion
@@ -57,22 +61,26 @@ class Router {
   }
   startRouteListenner() {
     window.onpopstate = this.handleLocation;
+    console.log('Start startRouteListenner')
   }
 
   pushState(path:string) {
 
-    window.location.assign(`${window.location.origin}${path}`)
+    // window.location.assign(`${window.location.origin}${path}`)
 
     // window.history.pushState({}, '', path)
     // window.location.reload()
   }
 
 
-  handleLocation() {
+  handleLocation(e:Event) {
+    console.log('this.routes========',this.routes)
+    console.log('eeeeeeeeeee',e)
+    e.preventDefault()
     // const href = window.location.href
     // console.log("href ===", href)
     const path = window.location.pathname;
-    // console.log("path 111===", path)
+    console.log("path 111===", path)
     const route = this.routes[path] || this.routes['/page404'];
         // console.log("route", route)
     route.routesPage(route.name);

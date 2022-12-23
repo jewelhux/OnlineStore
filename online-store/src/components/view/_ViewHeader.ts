@@ -52,13 +52,13 @@ class ViewHeader {
   headerListeners() {
     this.headerTotalPrice.addEventListener('click', this.onheaderBasketClick);
     this.headerBasket.addEventListener('click', (e) => {
-      console.log("e click this.headerBasket", e)
+      // console.log("e click this.headerBasket", e)
       this.headerBasket.dispatchEvent(this.EVENT.clickOnBacket)
     })
   }
 
   private onheaderBasketClick = () => {
-    console.log(this.headerBasketCount.textContent)
+    // console.log(this.headerBasketCount.textContent)
   }
 
 }

@@ -25,7 +25,6 @@ class ViewMainPage {
   viewList: HTMLElement;
   cardList: HTMLElement;
   customElement: CustomElement;
-  // _controller: ControllerMain;
   startCategoryData: stringArrayObject;
   startBrandData: stringArrayObject;
   startPriceOfFILTER: number[];
@@ -121,7 +120,7 @@ class ViewMainPage {
     this.customElement.addChildren(this.filterCategoryMain, [...this.renderCategoryBlock(startCategoryData)]);
 
     // Добавление Brand 
-    this.customElement.addChildren(this.filterBrandMain, [...this.renderCategoryBlock(startBrandData)]);
+    this.customElement.addChildren(this.filterBrandMain, [...this.renderBrandBlock(startBrandData)]);
     
     // Добавление всего в левую часть
     this.customElement.addChildren(mainLeft, [this.filterCategoryMain, this.filterBrandMain]);
@@ -170,6 +169,7 @@ class ViewMainPage {
   // Создание Category
   renderCategoryBlock(dataFilterCategory: stringArrayObject = this.startCategoryData): HTMLElement[] {
     const itemContainer: HTMLElement[] = [];
+    this.filterCategoryMain.innerHTML = '';
 
     const filterCategoryItemName = this.customElement.createElement('h3', { className: 'filter__item-name category__name', textContent: 'Category' });
     const filterCategory = this.customElement.createElement('div', { className: 'filter__item-container category__container filter__item-container-scroll' });
@@ -186,16 +186,18 @@ class ViewMainPage {
   // Создание Brand
   renderBrandBlock(dataFilterBrand: stringArrayObject = this.startBrandData): HTMLElement[] {
     const itemContainer: HTMLElement[] = [];
+    this.filterBrandMain.innerHTML = '';
+
 
     const filterBrandItemName = this.customElement.createElement('h3', { className: 'filter__item-name brand__name', textContent: 'Brand' });
-    const filterCategory = this.customElement.createElement('div', { className: 'filter__item-container brand__container filter__item-container-scroll' });
+    const filterBrand = this.customElement.createElement('div', { className: 'filter__item-container brand__container filter__item-container-scroll' });
     
     for (const key in dataFilterBrand) {
       const itemBrand = this.itemFilterCheckbox(key, dataFilterBrand[key]); // Функция получение разметки определенного чекбокса
-      this.customElement.addChildren(filterCategory, [itemBrand]);
+      this.customElement.addChildren(filterBrand, [itemBrand]);
     }
 
-    itemContainer.push(filterBrandItemName, filterCategory)
+    itemContainer.push(filterBrandItemName, filterBrand)
     return itemContainer
   }
 
@@ -307,7 +309,7 @@ class ViewMainPage {
   }
 
   updateCategoryBlock(data: stringArrayObject = this.startCategoryData) {
-    this.filterCategoryMain.innerHTML = ''
+    this.filterCategoryMain.innerHTML = '';
     this.customElement.addChildren(this.filterCategoryMain, [...this.renderCategoryBlock(data)]);
   }
 

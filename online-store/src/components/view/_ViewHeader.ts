@@ -5,18 +5,21 @@ class ViewHeader {
   headerTotalPrice: HTMLElement
   headerBasket: HTMLElement
   headerBasketCount: HTMLElement
+  logoTitle: HTMLElement
   customElement: CustomElement
-  EVENT: {[x:string]:Event}
+  EVENT: { [x: string]: Event }
 
   constructor() {
     this.customElement = new CustomElement();
     this.headerTotalPrice = this.customElement.createElement('span', { className: 'header__total-span', textContent: '0' });
     this.headerBasket = this.customElement.createElement('div', { className: 'header__basket' });
     this.headerBasketCount = this.customElement.createElement('span', { className: 'header__basket-count', textContent: '0' });
+    this.logoTitle = this.customElement.createElement('h1', { className: 'logo__title', textContent: 'Online Store' });
 
     this.headerListeners();
     this.EVENT = {
-      clickOnBacket: new Event('clickOnBacket', { bubbles: true })
+      clickOnBacket: new Event('clickOnBacket', { bubbles: true }),
+      clickOnLogo: new Event('clickOnLogo', { bubbles: true })
     }
   }
 
@@ -31,12 +34,12 @@ class ViewHeader {
     this.customElement.addChildren(headerContainer, [headerLogo, headerTotal, this.headerBasket])
 
     // Заполнение headerLogo
-    const logoTitle = this.customElement.createElement('h1', { className: 'logo__title', textContent: 'Online Store' });
-    this.customElement.addChildren(headerLogo, [logoTitle]);
+    // const logoTitle = this.customElement.createElement('h1', { className: 'logo__title', textContent: 'Online Store' });
+    this.customElement.addChildren(headerLogo, [this.logoTitle]);
     // Заполнение headerTotal
     this.customElement.addChildren(headerTotal, [this.headerTotalPrice]);
     // Заполнение headerBasket
-    const headerBasketImg = this.customElement.createElement('img', { src: basket  });
+    const headerBasketImg = this.customElement.createElement('img', { src: basket });
     this.headerBasket.innerHTML = ''
     this.customElement.addChildren(this.headerBasket, [headerBasketImg, this.headerBasketCount]);
 
@@ -54,6 +57,12 @@ class ViewHeader {
     this.headerBasket.addEventListener('click', (e) => {
       this.headerBasket.dispatchEvent(this.EVENT.clickOnBacket)
     })
+
+    this.logoTitle.addEventListener('click', (e) => {
+      e.preventDefault()
+      this.logoTitle.dispatchEvent(this.EVENT.clickOnLogo)
+    })
+
   }
 
   // private onheaderBasketClick = () => {
@@ -68,18 +77,18 @@ export default ViewHeader
 // [
 //   {
 //       id: 8
-//   count: 
+//   count:
 //   }
 //   {
 //       id: 3
-//   count: 
+//   count:
 //   }
 //   {
 //       id: 5
-//   count: 
+//   count:
 //   }
 //   {
 //       id: 1
-//   count: 
+//   count:
 //   }
 // ]

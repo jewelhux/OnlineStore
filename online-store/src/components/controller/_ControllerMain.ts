@@ -138,13 +138,13 @@ class ControllerMain {
   // Рендер КОМПАНЕНТОВ главной страницы из роутера
   rerenderMainPageComponents() {
     if (this.MAIN.firstChild === this.ViewMainPAGE.pageMain) {
-      // console.log('this.MAIN.firstChild первая ветка', this.MAIN.firstChild)
+      console.log('this.MAIN.firstChild первая ветка', this.MAIN.firstChild)
       // this.MAIN.append(this.ViewMainPAGE.create())
       this.viewMainPAGEupdate()
     } else {
-      // console.log('this.MAIN.firstChild вторая ветка', this.MAIN.firstChild)
+      console.log('this.MAIN.firstChild вторая ветка', this.MAIN.firstChild)
       this.MAIN.innerHTML = ''
-      // console.log('this.MAIN.firstChild вторая ветка Обнулили', this.MAIN.firstChild)
+      console.log('this.MAIN.firstChild вторая ветка Обнулили', this.MAIN.firstChild)
       this.viewMainPAGEupdate()
       this.MAIN.append(this.ViewMainPAGE.create())
     }
@@ -203,9 +203,12 @@ class ControllerMain {
   pushStateFilter(filter = this.MODEL.FILTER) {
     const params: URLSearchParams = this._formatURL.createURLSearchParams(filter)
     if (JSON.stringify(this.FILTER) === JSON.stringify(this.MODEL.startServerFILTER)) {
+      console.log('pushStateFilter ПЕРВАЯ ВЕТКА фильтрованный массив равен стартовому')
       window.history.replaceState({}, '', '/')
     } else {
-      window.history.pushState({}, '', `?${params}`)
+      console.log('pushStateFilter Вторая ВЕТКА фильтрованный массив НЕ равен стартовому')
+      console.log(`{window.location.pathname}`)
+      window.history.pushState({}, '', `/?${params}`)
     }
   }
 
@@ -249,6 +252,15 @@ class ControllerMain {
       this.MAIN.innerHTML = ''
       this.MAIN.append(this.ViewBASKETPAGE.create(this.MODEL.startServerData)) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
       window.history.pushState({}, '', '/basket')
+    })
+
+    // Клик по ЛОГОТИПУ из Хедера и запуск страницы корзины
+    this.BODY.addEventListener('clickOnLogo', (e) => {
+      // this.MAIN.innerHTML = ''
+      console.log('EEEEEEEEEEEEEEEEEEEEE', e)
+      this.rerenderMainPageComponents()
+      this.pushStateFilter()
+      // window.history.pushState({}, '', '/')
     })
 
 

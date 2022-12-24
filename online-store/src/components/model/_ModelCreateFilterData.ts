@@ -49,10 +49,8 @@ class CreateFilterData {
     this._FILTER.price = [...this.baseData.price]
     this._FILTER.stock = [...this.baseData.stock],
 
-      // console.log("this._FILTER",this._FILTER)
-      // console.log("state",state)
 
-      this._startPriceOfFILTER = this._startServerFILTER.price
+    this._startPriceOfFILTER = this._startServerFILTER.price
     this._startStockOfFILTER = this._startServerFILTER.stock
     this._startSearchOfFILTER = this._startServerFILTER.search
 
@@ -60,23 +58,11 @@ class CreateFilterData {
     this._stockOfFILTER = this._FILTER.stock
     this._searchOfFILTER = this._FILTER.search
 
-
-    // this.setSearchOfFILTER('iPhone 9')
-    // this.setFILTERCategory('groceries')
-    // this.setPriceOfFILTER([500,900])
-    // this.setStockOfFILTER([30,100])
-    // this.updateFILTER_Price_Stock()
-
     this._startCategoryData = this.getCategoryAndBrandData(this.startCategoryArray, "category");
     this._filtredCategoryData = this.getCategoryAndBrandData(this.startCategoryArray, "category", this.filtredData);
     this._startBrandData = this.getCategoryAndBrandData(this.startBrandArray, "brand");
     this._filtredBrandData = this.getCategoryAndBrandData(this.startBrandArray, "brand", this.filtredData);
 
-
-    // console.log("222 this.FILTER", this.FILTER)
-    // console.log("333 filtredData =====", this.filtredData)
-    // console.log("444 this.filtredCategoryData", this.filtredCategoryData)
-    // console.log("555 this.filtredBrandData", this.filtredBrandData)
   }
   // ссылка на класс Базы данных
   public get baseData() {
@@ -89,8 +75,8 @@ class CreateFilterData {
       && this.FILTER.category.length === 0
       && this.FILTER.sort[0] === ''
       && this.FILTER.search[0] === '') {
-       this.FILTER.price = [...this.baseData.price];
-       this.FILTER.stock = [...this.baseData.stock];
+      this.FILTER.price = [...this.baseData.price];
+      this.FILTER.stock = [...this.baseData.stock];
     }
 
     let resultfilterData: IitemDATA[] = this.startServerData.slice()
@@ -149,19 +135,23 @@ class CreateFilterData {
     })
     // console.log("777 =resultfilterData", resultfilterData)
 
-
-    resultfilterData.sort((product1, product2) => product1.title.toLowerCase() > product2.title.toLowerCase() ? 1 : -1)
-    if (this.FILTER.sort[0] === "CBA") { resultfilterData.reverse() }
-    if (this.FILTER.sort[0] === "Sort by Price low") {
+    // ABC по умолчанию
+    if (this.FILTER.sort[0] === "SortABC" || this.FILTER.sort[0] === "") {
+      resultfilterData.sort((product1, product2) => product1.title.toLowerCase() > product2.title.toLowerCase() ? 1 : -1)
+    }
+    if (this.FILTER.sort[0] === "SortCBA") {
+      resultfilterData.sort((product1, product2) => product1.title.toLowerCase() > product2.title.toLowerCase() ? -1 : 1)
+    }
+    if (this.FILTER.sort[0] === "SortByPriceLow") {
       resultfilterData.sort((product1, product2) => product1.price - product2.price)
     }
-    if (this.FILTER.sort[0] === "Sort by Price up") {
+    if (this.FILTER.sort[0] === "SortByPriceUp") {
       resultfilterData.sort((product1, product2) => product2.price - product1.price)
     }
-    if (this.FILTER.sort[0] === "Sort by Rating low") {
+    if (this.FILTER.sort[0] === "SortByRatingLow") {
       resultfilterData.sort((product1, product2) => product1.rating - product2.rating)
     }
-    if (this.FILTER.sort[0] === "Sort by Rating up") {
+    if (this.FILTER.sort[0] === "SortByRatingUp") {
       resultfilterData.sort((product1, product2) => product2.rating - product1.rating)
     }
 
@@ -260,30 +250,14 @@ class CreateFilterData {
   }
 
 
-
-
-  // this._startServerFILTER =
-  // {
-  //   "category": [],
-  //   "brand": [],
-  //   "price": this.baseData.price,
-  //   "stock": this.baseData.stock,
-  //   // "price": [10, 1749],
-  //   // "stock": [2, 150],
-  //   "search": [''],
-  //   "sort": [''],
-  // };
-
-
-
-  setFILTER(filter:IFilter) {
-this.FILTER.brand = [...filter.brand]
-this.FILTER.category = [...filter.category]
-this.FILTER.price = filter.price.length ? [...filter.price] : [...this.baseData.price]
-this.FILTER.stock = filter.stock.length? [...filter.stock] : [...this.baseData.stock]
-this.FILTER.search = filter.search.length ? [...filter.search] : ['']
-this.FILTER.sort = filter.sort.length ? [...filter.sort] : ['']
-this.updateFiltredData()
+  setFILTER(filter: IFilter) {
+    this.FILTER.brand = [...filter.brand]
+    this.FILTER.category = [...filter.category]
+    this.FILTER.price = filter.price.length ? [...filter.price] : [...this.baseData.price]
+    this.FILTER.stock = filter.stock.length ? [...filter.stock] : [...this.baseData.stock]
+    this.FILTER.search = filter.search.length ? [...filter.search] : ['']
+    this.FILTER.sort = filter.sort.length ? [...filter.sort] : ['']
+    this.updateFiltredData()
   }
 
   // возвращает стартовый массив категорий

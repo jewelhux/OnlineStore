@@ -11,6 +11,7 @@ import ViewHeader from '../view/_ViewHeader';
 import ViewMainPage from '../view/_ViewMainPage';
 import ViewFooter from '../view/_ViewFooter';
 import ViewItemCardPage from '../view/_ViewItemCardPage';
+import ViewBasketPage from '../view/_ViewBasketPage';
 
 // Служебные программки
 import CustomElement from '../utils/_createCustomElement';
@@ -34,6 +35,7 @@ class ControllerMain {
   ViewMainPAGE: ViewMainPage;
   ViewFOOTER: ViewFooter;
   ViewItemCardPAGE: ViewItemCardPage;
+  ViewBASKETPAGE: ViewBasketPage
 
   _formatURL: FormatURL;
 
@@ -71,8 +73,8 @@ class ControllerMain {
     this.MODEL = new CreateFilterData();
     this.ViewHEADER = new ViewHeader();
     this.ViewFOOTER = new ViewFooter();
-    
-    
+
+
     this.FILTER = this.MODEL.FILTER
     this.startCategoryData = this.MODEL.startCategoryData
     this.startBrandData = this.MODEL.startBrandData
@@ -85,22 +87,10 @@ class ControllerMain {
     this.priceOfFILTER = this.MODEL.priceOfFILTER
     this.stockOfFILTER = this.MODEL.stockOfFILTER
     this.searchOfFILTER = this.MODEL.searchOfFILTER
-    
+
     this.ViewMainPAGE = new ViewMainPage(this.startServerData, this.startCategoryData, this.startBrandData, this.startPriceOfFILTER, this.startStockOfFILTER);
-    console.log('КОНСТРУКТОР КОНТРОЛЛЕРА',this.startServerData[0])
     this.ViewItemCardPAGE = new ViewItemCardPage(this.startServerData[0]);
-
-
-    // this.ROUTER = new Router()
-
-    // this.router.startRouteListenner()
-
-    // this._model.setSearchOfFILTER('ap')
-    // console.log("this.FILTER 3000", this.FILTER)
-    // console.log("state 3000", state)
-    // this.a = this._formatURL.createURLSearchParams(this.FILTER)
-    // console.log("200000", this._formatURL.createURLSearchParams(this.FILTER).toString())
-    // console.log(this._formatURL.createObjectFromURLSearchParams(this.a))
+    this.ViewBASKETPAGE = new ViewBasketPage(this.startServerData)
 
     this.ListenersController()
 
@@ -111,11 +101,11 @@ class ControllerMain {
       },
       '/product': {
         name: 'Product details',
-        routesPage: this.routesFuntion.bind(this)
+        routesPage: this.renderItemCardPAGEFromRouter.bind(this)
       },
       '/basket': {
         name: 'Backet',
-        routesPage: this.routesFuntion.bind(this)
+        routesPage: this.renderBacket.bind(this)
       },
       '/': {
         name: 'Home',
@@ -123,55 +113,78 @@ class ControllerMain {
       },
     };
 
-
   }
 
   // Конец конструктора
+
   init() {
-    // this.ROUTER.startRouteListenner()
     this.startRouteListenner();
     this.handleLocation();
     this.HEADER.append(this.ViewHEADER.create())
-    this.MAIN.append(this.ViewMainPAGE.create())
-
-    this.MAIN.append(this.ViewItemCardPAGE.create())
-
-    // document.body.replaceChild(mainTwoInit, statePage);
-    // this.MAIN.replaceChild(this.ViewMainPAGE.create())
     this.FOOTER.append(this.ViewFOOTER.create())
 
-    // для проверки прокидывания значения в корзину
-    this.ViewHEADER.updateheaderBasketCount(7)
+
   }
 
-
+  // Рендер главной страницы из роутера
   renderMainPageFromRouter(name: string) {
     document.title = `Store - ${name}`;
-    // console.log('2222===', this.FILTER)
-    // this.returnStateFilter()
-    // // this.MAIN.innerHTML = ''
     const search = new URLSearchParams(window.location.search);
-    // console.log("query", query.toString().length)
-    // if (query.toString().length) {
     const filter = this._formatURL.createObjectFromURLSearchParams(search)
-    // console.log('8888=', this.FILTER)
-    // console.log('9999=', filter)
     this.MODEL.setFILTER(filter)
-    // console.log('AAAA=', this.FILTER)
-    // console.log('A1A1A1A1=', this.MODEL.startServerFILTER)
     this.rerenderMainPageComponents()
-
   }
 
+  // Рендер КОМПАНЕНТОВ главной страницы из роутера
   rerenderMainPageComponents() {
+    if (this.MAIN.firstChild === this.ViewMainPAGE.pageMain) {
+      console.log('this.MAIN.firstChild первая ветка', this.MAIN.firstChild)
+      // this.MAIN.append(this.ViewMainPAGE.create())
+      this.viewMainPAGEupdate()
+    } else {
+      console.log('this.MAIN.firstChild вторая ветка', this.MAIN.firstChild)
+      this.MAIN.innerHTML = ''
+      console.log('this.MAIN.firstChild вторая ветка Обнулили', this.MAIN.firstChild)
+      this.viewMainPAGEupdate()
+      this.MAIN.append(this.ViewMainPAGE.create())
+    }
+  }
+  // Подфунция рендора Компанента главной страниц из роутера Мейна
+  viewMainPAGEupdate() {
     this.ViewMainPAGE.updateCardList(this.MODEL.filtredData)
     this.ViewMainPAGE.updateBrandBlock(this.MODEL.filtredBrandData)
     this.ViewMainPAGE.updateCategoryBlock(this.MODEL.filtredCategoryData)
+    this.ViewMainPAGE.updateSearchValue(this.MODEL.searchOfFILTER[0])
+  }
+
+  // Рендер главной страницы ПРОДУКТА из роутера
+  renderItemCardPAGEFromRouter(name: string) {
+    document.title = `Store - ${name}`;
+    const search = new URLSearchParams(window.location.search);
+    console.log('search!!!!!!!!', this._formatURL.createIDFromURLSearchParams(search))
+    const id = this._formatURL.createIDFromURLSearchParams(search).id
+    // const filter = this._formatURL.createObjectFromURLSearchParams(search)
+    // this.MODEL.setFILTER(filter)
+    // this.rerenderMainPageComponents()
+    this.MAIN.innerHTML = ''
+    this.MAIN.append(this.ViewItemCardPAGE.create(this.MODEL.startServerData[Number(id) - 1]))
+  }
+
+  // Рендер корзины
+  renderBacket(name: string) {
+    document.title = `Store - ${name}`;
+    // const search = new URLSearchParams(window.location.search);
+    // console.log('search!!!!!!!!', this._formatURL.createIDFromURLSearchParams(search))
+    // const id = this._formatURL.createIDFromURLSearchParams(search).id
+
+    this.MAIN.innerHTML = ''
+    this.MAIN.append(this.ViewBASKETPAGE.create(this.MODEL.startServerData)) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
   }
 
   routesFuntion(name: string) {
     document.title = `Store - ${name}`;
-
+    this.MAIN.innerHTML = 'СТРАНИЦА НЕ НАЙДЕНА.'
+    window.history.pushState({}, '', `/page404`)
   }
 
   // Главыный слушаетль на кнопках АДРЕССНОЙ СТРОКИ
@@ -180,101 +193,92 @@ class ControllerMain {
       event.preventDefault()
       this.handleLocation()
     };
-    // console.log('Start startRouteListenner')
   }
-
+  // Метод распределения направлений
   handleLocation() {
-    // console.log('1111', this.FILTER)
-    // console.log("this.routes===", this.routes)
     const path = window.location.pathname;
-    // console.log("path 111===", path)
     const route = this.routes[path] || this.routes['/page404'];
-    // console.log("route===", route)
     route.routesPage(route.name);
-
   }
 
+  // Запись в историю адрессной строки с событий МЕЙНА
   pushStateFilter(filter = this.MODEL.FILTER) {
     const params: URLSearchParams = this._formatURL.createURLSearchParams(filter)
-
     if (JSON.stringify(this.FILTER) === JSON.stringify(this.MODEL.startServerFILTER)) {
+      console.log('pushStateFilter ПЕРВАЯ ВЕТКА фильтрованный массив равен стартовому')
       window.history.replaceState({}, '', '/')
     } else {
-      window.history.pushState({}, '', `?${params}`)
+      console.log('pushStateFilter Вторая ВЕТКА фильтрованный массив НЕ равен стартовому')
+      console.log(`{window.location.pathname}`)
+      window.history.pushState({}, '', `/?${params}`)
     }
-
-    // window.location.assign(`${window.location.origin}${path}`)
   }
 
-
-
-
+  // СЛУШАТЕЛИ СОБЫТИЙ
   ListenersController() {
-    // проверка ловли евента со вью хедера
-    this.BODY.addEventListener('clickOnBacket', (e) => {
-
-
-      // console.log('START window.location.href===', window.location.href)
-      // console.log('START FILTER===', this.MODEL.FILTER)
-      this.MODEL.setFILTERCategory('smartphones')
-      this.MODEL.setFILTERBrand('Apple')
-      // console.log('AFTERCHANGE this.MODEL.FILTER===', this.MODEL.FILTER)
-      // console.log("eventfromMain = ",e)
-      this.ViewHEADER.updateheaderBasketCount(100)
-      const b = this._formatURL.createURLSearchParams(this.MODEL.FILTER)
-      const a = Math.ceil(Math.random() * 1000)
-      window.history.pushState({}, '', `/main/?${b}#${a}`)
-
-      // console.log('AFTER pushState window.location.href===', window.location.href)
-      // console.log('window.location.pathname===', window.location.pathname)
-      // console.log('window.location.search===', window.location.search)
-
-
-      const query = new URLSearchParams(window.location.search);
-      // console.log('query',query.toString())
-
-
-
-      const Q = this._formatURL.createObjectFromURLSearchParams(query)
-      console.log('QQQQQQQQQQQQQQQQQQ', Q)
-
-
-      // this.handleLocation()
-    })
 
     // Ловля клика по Инпутам категорий из Мейна
-
     this.MAIN.addEventListener('clickOnCategoryMain', (e) => {
       const target = e.target as HTMLElement;
-      // console.log('eeeeeee', target.id)
       this.MODEL.setFILTERCategory(target.id)
-      console.log('3333', this.FILTER)
-      // console.log('PRODUCT', this.MODEL.filtredData)
-
       this.rerenderMainPageComponents()
       this.pushStateFilter()
     })
-
+    // Ловля клика по Инпутам brend из Мейна
     this.MAIN.addEventListener('clickOnBrandMain', (e) => {
       const target = e.target as HTMLElement;
       this.MODEL.setFILTERBrand(target.id)
-      console.log('6666', this.FILTER)
       this.rerenderMainPageComponents()
       this.pushStateFilter()
     })
 
+    // Ловля изменения инпута СЕРЧ
+    this.MAIN.addEventListener('changeOnSearchMain', (e) => {
+      const target = e.target as HTMLInputElement;
+
+      this.MODEL.setSearchOfFILTER(target.value)
+      this.rerenderMainPageComponents()
+      this.pushStateFilter()
+    })
+
+    // Клик по кнопке РЕСЕТ сброса фильтров из Мейна
+    this.MAIN.addEventListener('clickOnbuttonResetMain', (e) => {
+      this.MODEL.clearFILTER()
+      this.rerenderMainPageComponents()
+      this.pushStateFilter()
+
+    })
+
+    // Клик по корзине из Хедера и запуск страницы корзины
+    this.BODY.addEventListener('clickOnBacket', (e) => {
+      this.MAIN.innerHTML = ''
+      this.MAIN.append(this.ViewBASKETPAGE.create(this.MODEL.startServerData)) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
+      window.history.pushState({}, '', '/basket')
+    })
+
+    // Клик по ЛОГОТИПУ из Хедера и запуск страницы корзины
+    this.BODY.addEventListener('clickOnLogo', (e) => {
+      // this.MAIN.innerHTML = ''
+      console.log('EEEEEEEEEEEEEEEEEEEEE', e)
+      this.rerenderMainPageComponents()
+      this.pushStateFilter()
+      // window.history.pushState({}, '', '/')
+    })
+
+
+
+    // Клик по карточке для запуска страницы продукта из Мейна
+    this.MAIN.addEventListener('clickOnСardListMain', (e) => {
+      const target = e.target as HTMLElement;
+      const id = target.id
+      this.MAIN.innerHTML = ''
+      this.MAIN.append(this.ViewItemCardPAGE.create(this.MODEL.startServerData[Number(id) - 1]))
+      console.log(`ПУШНУЛ ИСТОРИ ОДНОГО ПРОДУКТА /product?id=${id}`)
+      window.history.pushState({}, '', `/product?id=${id}`)
+    })
+
 
   }
-
-
-
-  // rerenderMainPageComponentsStart() {
-  //   this.ViewMainPAGE.updateCardList(this.MODEL.startServerData)
-  //   this.ViewMainPAGE.updateBrandBlock(this.MODEL.startBrandData)
-  //   this.ViewMainPAGE.updateCategoryBlock(this.MODEL.startCategoryData)
-  // }
-
-
 
 
 

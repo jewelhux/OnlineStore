@@ -15,12 +15,19 @@ class FormatURL {
     return new URLSearchParams(result)
   }
 
+  createIDFromURLSearchParams(params: URLSearchParams) {
+    const result: { [x: string]: string } = {}
+    for (const [key, value] of params.entries()) {
+      result[key] = value
+    }
+    return result
+  }
+
   createObjectFromURLSearchParams(params: URLSearchParams) {
     const result: { [x: string]: string[] } = {}
     for (const [key, value] of params.entries()) {
       result[key] = value.split("|")
     }
-
     return this.strTonumbder(result)
   }
   // const result1: IFilter ={}

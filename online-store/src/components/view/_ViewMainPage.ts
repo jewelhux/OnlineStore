@@ -74,6 +74,7 @@ class ViewMainPage {
       changeOnSearchMain: new Event('changeOnSearchMain', { bubbles: true }),
       choiceOnSortMain: new Event('choiceOnSortMain', { bubbles: true }),// ЕЩЁ не СДЕЛАНО 
       clickOnСardListMain: new Event('clickOnСardListMain', { bubbles: true }),// Клик на контейнере с Карточками
+      clickOnbuttonResetMain: new Event('clickOnbuttonResetMain', { bubbles: true }),// Клик на контейнере с Карточками
     }
     this.headerListenersMain();
   }
@@ -96,13 +97,10 @@ class ViewMainPage {
     this.viewSearch.addEventListener('input', (e) => {
       const target = e.target as HTMLInputElement;
       if (target) {
-
         target.dispatchEvent(this.EVENT.changeOnSearchMain)
-        // target.value ='11111111'
-        console.log(target.value)
       }
 
-    this.viewSort.addEventListener('change', (e) => {
+      this.viewSort.addEventListener('change', (e) => {
         console.log(e)
       })
     })
@@ -124,9 +122,14 @@ class ViewMainPage {
 
     })
 
-// cлушаетль на кнопке копирования адресса
+    // cлушаетль на кнопке копирования адресса
     this.buttonCopy.addEventListener('click', (e) => {
       this.copyPageUrl()
+    })
+
+   // cлушаетль на кнопке сброса ФИЛЬТРОВ
+    this.buttonReset.addEventListener('click', (e) => {
+      this.buttonReset.dispatchEvent(this.EVENT.clickOnbuttonResetMain)
     })
 
 

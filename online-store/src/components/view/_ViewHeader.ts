@@ -20,7 +20,6 @@ class ViewHeader {
     }
   }
 
-
   create() {
     //Header контейнер
     const headerContainer = this.customElement.createElement('section', { className: 'header _container' });
@@ -45,22 +44,42 @@ class ViewHeader {
     return headerContainer
   }
 
+  // фунция обновления счетчика на корзине
   updateheaderBasketCount(count: number = 0) {
     this.headerBasketCount.textContent = count.toString()
   }
 
   headerListeners() {
-    this.headerTotalPrice.addEventListener('click', this.onheaderBasketClick);
+    // this.headerTotalPrice.addEventListener('click', this.onheaderBasketClick);
     this.headerBasket.addEventListener('click', (e) => {
-      // console.log("e click this.headerBasket", e)
       this.headerBasket.dispatchEvent(this.EVENT.clickOnBacket)
     })
   }
 
-  private onheaderBasketClick = () => {
-    // console.log(this.headerBasketCount.textContent)
-  }
+  // private onheaderBasketClick = () => {
+  //   // console.log(this.headerBasketCount.textContent)
+  // }
 
 }
 
 export default ViewHeader
+
+
+// [
+//   {
+//       id: 8
+//   count: 
+//   }
+//   {
+//       id: 3
+//   count: 
+//   }
+//   {
+//       id: 5
+//   count: 
+//   }
+//   {
+//       id: 1
+//   count: 
+//   }
+// ]

@@ -49,10 +49,8 @@ class CreateFilterData {
     this._FILTER.price = [...this.baseData.price]
     this._FILTER.stock = [...this.baseData.stock],
 
-      // console.log("this._FILTER",this._FILTER)
-      // console.log("state",state)
 
-      this._startPriceOfFILTER = this._startServerFILTER.price
+    this._startPriceOfFILTER = this._startServerFILTER.price
     this._startStockOfFILTER = this._startServerFILTER.stock
     this._startSearchOfFILTER = this._startServerFILTER.search
 
@@ -60,23 +58,11 @@ class CreateFilterData {
     this._stockOfFILTER = this._FILTER.stock
     this._searchOfFILTER = this._FILTER.search
 
-
-    // this.setSearchOfFILTER('iPhone 9')
-    // this.setFILTERCategory('groceries')
-    // this.setPriceOfFILTER([500,900])
-    // this.setStockOfFILTER([30,100])
-    // this.updateFILTER_Price_Stock()
-
     this._startCategoryData = this.getCategoryAndBrandData(this.startCategoryArray, "category");
     this._filtredCategoryData = this.getCategoryAndBrandData(this.startCategoryArray, "category", this.filtredData);
     this._startBrandData = this.getCategoryAndBrandData(this.startBrandArray, "brand");
     this._filtredBrandData = this.getCategoryAndBrandData(this.startBrandArray, "brand", this.filtredData);
 
-
-    // console.log("222 this.FILTER", this.FILTER)
-    // console.log("333 filtredData =====", this.filtredData)
-    // console.log("444 this.filtredCategoryData", this.filtredCategoryData)
-    // console.log("555 this.filtredBrandData", this.filtredBrandData)
   }
   // ссылка на класс Базы данных
   public get baseData() {
@@ -262,22 +248,6 @@ class CreateFilterData {
     this.updateFiltredData()
     // this.updateFILTER_Price_Stock()
   }
-
-
-
-
-  // this._startServerFILTER =
-  // {
-  //   "category": [],
-  //   "brand": [],
-  //   "price": this.baseData.price,
-  //   "stock": this.baseData.stock,
-  //   // "price": [10, 1749],
-  //   // "stock": [2, 150],
-  //   "search": [''],
-  //   "sort": [''],
-  // };
-
 
 
   setFILTER(filter: IFilter) {

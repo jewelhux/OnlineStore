@@ -183,6 +183,8 @@ class ControllerMain {
 
   routesFuntion(name: string) {
     document.title = `Store - ${name}`;
+    this.MAIN.innerHTML = 'СТРАНИЦА НЕ НАЙДЕНА.'
+    window.history.pushState({}, '', `/page404`)
   }
 
   // Главыный слушаетль на кнопках АДРЕССНОЙ СТРОКИ

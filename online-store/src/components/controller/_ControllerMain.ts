@@ -167,6 +167,7 @@ class ControllerMain {
     this.ViewMainPAGE.updateCardList(this.MODEL.filtredData)
     this.ViewMainPAGE.updateBrandBlock(this.MODEL.filtredBrandData)
     this.ViewMainPAGE.updateCategoryBlock(this.MODEL.filtredCategoryData)
+    this.ViewMainPAGE.updateSearchValue(this.MODEL.searchOfFILTER[0])
   }
 
   routesFuntion(name: string) {

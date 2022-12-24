@@ -89,8 +89,8 @@ class CreateFilterData {
       && this.FILTER.category.length === 0
       && this.FILTER.sort[0] === ''
       && this.FILTER.search[0] === '') {
-       this.FILTER.price = [...this.baseData.price];
-       this.FILTER.stock = [...this.baseData.stock];
+      this.FILTER.price = [...this.baseData.price];
+      this.FILTER.stock = [...this.baseData.stock];
     }
 
     let resultfilterData: IitemDATA[] = this.startServerData.slice()
@@ -149,19 +149,23 @@ class CreateFilterData {
     })
     // console.log("777 =resultfilterData", resultfilterData)
 
-
-    resultfilterData.sort((product1, product2) => product1.title.toLowerCase() > product2.title.toLowerCase() ? 1 : -1)
-    if (this.FILTER.sort[0] === "CBA") { resultfilterData.reverse() }
-    if (this.FILTER.sort[0] === "Sort by Price low") {
+    // ABC по умолчанию
+    if (this.FILTER.sort[0] === "SortABC" || this.FILTER.sort[0] === "") {
+      resultfilterData.sort((product1, product2) => product1.title.toLowerCase() > product2.title.toLowerCase() ? 1 : -1)
+    }
+    if (this.FILTER.sort[0] === "SortCBA") {
+      resultfilterData.sort((product1, product2) => product1.title.toLowerCase() > product2.title.toLowerCase() ? -1 : 1)
+    }
+    if (this.FILTER.sort[0] === "SortByPriceLow") {
       resultfilterData.sort((product1, product2) => product1.price - product2.price)
     }
-    if (this.FILTER.sort[0] === "Sort by Price up") {
+    if (this.FILTER.sort[0] === "SortByPriceUp") {
       resultfilterData.sort((product1, product2) => product2.price - product1.price)
     }
-    if (this.FILTER.sort[0] === "Sort by Rating low") {
+    if (this.FILTER.sort[0] === "SortByRatingLow") {
       resultfilterData.sort((product1, product2) => product1.rating - product2.rating)
     }
-    if (this.FILTER.sort[0] === "Sort by Rating up") {
+    if (this.FILTER.sort[0] === "SortByRatingUp") {
       resultfilterData.sort((product1, product2) => product2.rating - product1.rating)
     }
 
@@ -276,14 +280,14 @@ class CreateFilterData {
 
 
 
-  setFILTER(filter:IFilter) {
-this.FILTER.brand = [...filter.brand]
-this.FILTER.category = [...filter.category]
-this.FILTER.price = filter.price.length ? [...filter.price] : [...this.baseData.price]
-this.FILTER.stock = filter.stock.length? [...filter.stock] : [...this.baseData.stock]
-this.FILTER.search = filter.search.length ? [...filter.search] : ['']
-this.FILTER.sort = filter.sort.length ? [...filter.sort] : ['']
-this.updateFiltredData()
+  setFILTER(filter: IFilter) {
+    this.FILTER.brand = [...filter.brand]
+    this.FILTER.category = [...filter.category]
+    this.FILTER.price = filter.price.length ? [...filter.price] : [...this.baseData.price]
+    this.FILTER.stock = filter.stock.length ? [...filter.stock] : [...this.baseData.stock]
+    this.FILTER.search = filter.search.length ? [...filter.search] : ['']
+    this.FILTER.sort = filter.sort.length ? [...filter.sort] : ['']
+    this.updateFiltredData()
   }
 
   // возвращает стартовый массив категорий

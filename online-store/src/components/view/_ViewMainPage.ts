@@ -147,9 +147,13 @@ class ViewMainPage {
     this.viewSort.setAttribute('list', 'sorting');
     const dataListSort = this.customElement.createElement('datalist', { id: "sorting" });
     const optionSortABC = this.customElement.createElement('option', { value: "SortABC" });
-    const optionSortPrice = this.customElement.createElement('option', { value: "SortPrice" });
-    const optionSortRating = this.customElement.createElement('option', { value: "SortRating" });
-    this.customElement.addChildren(dataListSort, [optionSortABC, optionSortPrice, optionSortRating]);
+    const optionSortCBA = this.customElement.createElement('option', { value: "SortCBA" });
+    const optionSortByPriceLow = this.customElement.createElement('option', { value: "SortByPriceLow" });
+    const optionSortByPriceUp = this.customElement.createElement('option', { value: "SortByPriceUp" });
+    const optionSortByRatingLow = this.customElement.createElement('option', { value: "SortByRatingLow" });
+    const optionSortByRatingUp = this.customElement.createElement('option', { value: "SortByRatingUp" });
+    this.customElement.addChildren(dataListSort, [optionSortABC, optionSortCBA, optionSortByPriceLow,
+      optionSortByPriceUp, optionSortByRatingLow, optionSortByRatingUp]);
 
     //Число найденных товров
     const viewFindCount = this.customElement.createElement('p', { className: 'view__find-count', textContent: 'Found:' });
@@ -161,7 +165,7 @@ class ViewMainPage {
     this.customElement.addChildren(viewVisible, [this.viewBlock, this.viewList]);
 
     // Добавление в правый вернхнюю правую секцию
-    this.customElement.addChildren(rightView, [this.viewSort, viewFindCount, this.viewSearch, viewVisible]);
+    this.customElement.addChildren(rightView, [this.viewSort, dataListSort, this.viewSearch, viewVisible]);
 
     // Создание ПРАВОЙ НИЖНЕЙ СЕКЦИИ!!!
     // this.customElement.addChildren(this.cardList, [...this.renderItemCard(startServerData)]);
@@ -263,11 +267,11 @@ class ViewMainPage {
     return filterStock
   }
 
-  
+
   // Создание ItemCard (девок)
   renderItemCard(dataServerItem: IitemDATA[] = this.startServerData) {
     const itemContainer: HTMLElement[] = [];
-    
+
     for (const item of dataServerItem) {
       // Создание обертки карточки которую мы будем закидывать в контейнер
       const card = this.customElement.createElement('div', { className: 'cardlist__item card', id: `${item.id}` });
@@ -278,19 +282,19 @@ class ViewMainPage {
       const cardInfo = this.customElement.createElement('div', { className: 'card__info' });
       const cardButtons = this.customElement.createElement('div', { className: 'card__btn' });
       this.customElement.addChildren(card, [cardName, cardInfo, cardButtons]);
-      
+
       //Заполнение cardButtons
       const buttonItemAdd = this.customElement.createElement('button', { className: '_btn', textContent: 'Add to card' }); // Кнопка добавления в корзину
       buttonItemAdd.addEventListener('click', this.addCardInBasket)
       const buttonItemDetails = this.customElement.createElement('button', { className: '_btn', textContent: 'Detais' });  // Кнопка просмотра товара
-      
+
       this.customElement.addChildren(cardButtons, [buttonItemAdd, buttonItemDetails]);
 
       //Заполнение cardInfo
       const cardImg = this.customElement.createElement('img', { className: 'card__info-img', src: `${item.images[0]}` });
       const cardData = this.customElement.createElement('div', { className: 'card__data i-data' });
       this.customElement.addChildren(cardInfo, [cardImg, cardData]);
-      
+
       //Заполнение cardData
       const cardDataСategory = this.customElement.createElement('p', { textContent: `Category: ${item.category}` });
       const cardDataBrand = this.customElement.createElement('p', { textContent: `Brand: ${item.brand}` });
@@ -298,9 +302,9 @@ class ViewMainPage {
       const cardDataDiscount = this.customElement.createElement('p', { textContent: `Discount: ${item.discountPercentage}%` });
       const cardDataRating = this.customElement.createElement('p', { textContent: `Rating: ${item.rating}` });
       const cardDataStock = this.customElement.createElement('p', { textContent: `Stock: ${item.stock}` });
-      
+
       this.customElement.addChildren(cardData, [cardDataСategory, cardDataBrand, cardDataPrice, cardDataDiscount, cardDataRating, cardDataStock]);
-      
+
       itemContainer.push(card)
     }
 

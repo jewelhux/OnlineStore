@@ -32,6 +32,7 @@ class ViewItemCardPage {
   }
 
   create(product: IitemDATA = this.startServerProduct) {
+    this.pageMainItemCard.innerHTML = ''
     this.customElement.addChildren(this.pageMainItemCard, [this.renderCardBlock(product)]);
     // this.customElement.addChildren(MAIN, [this.pageMainItemCard]);
     return this.pageMainItemCard

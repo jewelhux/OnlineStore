@@ -6,6 +6,7 @@ import { createElement } from '../utils/utils';
 // import { MAIN } from '../utils/const';
 
 class ViewMainPage {
+  pageMain: HTMLElement;
   buttonReset: HTMLElement;
   buttonCopy: HTMLElement;
   itemPriceNumberFrom: HTMLElement;
@@ -41,6 +42,8 @@ class ViewMainPage {
 
     this.customElement = new CustomElement();
 
+    this.pageMain = this.customElement.createElement('div', { className: 'page-main-one _main-container' });
+
     this.buttonReset = this.customElement.createElement('button', { className: 'stock__reset _btn', textContent: 'Reset Filter' }); // button Reset
     this.buttonCopy = this.customElement.createElement('button', { className: 'stock__copy _btn', textContent: 'Copy Link' }); // button Copy
 
@@ -69,6 +72,8 @@ class ViewMainPage {
       clickOnCategoryMain: new Event('clickOnCategoryMain', { bubbles: true }),
       clickOnBrandMain: new Event('clickOnBrandMain', { bubbles: true }),
       changeOnSearchMain: new Event('changeOnSearchMain', { bubbles: true }),
+      choiceOnSortMain: new Event('choiceOnSortMain', { bubbles: true }),// ЕЩЁ не СДЕЛАНО 
+      clickOnСardListMain: new Event('clickOnСardListMain', { bubbles: true }),// Клик на контейнере с Карточками
     }
     this.headerListenersMain();
   }
@@ -96,10 +101,47 @@ class ViewMainPage {
         // target.value ='11111111'
         console.log(target.value)
       }
+
+    this.viewSort.addEventListener('change', (e) => {
+        console.log(e)
+      })
+    })
+
+    this.cardList.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const card = target.closest('.cardlist__item')
+      const addToCard = target.closest('._btn_add-to-card')
+      // console.log('addToCard >',addToCard,'<')
+      if (card && !addToCard) {
+        card.dispatchEvent(this.EVENT.clickOnСardListMain)
+        // console.log('card >',card,'<')      
+      }
+
+      // if (target.className = 'carlist_item card') {
+      //         const id = target.id
+      // console.log(id)
+      // }
+
+    })
+
+// cлушаетль на кнопке копирования адресса
+    this.buttonCopy.addEventListener('click', (e) => {
+      this.copyPageUrl()
     })
 
 
   }
+
+  async copyPageUrl() {
+    try {
+      await navigator.clipboard.writeText(location.href);
+      console.log('URL страницы скопирован в буфер обмена');
+    } catch (err) {
+      console.error('Не удалось скопировать: ', err);
+    }
+  }
+
+
 
   create(startServerData: IitemDATA[] = this.startServerData,
     startCategoryData: stringArrayObject = this.startCategoryData,
@@ -107,9 +149,10 @@ class ViewMainPage {
     startPriceOfFILTER: number[] = this.startPriceOfFILTER,
     startStockOfFILTER: number[] = this.startStockOfFILTER) {
     // Создание основной секции
-    const pageMain = this.customElement.createElement('div', { className: 'page-main-one _main-container' });
+    // const pageMain = this.customElement.createElement('div', { className: 'page-main-one _main-container' });
     const mainOne = this.customElement.createElement('section', { className: 'main-one _container' });
-    this.customElement.addChildren(pageMain, [mainOne]);
+    this.pageMain.innerHTML = ''
+    this.customElement.addChildren(this.pageMain, [mainOne]);
 
     // Создание ЛЕВОЙ СЕКЦИИ!!!
     const mainLeft = this.customElement.createElement('div', { className: 'main-one__left filter' });
@@ -165,13 +208,13 @@ class ViewMainPage {
     this.customElement.addChildren(viewVisible, [this.viewBlock, this.viewList]);
 
     // Добавление в правый вернхнюю правую секцию
-    this.customElement.addChildren(rightView, [this.viewSort, dataListSort, this.viewSearch, viewVisible]);
+    this.customElement.addChildren(rightView, [this.viewSort, dataListSort, viewFindCount, this.viewSearch, viewVisible]);
 
     // Создание ПРАВОЙ НИЖНЕЙ СЕКЦИИ!!!
     // this.customElement.addChildren(this.cardList, [...this.renderItemCard(startServerData)]);
     this.customElement.addChildren(mainRight, [this.cardList]);
 
-    return pageMain
+    return this.pageMain
   }
 
   // Создание Category
@@ -275,7 +318,11 @@ class ViewMainPage {
     for (const item of dataServerItem) {
       // Создание обертки карточки которую мы будем закидывать в контейнер
       const card = this.customElement.createElement('div', { className: 'cardlist__item card', id: `${item.id}` });
-      card.addEventListener('click', this.showPageProduct); // ТУТ БАГ, ЧТО ПРИ КЛИКЕ НА АДД ВЫЗЫВАЕТСЯ ОТРИСОВКА КАРТОЧКИ
+
+
+      // ТУТ БАГ, ЧТО ПРИ КЛИКЕ НА АДД ВЫЗЫВАЕТСЯ ОТРИСОВКА КАРТОЧКИ
+      // card.addEventListener('click', this.showPageProduct);
+      // ТУТ БАГ, ЧТО ПРИ КЛИКЕ НА АДД ВЫЗЫВАЕТСЯ ОТРИСОВКА КАРТОЧКИ
 
       //Заполнение самой карточки
       const cardName = this.customElement.createElement('h4', { className: 'card__name', textContent: `${item.title}` });
@@ -284,8 +331,8 @@ class ViewMainPage {
       this.customElement.addChildren(card, [cardName, cardInfo, cardButtons]);
 
       //Заполнение cardButtons
-      const buttonItemAdd = this.customElement.createElement('button', { className: '_btn', textContent: 'Add to card' }); // Кнопка добавления в корзину
-      buttonItemAdd.addEventListener('click', this.addCardInBasket)
+      const buttonItemAdd = this.customElement.createElement('button', { className: '_btn _btn_add-to-card', textContent: 'Add to card' }); // Кнопка добавления в корзину
+      // buttonItemAdd.addEventListener('click', this.addCardInBasket)
       const buttonItemDetails = this.customElement.createElement('button', { className: '_btn', textContent: 'Detais' });  // Кнопка просмотра товара
 
       this.customElement.addChildren(cardButtons, [buttonItemAdd, buttonItemDetails]);
@@ -332,10 +379,10 @@ class ViewMainPage {
     this.customElement.addChildren(this.filterBrandMain, [...this.renderBrandBlock(data)]);
   }
 
-  mainListeners(): void {
-    this.filterCategoryMain.addEventListener('click', this.onMainFc);
-    this.filterBrandMain.addEventListener('click', this.onMainFc);
-  }
+  // mainListeners(): void {
+  //   this.filterCategoryMain.addEventListener('click', this.onMainFc);
+  //   this.filterBrandMain.addEventListener('click', this.onMainFc);
+  // }
 
   itemFilterCheckbox(name: string, data: number[]): HTMLElement {
     const temp = `<div class = 'filterCheckbox'>
@@ -348,17 +395,17 @@ class ViewMainPage {
   }
 
 
-  private onMainFc = () => {
-    console.log('123');
-  }
+  // private onMainFc = () => {
+  //   console.log('123');
+  // }
 
-  addCardInBasket() {
-    console.log('Добавление карточки в корзину')
-  }
+  // addCardInBasket() {
+  //   console.log('Добавление карточки в корзину')
+  // }
 
-  showPageProduct() {
-    console.log('Открытие карточки товара')
-  }
+  // showPageProduct() {
+  //   console.log('Открытие карточки товара')
+  // }
 
 }
 

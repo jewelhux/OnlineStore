@@ -90,8 +90,9 @@ class ViewMainPage {
 
     this.viewSearch.addEventListener('input', (e) => {
       const target = e.target as HTMLInputElement;
-      if (target) console.log(target.value)
-      target.dispatchEvent(this.EVENT.changeOnSearchMain)
+      if (target){
+        target.dispatchEvent(this.EVENT.changeOnSearchMain)
+      }
     })
 
 

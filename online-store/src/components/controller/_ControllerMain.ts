@@ -246,11 +246,7 @@ class ControllerMain {
 
     this.MAIN.addEventListener('clickOnCategoryMain', (e) => {
       const target = e.target as HTMLElement;
-      // console.log('eeeeeee', target.id)
       this.MODEL.setFILTERCategory(target.id)
-      console.log('3333', this.FILTER)
-      // console.log('PRODUCT', this.MODEL.filtredData)
-
       this.rerenderMainPageComponents()
       this.pushStateFilter()
     })
@@ -258,7 +254,14 @@ class ControllerMain {
     this.MAIN.addEventListener('clickOnBrandMain', (e) => {
       const target = e.target as HTMLElement;
       this.MODEL.setFILTERBrand(target.id)
-      console.log('6666', this.FILTER)
+      this.rerenderMainPageComponents()
+      this.pushStateFilter()
+    })
+
+    this.MAIN.addEventListener('changeOnSearchMain', (e) => {
+      const target = e.target as HTMLInputElement;
+
+      this.MODEL.setSearchOfFILTER(target.value)
       this.rerenderMainPageComponents()
       this.pushStateFilter()
     })

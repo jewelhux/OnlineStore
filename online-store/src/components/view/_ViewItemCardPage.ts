@@ -1,40 +1,43 @@
 import CustomElement from '../utils/_createCustomElement';
 import ControllerMain from '../controller/_ControllerMain';
-import { stringArrayObject } from '../typingTS/_type';
+// import { stringArrayObject } from '../typingTS/_type';
 import { IitemDATA } from '../typingTS/_interfaces';
 import { createElement } from '../utils/utils';
 // import { MAIN } from '../utils/const';
 
 class ViewItemCardPage {
   customElement: CustomElement;
-  _controller: ControllerMain;
+  // _controller: ControllerMain;
 
   pageMainItemCard: HTMLElement;
   itemCardImagePhotoImg: HTMLElement
 
-  startServerData: IitemDATA[];
+  // startServerData: IitemDATA[];
+  startServerProduct:IitemDATA
 
-  constructor() {
-    this._controller = new ControllerMain();
+  constructor(product: IitemDATA) {
+    this.startServerProduct = product;
+    // this._controller = new ControllerMain();
     this.customElement = new CustomElement();
 
     this.pageMainItemCard = this.customElement.createElement('div', { className: 'page-main-itemCard _main-container' }); // Основная сакция картчоки
-    this.startServerData = this._controller.startServerData;
+    // this.startServerData = this._controller.startServerData;
 
-    console.log(this.startServerData[0].images)
+    // console.log(this.startServerData[0].images)
 
     this.itemCardImagePhotoImg = this.customElement.createElement('img', { className: 'itemCard__imagePhoto-img' });
 
 
-    this.create();
+    // this.create(product);
   }
 
-  create() {
-    this.customElement.addChildren(this.pageMainItemCard, [this.renderCardBlock()]);
+  create(product: IitemDATA = this.startServerProduct) {
+    this.customElement.addChildren(this.pageMainItemCard, [this.renderCardBlock(product)]);
     // this.customElement.addChildren(MAIN, [this.pageMainItemCard]);
+    return this.pageMainItemCard
   }
 
-  renderCardBlock(product: IitemDATA = this.startServerData[0]): HTMLElement {
+  renderCardBlock(product: IitemDATA = this.startServerProduct): HTMLElement {
     // Создание основной секции
     const mainItemCard = this.customElement.createElement('section', { className: 'main-itemCard _container itemCard' })
     this.customElement.addChildren(this.pageMainItemCard, [mainItemCard]);

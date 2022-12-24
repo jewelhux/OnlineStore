@@ -1,5 +1,5 @@
 import CustomElement from '../utils/_createCustomElement';
-import ControllerMain from '../controller/_ControllerMain';
+// import ControllerMain from '../controller/_ControllerMain';
 import { stringArrayObject } from '../typingTS/_type';
 import { IitemDATA } from '../typingTS/_interfaces'
 import { createElement } from '../utils/utils';
@@ -59,7 +59,7 @@ class ViewMainPage {
     this.itemStockInputTwo = this.customElement.createElement('input', { type: 'range', step: '1', id: 'slider4' }); // Stock Input Two
     //------Right Top------//
     this.viewSort = this.customElement.createElement('input', { className: 'view__sort', name: 'sort', placeholder: 'Sorting' }); // Сортировка
-    this.findCount = this.customElement.createElement('span', { className: 'view__find-count-span', textContent: '100' }); // Число найденных совпадений
+    this.findCount = this.customElement.createElement('span', { className: 'view__find-count-span', textContent: `${this.startServerData.length}` }); // Число найденных совпадений
     this.viewSearch = this.customElement.createElement('input', { className: 'view__search', type: 'search', placeholder: 'Search product' }); // Поиск
     this.viewBlock = this.customElement.createElement('div', { className: 'visible__item viewBlock' }); // Вид для блочной модели
     this.viewList = this.customElement.createElement('div', { className: 'visible__item viewList' }); // Вид для строчной модели
@@ -69,6 +69,7 @@ class ViewMainPage {
     this.EVENT = {
       clickOnCategoryMain: new Event('clickOnCategoryMain', { bubbles: true }),
       clickOnBrandMain: new Event('clickOnBrandMain', { bubbles: true }),
+      changeOnSearchMain: new Event('changeOnSearchMain', { bubbles: true }),
     }
     this.headerListenersMain();
   }
@@ -80,6 +81,21 @@ class ViewMainPage {
         target.dispatchEvent(this.EVENT.clickOnCategoryMain)
       }
     })
+    
+    this.filterBrandMain.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.getAttribute('type') === "checkbox") {
+        target.dispatchEvent(this.EVENT.clickOnBrandMain)
+      }
+    })
+
+    this.viewSearch.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      if (target) console.log(target.value)
+      target.dispatchEvent(this.EVENT.changeOnSearchMain)
+    })
+
+
   }
 
   create(startServerData: IitemDATA[] = this.startServerData, 
@@ -134,6 +150,7 @@ class ViewMainPage {
 
     //Число найденных товров
     const viewFindCount = this.customElement.createElement('p', { className: 'view__find-count', textContent: 'Found:' });
+    this.findCount.textContent = `${startServerData.length}`
     this.customElement.addChildren(viewFindCount, [this.findCount]);
 
     //Вид карточек
@@ -285,6 +302,7 @@ class ViewMainPage {
 
   updateCardList(data: IitemDATA[] = this.startServerData) {
     this.cardList.innerHTML = ''
+    this.findCount.textContent = `${data.length}`
     this.customElement.addChildren(this.cardList, [...this.renderItemCard(data)]);
   }
 
@@ -305,8 +323,8 @@ class ViewMainPage {
 
   itemFilterCheckbox(name: string, data: number[]): HTMLElement {
     const temp = `<div class = 'filterCheckbox'>
-      <input type="checkbox" id=${name} ${!data[2] ? '' : 'checked'}>
-      <label for=${name}>${name}</label>
+      <input type="checkbox" id='${name}' ${!data[2] ? '' : 'checked'}>
+      <label for='${name}'>${name}</label>
       <div>(${data[0]}/${data[1]})</div>
     </div>`
 

@@ -1,5 +1,5 @@
 import CustomElement from '../utils/_createCustomElement';
-import ControllerMain from '../controller/_ControllerMain';
+// import ControllerMain from '../controller/_ControllerMain';
 import { stringArrayObject } from '../typingTS/_type';
 import { IitemDATA } from '../typingTS/_interfaces'
 import { createElement } from '../utils/utils';
@@ -69,6 +69,7 @@ class ViewMainPage {
     this.EVENT = {
       clickOnCategoryMain: new Event('clickOnCategoryMain', { bubbles: true }),
       clickOnBrandMain: new Event('clickOnBrandMain', { bubbles: true }),
+      changeOnSearchMain: new Event('changeOnSearchMain', { bubbles: true }),
     }
     this.headerListenersMain();
   }
@@ -87,6 +88,14 @@ class ViewMainPage {
         target.dispatchEvent(this.EVENT.clickOnBrandMain)
       }
     })
+
+    this.viewSearch.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      if (target) console.log(target.value)
+      target.dispatchEvent(this.EVENT.changeOnSearchMain)
+    })
+
+
   }
 
   create(startServerData: IitemDATA[] = this.startServerData, 

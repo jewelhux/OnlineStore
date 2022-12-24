@@ -10,9 +10,10 @@ import CreateFilterData from '../model/_ModelCreateFilterData'
 import ViewHeader from '../view/_ViewHeader';
 import ViewMainPage from '../view/_ViewMainPage';
 import ViewFooter from '../view/_ViewFooter';
+import ViewItemCardPage from '../view/_ViewItemCardPage';
 
+// Служебные программки
 import CustomElement from '../utils/_createCustomElement';
-
 import FormatURL from '../utils/_formatUrl';
 // import state from '../utils/state';
 // import Router from '../router';
@@ -32,6 +33,7 @@ class ControllerMain {
   ViewHEADER: ViewHeader;
   ViewMainPAGE: ViewMainPage;
   ViewFOOTER: ViewFooter;
+  ViewItemCardPAGE: ViewItemCardPage;
 
   _formatURL: FormatURL;
 
@@ -57,6 +59,9 @@ class ControllerMain {
   constructor() {
 
     this.customElement = new CustomElement();
+    this._formatURL = new FormatURL();
+
+
     this.BODY = document.body
     this.HEADER = this.customElement.createElement('header', { className: "page-header _main-container" });
     this.MAIN = this.customElement.createElement('main');
@@ -66,9 +71,8 @@ class ControllerMain {
     this.MODEL = new CreateFilterData();
     this.ViewHEADER = new ViewHeader();
     this.ViewFOOTER = new ViewFooter();
-
-    this._formatURL = new FormatURL();
-
+    
+    
     this.FILTER = this.MODEL.FILTER
     this.startCategoryData = this.MODEL.startCategoryData
     this.startBrandData = this.MODEL.startBrandData
@@ -81,8 +85,10 @@ class ControllerMain {
     this.priceOfFILTER = this.MODEL.priceOfFILTER
     this.stockOfFILTER = this.MODEL.stockOfFILTER
     this.searchOfFILTER = this.MODEL.searchOfFILTER
-
+    
     this.ViewMainPAGE = new ViewMainPage(this.startServerData, this.startCategoryData, this.startBrandData, this.startPriceOfFILTER, this.startStockOfFILTER);
+    console.log('КОНСТРУКТОР КОНТРОЛЛЕРА',this.startServerData[0])
+    this.ViewItemCardPAGE = new ViewItemCardPage(this.startServerData[0]);
 
 
     // this.ROUTER = new Router()
@@ -121,56 +127,54 @@ class ControllerMain {
   }
 
   // Конец конструктора
+  init() {
+    // this.ROUTER.startRouteListenner()
+    this.startRouteListenner();
+    this.handleLocation();
+    this.HEADER.append(this.ViewHEADER.create())
+    this.MAIN.append(this.ViewMainPAGE.create())
 
+    this.MAIN.append(this.ViewItemCardPAGE.create())
+
+    // document.body.replaceChild(mainTwoInit, statePage);
+    // this.MAIN.replaceChild(this.ViewMainPAGE.create())
+    this.FOOTER.append(this.ViewFOOTER.create())
+
+    // для проверки прокидывания значения в корзину
+    this.ViewHEADER.updateheaderBasketCount(7)
+  }
 
 
   renderMainPageFromRouter(name: string) {
     document.title = `Store - ${name}`;
-    console.log('2222===', this.FILTER)
+    // console.log('2222===', this.FILTER)
     // this.returnStateFilter()
     // // this.MAIN.innerHTML = ''
-
-    const query = new URLSearchParams(window.location.search);
-    console.log("query",query.toString().length)
+    const search = new URLSearchParams(window.location.search);
+    // console.log("query", query.toString().length)
     // if (query.toString().length) {
-          const filter = this._formatURL.createObjectFromURLSearchParams(query)
-    console.log('8888=', this.FILTER)
-    console.log('9999=', filter)
+    const filter = this._formatURL.createObjectFromURLSearchParams(search)
+    // console.log('8888=', this.FILTER)
+    // console.log('9999=', filter)
     this.MODEL.setFILTER(filter)
-    console.log('AAAA=', this.FILTER)
-    console.log('A1A1A1A1=', this.MODEL.startServerFILTER)
+    // console.log('AAAA=', this.FILTER)
+    // console.log('A1A1A1A1=', this.MODEL.startServerFILTER)
     this.rerenderMainPageComponents()
 
-    if( String(this.FILTER) === String(this.MODEL.startServerFILTER)) {
-      console.log('УРААААА5555555555555555')
-          // window.history.pushState({}, '', ``)
-    }
-    // window.history.pushState({}, '', ``)
-    // } else {
-      // this.MAIN.innerHTML = ''
-      // this.MAIN.append(this.ViewMainPAGE.create())
-  // }
-}
+  }
+
+  rerenderMainPageComponents() {
+    this.ViewMainPAGE.updateCardList(this.MODEL.filtredData)
+    this.ViewMainPAGE.updateBrandBlock(this.MODEL.filtredBrandData)
+    this.ViewMainPAGE.updateCategoryBlock(this.MODEL.filtredCategoryData)
+  }
 
   routesFuntion(name: string) {
     document.title = `Store - ${name}`;
 
-    // if (name !== 'Home') {
-    //   // const div = document.createElement('div');
-    //   // div.textContent = name;
-    //   // document.body.replaceChildren(div);
-    //   // console.log('111111111111111111')
-    // }
-    // else {
-    //   // const div = document.createElement('div');
-    //   // div.textContent = name;
-    //   // document.body.replaceChildren(div);
-    //   // window.history.pushState({}, '', '/')
-    //   // window.location.reload()
-    // }
-
   }
 
+  // Главыный слушаетль на кнопках АДРЕССНОЙ СТРОКИ
   startRouteListenner() {
     window.onpopstate = (event: PopStateEvent) => {
       event.preventDefault()
@@ -180,9 +184,9 @@ class ControllerMain {
   }
 
   handleLocation() {
-    console.log('1111', this.FILTER)
+    // console.log('1111', this.FILTER)
     // console.log("this.routes===", this.routes)
-    const path = window.location.pathname.toString();
+    const path = window.location.pathname;
     // console.log("path 111===", path)
     const route = this.routes[path] || this.routes['/page404'];
     // console.log("route===", route)
@@ -191,10 +195,10 @@ class ControllerMain {
   }
 
   pushStateFilter(filter = this.MODEL.FILTER) {
-    const params = this._formatURL.createURLSearchParams(filter)
+    const params: URLSearchParams = this._formatURL.createURLSearchParams(filter)
 
-    if( JSON.stringify(this.FILTER) === JSON.stringify(this.MODEL.startServerFILTER)) {
-          window.history.replaceState({}, '', '/')
+    if (JSON.stringify(this.FILTER) === JSON.stringify(this.MODEL.startServerFILTER)) {
+      window.history.replaceState({}, '', '/')
     } else {
       window.history.pushState({}, '', `?${params}`)
     }
@@ -262,12 +266,7 @@ class ControllerMain {
 
   }
 
-  rerenderMainPageComponents() {
 
-    this.ViewMainPAGE.updateCardList(this.MODEL.filtredData)
-    this.ViewMainPAGE.updateBrandBlock(this.MODEL.filtredBrandData)
-    this.ViewMainPAGE.updateCategoryBlock(this.MODEL.filtredCategoryData)
-  }
 
   // rerenderMainPageComponentsStart() {
   //   this.ViewMainPAGE.updateCardList(this.MODEL.startServerData)
@@ -276,22 +275,7 @@ class ControllerMain {
   // }
 
 
-  init() {
-    // this.ROUTER.startRouteListenner()
-    this.startRouteListenner();
-    this.handleLocation();
-    this.HEADER.append(this.ViewHEADER.create())
-    this.MAIN.append(this.ViewMainPAGE.create())
-    // document.body.replaceChild(mainTwoInit, statePage);
-    // this.MAIN.replaceChild(this.ViewMainPAGE.create())
-    this.FOOTER.append(this.ViewFOOTER.create())
 
-    // для проверки прокидывания значения в корзину
-    this.ViewHEADER.updateheaderBasketCount(7)
-
-
-
-  }
 
 
 }

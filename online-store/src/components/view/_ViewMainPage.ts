@@ -32,15 +32,25 @@ class ViewMainPage {
   startBrandData: stringArrayObject;
   startPriceOfFILTER: number[];
   startStockOfFILTER: number[];
+  startSortOfFILTER: string[];
   startServerData: IitemDATA[];
   EVENT: { [x: string]: Event }
 
-  constructor(startServerData: IitemDATA[], startCategoryData: stringArrayObject, startBrandData: stringArrayObject, startPriceOfFILTER: number[], startStockOfFILTER: number[]) {
+  constructor(startServerData: IitemDATA[],
+    startCategoryData: stringArrayObject,
+    startBrandData: stringArrayObject,
+    startPriceOfFILTER: number[],
+    startStockOfFILTER: number[],
+    startSortOfFILTER: string[]) {
+
+    console.log("200 = startSortOfFILTER КОНСТРУКТОР МАЙН ПАЙДЖ", startSortOfFILTER)
+
     this.startServerData = startServerData;
     this.startCategoryData = startCategoryData;
     this.startBrandData = startBrandData;
     this.startPriceOfFILTER = startPriceOfFILTER;
     this.startStockOfFILTER = startStockOfFILTER;
+    this.startSortOfFILTER = startSortOfFILTER;
 
     this.customElement = new CustomElement();
 
@@ -76,7 +86,7 @@ class ViewMainPage {
       clickOnCategoryMain: new Event('clickOnCategoryMain', { bubbles: true }),
       clickOnBrandMain: new Event('clickOnBrandMain', { bubbles: true }),
       changeOnSearchMain: new Event('changeOnSearchMain', { bubbles: true }),
-      choiceOnSortMain: new Event('choiceOnSortMain', { bubbles: true }),// ЕЩЁ не СДЕЛАНО 
+      choiceOnSortMain: new Event('choiceOnSortMain', { bubbles: true }),// в процессе 
       clickOnСardListMain: new Event('clickOnСardListMain', { bubbles: true }),// Клик на контейнере с Карточками
       clickOnProductAddInBascetMain: new Event('clickOnProductAddInBascetMain', { bubbles: true }),// Клик на кнопке добавить с Карточками
       clickOnbuttonResetMain: new Event('clickOnbuttonResetMain', { bubbles: true }),// Клик на кнопке сброса
@@ -149,7 +159,10 @@ class ViewMainPage {
     startCategoryData: stringArrayObject = this.startCategoryData,
     startBrandData: stringArrayObject = this.startBrandData,
     startPriceOfFILTER: number[] = this.startPriceOfFILTER,
-    startStockOfFILTER: number[] = this.startStockOfFILTER) {
+    startStockOfFILTER: number[] = this.startStockOfFILTER,
+    startSortOfFILTER: string[]) {
+
+    console.log('700 = startSortOfFILTER из create МАИН ПАДЖЕ', startSortOfFILTER)
     // Создание основной секции
     // const pageMain = this.customElement.createElement('div', { className: 'page-main-one _main-container' });
     const mainOne = this.customElement.createElement('section', { className: 'main-one _container' });
@@ -191,14 +204,74 @@ class ViewMainPage {
 
     // Сортировка
     this.viewSort.setAttribute('list', 'sorting');
-    const optionSortABC = this.customElement.createElement('option', { value: "SortABC", textContent: "SortABC" }) as HTMLOptionElement;
-    const optionSortCBA = this.customElement.createElement('option', { value: "SortCBA", textContent: "SortCBA" }) as HTMLOptionElement;
-    const optionSortByPriceLow = this.customElement.createElement('option', { value: "SortByPriceLow", textContent: "SortByPriceLow" }) as HTMLOptionElement;
-    const optionSortByPriceUp = this.customElement.createElement('option', { value: "SortByPriceUp", textContent: "SortByPriceUp" }) as HTMLOptionElement;
-    const optionSortByRatingLow = this.customElement.createElement('option', { value: "SortByRatingLow", textContent: "SortByRatingLow" }) as HTMLOptionElement;
-    const optionSortByRatingUp = this.customElement.createElement('option', { value: "SortByRatingUp", textContent: "SortByRatingUp" }) as HTMLOptionElement;
-    this.customElement.addChildren(this.viewSort, [optionSortABC, optionSortCBA, optionSortByPriceLow,
-      optionSortByPriceUp, optionSortByRatingLow, optionSortByRatingUp]);
+
+    [{ value: "SortABC", textContent: "SortABC" },
+    { value: "SortCBA", textContent: "SortCBA" },
+    { value: "SortByPriceLow", textContent: "SortByPriceLow" },
+    { value: "SortByPriceUp", textContent: "SortByPriceUp" },
+    { value: "SortByRatingLow", textContent: "SortByRatingLow" },
+    { value: "SortByRatingUp", textContent: "SortByRatingUp" }].forEach((atributs) => {
+const option = this.customElement.createElement('option', atributs)
+if ((option as HTMLOptionElement).value === startSortOfFILTER[0]) {
+  (option as HTMLOptionElement).selected = true
+}
+this.customElement.addChildren(this.viewSort, [option])
+    })
+
+
+
+    // const optionSortABC = this.customElement.createElement('option', { value: "SortABC", textContent: "SortABC" }) as HTMLOptionElement;
+    // const optionSortCBA = this.customElement.createElement('option', { value: "SortCBA", textContent: "SortCBA" }) as HTMLOptionElement;
+    // const optionSortByPriceLow = this.customElement.createElement('option', { value: "SortByPriceLow", textContent: "SortByPriceLow" }) as HTMLOptionElement;
+    // const optionSortByPriceUp = this.customElement.createElement('option', { value: "SortByPriceUp", textContent: "SortByPriceUp" }) as HTMLOptionElement;
+    // const optionSortByRatingLow = this.customElement.createElement('option', { value: "SortByRatingLow", textContent: "SortByRatingLow" }) as HTMLOptionElement;
+    // const optionSortByRatingUp = this.customElement.createElement('option', { value: "SortByRatingUp", textContent: "SortByRatingUp" }) as HTMLOptionElement;
+    // this.customElement.addChildren(this.viewSort, [optionSortABC, optionSortCBA, optionSortByPriceLow,
+    //   optionSortByPriceUp, optionSortByRatingLow, optionSortByRatingUp]);
+
+    // // optionSortCBA.setAttribute("selected","selected")
+    // // optionSortCBA.selected = true
+    // const children: NodeListOf<ChildNode> = this.viewSort.childNodes;
+
+    // children.forEach(child => {
+    //   if ((child as HTMLOptionElement).value === startSortOfFILTER[0]) {
+    //     console.log('800 child РАВЕН СОРТИРОВКЕ', child);
+    //     (child as HTMLOptionElement).selected = true
+    //     console.log('900 child =', child, 'startSortOfFILTER[0]=', startSortOfFILTER[0]);
+
+    //   } else {
+    //     optionSortABC.selected = true
+    //   }
+
+    // })
+
+    // for (let i = 0; i < children.length; ++i) {
+
+    //   // (children[2]as HTMLOptionElement).selected === true
+
+
+
+    //   console.log((children[i] as HTMLOptionElement).getAttribute('value'))
+
+
+    //   // if ((children[i] as HTMLOptionElement).getAttribute('value') === startSortOfFILTER[0])  {
+    //   //   (children[i]as HTMLOptionElement).selected === true;
+    //   //   console.log(children[i])
+    //   // } else {
+    //   //   optionSortABC.selected = true
+    //   // }
+
+
+
+    // }
+
+
+
+
+
+
+
+
 
     //Число найденных товров
     const viewFindCount = this.customElement.createElement('p', { className: 'view__find-count', textContent: 'Found:' });
@@ -219,7 +292,8 @@ class ViewMainPage {
 
     this.viewSort.addEventListener('change', (e) => {
       const target = e.target as HTMLSelectElement;
-      console.log(target.value)
+      target.dispatchEvent(this.EVENT.choiceOnSortMain)
+      // console.log(target.value)
     })
 
     // this.listenersMain();

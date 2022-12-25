@@ -61,6 +61,7 @@ class ControllerMain {
   readonly priceOfFILTER: number[];
   readonly stockOfFILTER: number[];
   readonly searchOfFILTER: string[];
+  sortOfFILTER: string[];
 
   constructor() {
 
@@ -71,7 +72,7 @@ class ControllerMain {
       this.BascetLocalStorage = []
     }
 
-    console.log('this.BascetLocalStorage', this.BascetLocalStorage)
+    // console.log('this.BascetLocalStorage', this.BascetLocalStorage)
 
     this.customElement = new CustomElement();
     this._formatURL = new FormatURL();
@@ -100,8 +101,14 @@ class ControllerMain {
     this.priceOfFILTER = this.MODEL.priceOfFILTER
     this.stockOfFILTER = this.MODEL.stockOfFILTER
     this.searchOfFILTER = this.MODEL.searchOfFILTER
+    this.sortOfFILTER = this.MODEL.sortOfFILTER
 
-    this.ViewMainPAGE = new ViewMainPage(this.startServerData, this.startCategoryData, this.startBrandData, this.startPriceOfFILTER, this.startStockOfFILTER);
+    this.ViewMainPAGE = new ViewMainPage(this.startServerData,
+      this.startCategoryData,
+      this.startBrandData,
+      this.startPriceOfFILTER,
+      this.startStockOfFILTER,
+      this.sortOfFILTER);
     this.ViewItemCardPAGE = new ViewItemCardPage(this.startServerData[0]);
     this.ViewBASKETPAGE = new ViewBasketPage(this.startServerData)
 
@@ -174,6 +181,8 @@ class ControllerMain {
     document.title = `Store - ${name}`;
     const search = new URLSearchParams(window.location.search);
     const filter = this._formatURL.createObjectFromURLSearchParams(search)
+console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ СТРОКИ',filter)
+
     this.MODEL.setFILTER(filter)
     this.rerenderMainPageComponents()
   }
@@ -181,19 +190,27 @@ class ControllerMain {
   // Рендер КОМПАНЕНТОВ главной страницы из роутера
   rerenderMainPageComponents() {
     if (this.MAIN.firstChild === this.ViewMainPAGE.pageMain) {
-      console.log('this.MAIN.firstChild первая ветка', this.MAIN.firstChild)
+      // console.log('this.MAIN.firstChild первая ветка', this.MAIN.firstChild)
       // this.MAIN.append(this.ViewMainPAGE.create())
       this.viewMainPAGEupdate()
     } else {
-      console.log('this.MAIN.firstChild вторая ветка', this.MAIN.firstChild)
+      // console.log('this.MAIN.firstChild вторая ветка', this.MAIN.firstChild)
       this.MAIN.innerHTML = ''
-      console.log('this.MAIN.firstChild вторая ветка Обнулили', this.MAIN.firstChild)
+      // console.log('this.MAIN.firstChild вторая ветка Обнулили', this.MAIN.firstChild)
       this.viewMainPAGEupdate()
-      this.MAIN.append(this.ViewMainPAGE.create())
+      console.log('300 =this.sortOfFILTER РЕНДЕР', this.sortOfFILTER)
+      console.log('400 =this.MODEL.FILTER РЕНДЕР', this.MODEL.FILTER)
+      this.MAIN.append(this.ViewMainPAGE.create(this.MODEL.filtredData,
+        this.MODEL.filtredCategoryData,
+        this.MODEL.filtredBrandData,
+        this.priceOfFILTER,
+        this.stockOfFILTER,
+        this.sortOfFILTER))
     }
   }
   // Подфунция рендора Компанента главной страниц из роутера Мейна
   viewMainPAGEupdate() {
+    this.sortOfFILTER = this.MODEL.sortOfFILTER
     this.ViewMainPAGE.updateCardList(this.MODEL.filtredData)
     this.ViewMainPAGE.updateBrandBlock(this.MODEL.filtredBrandData)
     this.ViewMainPAGE.updateCategoryBlock(this.MODEL.filtredCategoryData)
@@ -225,19 +242,13 @@ class ControllerMain {
   }
 
   // Метод получения товаров в корзину по Списку из ЛОКАЛ СТОРИДЖ
-
   generateProductsForBascet(localData: IBascetLocalStorage[] = this.BascetLocalStorage): IitemDATA[] {
     return this.startServerData.filter((el) => {
 
-for (let index = 0; index < localData.length; index++) {
-  if (el.id === localData[index].id) return true
-  
-}
+      for (let index = 0; index < localData.length; index++) {
+        if (el.id === localData[index].id) return true
 
-      // localData.forEach((local) => {
-      //   if (el.id === local.id) return true
-      // })
-
+      }
 
     })
   }
@@ -267,11 +278,11 @@ for (let index = 0; index < localData.length; index++) {
   pushStateFilter(filter = this.MODEL.FILTER) {
     const params: URLSearchParams = this._formatURL.createURLSearchParams(filter)
     if (JSON.stringify(this.FILTER) === JSON.stringify(this.MODEL.startServerFILTER)) {
-      console.log('pushStateFilter ПЕРВАЯ ВЕТКА фильтрованный массив равен стартовому')
+      // console.log('pushStateFilter ПЕРВАЯ ВЕТКА фильтрованный массив равен стартовому')
       window.history.replaceState({}, '', '/')
     } else {
-      console.log('pushStateFilter Вторая ВЕТКА фильтрованный массив НЕ равен стартовому')
-      console.log(`{window.location.pathname}`)
+      // console.log('pushStateFilter Вторая ВЕТКА фильтрованный массив НЕ равен стартовому')
+      // console.log(`{window.location.pathname}`)
       window.history.pushState({}, '', `/?${params}`)
     }
   }
@@ -303,6 +314,20 @@ for (let index = 0; index < localData.length; index++) {
       this.pushStateFilter()
     })
 
+    // Ловля изменения СОРТИРОВКИ
+    this.MAIN.addEventListener('choiceOnSortMain', (e) => {
+      const target = e.target as HTMLSelectElement;
+      console.log('500 = target.value', target.value)
+
+
+      this.MODEL.setSortOfFILTER(target.value)
+      // this.sortOfFILTER = this.MODEL.sortOfFILTER
+      console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА', this.sortOfFILTER)
+      console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА модель', this.MODEL.sortOfFILTER)
+      this.rerenderMainPageComponents()
+      this.pushStateFilter()
+    })
+
     // Клик по кнопке РЕСЕТ сброса фильтров из Мейна
     this.MAIN.addEventListener('clickOnbuttonResetMain', (e) => {
       this.MODEL.clearFILTER()
@@ -314,7 +339,7 @@ for (let index = 0; index < localData.length; index++) {
     // Клик по корзине из Хедера и запуск страницы корзины
     this.BODY.addEventListener('clickOnBacket', (e) => {
       this.MAIN.innerHTML = ''
-      console.log('this.generateProductsForBascet()====',this.generateProductsForBascet())
+      // console.log('this.generateProductsForBascet()====',this.generateProductsForBascet())
       this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet())) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
       window.history.pushState({}, '', '/basket')
     })
@@ -322,7 +347,7 @@ for (let index = 0; index < localData.length; index++) {
     // Клик по ЛОГОТИПУ из Хедера и запуск страницы корзины
     this.BODY.addEventListener('clickOnLogo', (e) => {
       // this.MAIN.innerHTML = ''
-      console.log('EEEEEEEEEEEEEEEEEEEEE', e)
+      // console.log('EEEEEEEEEEEEEEEEEEEEE', e)
       this.rerenderMainPageComponents()
       this.pushStateFilter()
       // window.history.pushState({}, '', '/')
@@ -336,7 +361,7 @@ for (let index = 0; index < localData.length; index++) {
       const id = target.id
       this.MAIN.innerHTML = ''
       this.MAIN.append(this.ViewItemCardPAGE.create(this.MODEL.startServerData[Number(id) - 1]))
-      console.log(`ПУШНУЛ ИСТОРИ ОДНОГО ПРОДУКТА /product?id=${id}`)
+      // console.log(`ПУШНУЛ ИСТОРИ ОДНОГО ПРОДУКТА /product?id=${id}`)
       window.history.pushState({}, '', `/product?id=${id}`)
     })
 

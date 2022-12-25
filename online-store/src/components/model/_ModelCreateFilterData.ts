@@ -24,6 +24,7 @@ class CreateFilterData {
   protected readonly _priceOfFILTER: number[];
   protected readonly _stockOfFILTER: number[];
   protected readonly _searchOfFILTER: string[];
+  // protected readonly _sortOfFILTER: string[];
 
   constructor() {
     this._baseData = new CreateBaseDate();
@@ -45,9 +46,10 @@ class CreateFilterData {
       "search": [''],
       "sort": [''],
     };
-    this._FILTER = state
+    this._FILTER = {...this._startServerFILTER}
     this._FILTER.price = [...this.baseData.price]
     this._FILTER.stock = [...this.baseData.stock],
+    // this._FILTER.stock = [...this.baseData.stock],
 
 
     this._startPriceOfFILTER = this._startServerFILTER.price
@@ -57,6 +59,7 @@ class CreateFilterData {
     this._priceOfFILTER = this._FILTER.price
     this._stockOfFILTER = this._FILTER.stock
     this._searchOfFILTER = this._FILTER.search
+    // this._sortOfFILTER = this._FILTER.sort
 
     this._startCategoryData = this.getCategoryAndBrandData(this.startCategoryArray, "category");
     this._filtredCategoryData = this.getCategoryAndBrandData(this.startCategoryArray, "category", this.filtredData);
@@ -68,6 +71,20 @@ class CreateFilterData {
   public get baseData() {
     return this._baseData
   }
+  // ссылка на класс Базы данных
+  public get sortOfFILTER() {
+    console.log('100 = this._FILTER.sort из СоРТ', this._FILTER.sort)
+    return this._FILTER.sort
+  }
+
+    // метод Установки Сортировки товара фильтра
+    setSortOfFILTER(data: string = this.startServerFILTER.sort[0]) {
+      // console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА ФИЛЬТДАТА', data)
+      this._FILTER.sort[0] = data;
+      console.log('600 = ОБНОВИЛАСЬ ЛИ this._FILTER.sort в конструкторе', this._FILTER.sort)
+      this.updateFiltredData()
+      // this.updateFILTER_Price_Stock()
+    }
 
   // медод обновляющий отфильтрованный Объект c данными ПРОДУКТА по измененному FILTER
   updateFiltredData(): IitemDATA[] {
@@ -161,7 +178,6 @@ class CreateFilterData {
     return this._filtredData
   }
 
-
   // обновляем мин и мак цены и количества товара в FILTER
   updateFILTER_Price_Stock(data: IitemDATA[] = this.filtredData) {
     // console.log("DDDDDDDDDDthis.filtredData", this.filtredData)
@@ -242,6 +258,15 @@ class CreateFilterData {
     // this.updateFILTER_Price_Stock()
   }
 
+  // // метод Установки Сортировки товара фильтра
+  // setSortOfFILTER(data: string = this.startServerFILTER.sort[0]) {
+  //   // console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА ФИЛЬТДАТА', data)
+  //   this._FILTER.sort[0] = data;
+  //   console.log('ОБНОВИЛАСЬ ЛИ this._FILTER.sort', this._FILTER.sort)
+  //   this.updateFiltredData()
+  //   // this.updateFILTER_Price_Stock()
+  // }
+
 
   setFILTER(filter: IFilter) {
     this.FILTER.brand = [...filter.brand]
@@ -250,6 +275,7 @@ class CreateFilterData {
     this.FILTER.stock = filter.stock.length ? [...filter.stock] : [...this.baseData.stock]
     this.FILTER.search = filter.search.length ? [...filter.search] : ['']
     this.FILTER.sort = filter.sort.length ? [...filter.sort] : ['']
+    console.log('this.FILTER.sort ЭТО ИЗ МОДЕЛИ',this.FILTER.sort)
     this.updateFiltredData()
   }
 

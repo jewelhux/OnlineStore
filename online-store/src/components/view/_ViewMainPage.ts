@@ -25,6 +25,8 @@ class ViewMainPage {
   viewBlock: HTMLElement;
   viewList: HTMLElement;
   cardList: HTMLElement;
+  silderPrice: HTMLElement;
+  silderStock: HTMLElement;
   customElement: CustomElement;
   startCategoryData: stringArrayObject;
   startBrandData: stringArrayObject;
@@ -50,13 +52,15 @@ class ViewMainPage {
     this.filterCategoryMain = this.customElement.createElement('div', { className: 'filter__item filter__category category filter__item-scroll' }); // Category
     this.filterBrandMain = this.customElement.createElement('div', { className: 'filter__item filter__brand brand filter__item-scroll' }); // Brand
     //------Price------//
+    this.silderPrice = this.customElement.createElement('div', { id: 'sliderPrice' }); // No Ui Slider Price
+    this.silderStock = this.customElement.createElement('div', { id: 'sliderStock' }); // No Ui Slider Stock
     this.itemPriceNumberFrom = this.customElement.createElement('div', { className: 'item-price__from' }); // Price Text Min
     this.itemPriceNumberTo = this.customElement.createElement('div', { className: 'item-price__to' }); // Price Text Max
     this.itemPriceInputOne = this.customElement.createElement('input', { type: 'range', step: '1', id: 'slider1' }); // Price Input One
     this.itemPriceInputTwo = this.customElement.createElement('input', { type: 'range', step: '1', id: 'slider2' }); // Price Input Two
     //------Stock------//
-    this.itemStockNumberFrom = this.customElement.createElement('div', { className: 'item-stock-slider__from' }); // Stock Text Min
-    this.itemStockNumberTo = this.customElement.createElement('div', { className: 'item-stock-slider__to' }); // Stock Text Max
+    this.itemStockNumberFrom = this.customElement.createElement('div', { className: 'item-stock__from' }); // Stock Text Min
+    this.itemStockNumberTo = this.customElement.createElement('div', { className: 'item-stock__to' }); // Stock Text Max
     this.itemStockInputOne = this.customElement.createElement('input', { type: 'range', step: '1', id: 'slider3' }); // Stock Input One
     this.itemStockInputTwo = this.customElement.createElement('input', { type: 'range', step: '1', id: 'slider4' }); // Stock Input Two
     //------Right Top------//
@@ -262,27 +266,16 @@ class ViewMainPage {
   renderPriceBlock(dataFilterPrice: number[] = this.startPriceOfFILTER): HTMLElement {
     const filterPrice = this.customElement.createElement('div', { className: 'filter__item filter__price price' });
     const filterPriceItemName = this.customElement.createElement('h3', { className: 'filter__item-name price__name', textContent: 'Price' });
-    const filterPriceContainer = this.customElement.createElement('div', { className: 'filter__item-container price__container' });
+    const filterPriceContainer = this.customElement.createElement('div', { className: 'inputRange_container price__container' });
     this.customElement.addChildren(filterPrice, [filterPriceItemName, filterPriceContainer]);
 
     const itemPriceNumberContainer = this.customElement.createElement('div', { className: 'filter__item-data item-price' });
-    const itemPriceInputContainer = this.customElement.createElement('div', { className: 'range-slider' });
-    this.customElement.addChildren(filterPriceContainer, [itemPriceNumberContainer, itemPriceInputContainer]);
+    this.customElement.addChildren(filterPriceContainer, [itemPriceNumberContainer, this.silderPrice]);
 
     this.itemPriceNumberFrom.textContent = `${dataFilterPrice[0]}`;
     this.itemPriceNumberTo.textContent = `${dataFilterPrice[1]}`;
     const itemPriceNumberMid = this.customElement.createElement('div', { textContent: '⟷' });
     this.customElement.addChildren(itemPriceNumberContainer, [this.itemPriceNumberFrom, itemPriceNumberMid, this.itemPriceNumberTo]);
-
-    this.itemPriceInputOne.setAttribute('min', `${dataFilterPrice[0]}`);
-    this.itemPriceInputOne.setAttribute('max', `${dataFilterPrice[1]}`);
-    this.itemPriceInputOne.setAttribute('value', `${dataFilterPrice[0]}`);
-
-    this.itemPriceInputTwo.setAttribute('min', `${dataFilterPrice[0]}`);
-    this.itemPriceInputTwo.setAttribute('max', `${dataFilterPrice[1]}`);
-    this.itemPriceInputTwo.setAttribute('value', `${dataFilterPrice[1]}`);
-
-    this.customElement.addChildren(itemPriceInputContainer, [this.itemPriceInputOne, this.itemPriceInputTwo]);
 
     return filterPrice
   }
@@ -291,27 +284,16 @@ class ViewMainPage {
   renderStockBlock(dataFilterStock: number[] = this.startStockOfFILTER): HTMLElement {
     const filterStock = this.customElement.createElement('div', { className: 'filter__item filter__stock-slider stock-slider' });
     const filterStockItemName = this.customElement.createElement('h3', { className: 'filter__item-name stock-slider__name', textContent: 'Stock' });
-    const filterStockContainer = this.customElement.createElement('div', { className: 'filter__item-container stock-slider__container' });
+    const filterStockContainer = this.customElement.createElement('div', { className: 'inputRange_container stock-slider__container' });
     this.customElement.addChildren(filterStock, [filterStockItemName, filterStockContainer]);
 
     const itemStockNumberContainer = this.customElement.createElement('div', { className: 'filter__item-data item-stock-slider' });
-    const itemStockInputContainer = this.customElement.createElement('div', { className: 'range-slider' });
-    this.customElement.addChildren(filterStockContainer, [itemStockNumberContainer, itemStockInputContainer]);
+    this.customElement.addChildren(filterStockContainer, [itemStockNumberContainer, this.silderStock]);
 
     this.itemStockNumberFrom.textContent = `${dataFilterStock[0]}`;
     this.itemStockNumberTo.textContent = `${dataFilterStock[1]}`;
     const itemStockNumberMid = this.customElement.createElement('div', { textContent: '⟷' });
     this.customElement.addChildren(itemStockNumberContainer, [this.itemStockNumberFrom, itemStockNumberMid, this.itemStockNumberTo]);
-
-    this.itemStockInputOne.setAttribute('min', `${dataFilterStock[0]}`);
-    this.itemStockInputOne.setAttribute('max', `${dataFilterStock[1]}`);
-    this.itemStockInputOne.setAttribute('value', `${dataFilterStock[0]}`);
-
-    this.itemStockInputTwo.setAttribute('min', `${dataFilterStock[0]}`);
-    this.itemStockInputTwo.setAttribute('max', `${dataFilterStock[1]}`);
-    this.itemStockInputTwo.setAttribute('value', `${dataFilterStock[1]}`);
-
-    this.customElement.addChildren(itemStockInputContainer, [this.itemStockInputOne, this.itemStockInputTwo]);
 
     return filterStock
   }
@@ -324,7 +306,6 @@ class ViewMainPage {
     for (const item of dataServerItem) {
       // Создание обертки карточки которую мы будем закидывать в контейнер
       const card = this.customElement.createElement('div', { className: 'cardlist__item card', id: `${item.id}` });
-
 
       // ТУТ БАГ, ЧТО ПРИ КЛИКЕ НА АДД ВЫЗЫВАЕТСЯ ОТРИСОВКА КАРТОЧКИ
       // card.addEventListener('click', this.showPageProduct);

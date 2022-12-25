@@ -10,25 +10,44 @@ class ViewItemCardPage {
   // _controller: ControllerMain;
 
   pageMainItemCard: HTMLElement;
-  itemCardImagePhotoImg: HTMLElement
+  itemCardImagePhotoImg: HTMLElement;
+  cardBtnButtonAdd: HTMLElement;
+  cardBtnButtonBuy: HTMLElement;
 
   // startServerData: IitemDATA[];
-  startServerProduct:IitemDATA
+  startServerProduct: IitemDATA
+  EVENT: { [x: string]: Event }
 
   constructor(product: IitemDATA) {
     this.startServerProduct = product;
-    // this._controller = new ControllerMain();
     this.customElement = new CustomElement();
-
     this.pageMainItemCard = this.customElement.createElement('div', { className: 'page-main-itemCard _main-container' }); // Основная сакция картчоки
     // this.startServerData = this._controller.startServerData;
-
-    // console.log(this.startServerData[0].images)
-
     this.itemCardImagePhotoImg = this.customElement.createElement('img', { className: 'itemCard__imagePhoto-img' });
-
-
     // this.create(product);
+
+    this.cardBtnButtonAdd = this.customElement.createElement('button', { className: 'card__btn-button _btn button-add', textContent: 'Add to Cart' });
+    this.cardBtnButtonBuy = this.customElement.createElement('button', { className: 'card__btn-button _btn button-buy', textContent: 'Buy now' });
+
+    this.EVENT = {
+      clickOnProductAddInBascetMain: new Event('clickOnProductAddInBascetMain', { bubbles: true }),// Клик на контейнере с Карточками
+    }
+
+    this.listenersCardPage();
+
+  }
+
+  listenersCardPage() {
+
+    this.cardBtnButtonAdd.addEventListener('click', (e) => {
+      this.cardBtnButtonAdd.dispatchEvent(this.EVENT.clickOnProductAddInBascetMain)
+    });
+
+    this.cardBtnButtonBuy.addEventListener('click', (e) => {
+      console.log('this.cardBtnButtonBuy')
+      this.cardBtnButtonBuy.dispatchEvent(this.EVENT.clickOnProductAddInBascetMain)
+    })
+
   }
 
   create(product: IitemDATA = this.startServerProduct) {
@@ -132,9 +151,10 @@ class ViewItemCardPage {
     const itemCardDataPrice = this.customElement.createElement('p', {
       className: 'itemCard-data__price', textContent: `Price: $ ${product.price}`
     });
-    const cardBtnButtonAdd = this.customElement.createElement('button', { className: 'card__btn-button _btn button-add', textContent: 'Add to Cart' });
-    const cardBtnButtonBuy = this.customElement.createElement('button', { className: 'card__btn-button _btn button-buy', textContent: 'Buy now' });
-    this.customElement.addChildren(itemCardSummary, [itemCardDataPrice, cardBtnButtonAdd, cardBtnButtonBuy]);
+
+    this.cardBtnButtonAdd.setAttribute('id', `button-add|${product.id}`)
+    this.cardBtnButtonBuy.setAttribute('id', `button-buy|${product.id}`)
+    this.customElement.addChildren(itemCardSummary, [itemCardDataPrice, this.cardBtnButtonAdd, this.cardBtnButtonBuy]);
 
     return mainItemCard
   }

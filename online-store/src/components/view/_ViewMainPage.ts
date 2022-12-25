@@ -74,12 +74,13 @@ class ViewMainPage {
       changeOnSearchMain: new Event('changeOnSearchMain', { bubbles: true }),
       choiceOnSortMain: new Event('choiceOnSortMain', { bubbles: true }),// ЕЩЁ не СДЕЛАНО 
       clickOnСardListMain: new Event('clickOnСardListMain', { bubbles: true }),// Клик на контейнере с Карточками
-      clickOnbuttonResetMain: new Event('clickOnbuttonResetMain', { bubbles: true }),// Клик на контейнере с Карточками
+      clickOnProductAddInBascetMain: new Event('clickOnProductAddInBascetMain', { bubbles: true }),// Клик на кнопке добавить с Карточками
+      clickOnbuttonResetMain: new Event('clickOnbuttonResetMain', { bubbles: true }),// Клик на кнопке сброса
     }
-    this.headerListenersMain();
+    this.listenersMain();
   }
 
-  headerListenersMain() {
+  listenersMain() {
     this.filterCategoryMain.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       if (target.getAttribute('type') === "checkbox") {
@@ -113,6 +114,8 @@ class ViewMainPage {
       if (card && !addToCard) {
         card.dispatchEvent(this.EVENT.clickOnСardListMain)
         // console.log('card >',card,'<')      
+      } else {
+        addToCard?.dispatchEvent(this.EVENT.clickOnProductAddInBascetMain)
       }
 
       // if (target.className = 'carlist_item card') {
@@ -334,7 +337,7 @@ class ViewMainPage {
       this.customElement.addChildren(card, [cardName, cardInfo, cardButtons]);
 
       //Заполнение cardButtons
-      const buttonItemAdd = this.customElement.createElement('button', { className: '_btn _btn_add-to-card', textContent: 'Add to card' }); // Кнопка добавления в корзину
+      const buttonItemAdd = this.customElement.createElement('button', { className: '_btn _btn_add-to-card', id: `_btn_add-to-card|${item.id}`, textContent: 'Add to card' }); // Кнопка добавления в корзину
       // buttonItemAdd.addEventListener('click', this.addCardInBasket)
       const buttonItemDetails = this.customElement.createElement('button', { className: '_btn', textContent: 'Detais' });  // Кнопка просмотра товара
 

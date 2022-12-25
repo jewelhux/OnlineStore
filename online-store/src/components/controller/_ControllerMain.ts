@@ -1,6 +1,6 @@
 // Типы интерфейсы
 import { stringArrayObject } from '../typingTS/_type'
-import { IitemDATA, IFilter } from '../typingTS/_interfaces'
+import { IitemDATA, IFilter, IBascetLocalStorage } from '../typingTS/_interfaces'
 
 // Модель
 import CreateFilterData from '../model/_ModelCreateFilterData'
@@ -19,7 +19,18 @@ import FormatURL from '../utils/_formatUrl';
 // import state from '../utils/state';
 // import Router from '../router';
 
+
+
+
+
+
+
+
+
+
 class ControllerMain {
+
+  BascetLocalStorage: IBascetLocalStorage[]
 
   routes: {
     [key: string]: {
@@ -59,6 +70,17 @@ class ControllerMain {
   readonly searchOfFILTER: string[];
 
   constructor() {
+
+
+
+    const readlocalStorage = localStorage.getItem('BascetLocalStorage')
+    if (readlocalStorage) {
+      this.BascetLocalStorage = JSON.parse(readlocalStorage)
+    } else {
+      this.BascetLocalStorage = []
+    }
+
+    console.log('this.BascetLocalStorage', this.BascetLocalStorage)
 
     this.customElement = new CustomElement();
     this._formatURL = new FormatURL();
@@ -117,14 +139,40 @@ class ControllerMain {
 
   // Конец конструктора
 
+  // МЕТОД добавления и удаления  ПО ID из КОРЗИНЫ
+  updateBascetLocalStorage(id: number, key: boolean = true): IBascetLocalStorage[] {
+
+    const index = this.BascetLocalStorage.findIndex((el, index) => {
+      return el.id === id
+    })
+
+    if (index === -1) {
+      this.BascetLocalStorage.push(this.convertIDtoBascetObject(id))
+    } else if (index !== -1 && key) {
+      this.BascetLocalStorage.splice(index, 1);
+    }
+
+    localStorage.setItem('BascetLocalStorage', JSON.stringify(this.BascetLocalStorage))
+    return this.BascetLocalStorage
+  }
+
+  // МЕТОД возврата ОБЪЕКТА ПО ID для КОРЗИНЫ
+  convertIDtoBascetObject(id: number): IBascetLocalStorage {
+    return {
+      id: id,
+      price: this.MODEL.startServerData[id - 1].price,
+      count: 1,
+    }
+  }
+
   init() {
     this.startRouteListenner();
     this.handleLocation();
     this.HEADER.append(this.ViewHEADER.create())
     this.FOOTER.append(this.ViewFOOTER.create())
-
-
+    this.ViewHEADER.updateheaderBasketCount(this.BascetLocalStorage.length)
   }
+
 
   // Рендер главной страницы из роутера
   renderMainPageFromRouter(name: string) {
@@ -277,9 +325,18 @@ class ControllerMain {
       window.history.pushState({}, '', `/product?id=${id}`)
     })
 
+    // Клик по карточке для добавления  продукта в КОРЗИНУ из Мейна
+    this.MAIN.addEventListener('clickOnProductAddInBascetMain', (e) => {
+      const target = e.target as HTMLElement;
+      const id = +target.id.split('|')[1]
+      console.log("target.id.split('|')[0]",target.id.split('|')[0])
+      const key: boolean = target.id.split('|')[0] === 'button-buy' ? false: true
+      console.log("key",key)
+        this.updateBascetLocalStorage(id, key)
+      this.ViewHEADER.updateheaderBasketCount(this.BascetLocalStorage.length)
 
+    })
   }
-
 
 
 }

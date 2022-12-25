@@ -23,10 +23,18 @@ interface IitemDATA {
     search: string[];
     sort: string[]
 }
+
+
+
+interface IBascetLocalStorage {
+  id: number
+  price: number
+  count: number
+};
   // interface IFilter { [x: string]: string[] }
 
 
-export { IitemDATA, IFilter}
+export { IitemDATA, IFilter, IBascetLocalStorage}
 
 
 // import { option } from './_type'

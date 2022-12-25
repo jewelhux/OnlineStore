@@ -31,3 +31,5 @@ APP.init()
 // const test = new ViewBasketPage();
 
 // APP.start()
+
+    // console.log('localStorage.getItem(BascetLocalStorage)===', JSON.stringify(localStorage.getItem('BascetLocalStorage')))

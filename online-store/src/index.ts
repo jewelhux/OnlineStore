@@ -1,33 +1,62 @@
 import './_global.scss';
 import '../index.html';
-// import './components/view/_ViewBlocks' // Отрисовка основных блоков, выше всех должно быть
 import './components/_add_favicon';
-// import './components/_CreateBaseData';
-// import './components/_ModelCreateFilterData'
-// import './components/_add_rangeSlider';
-
-// import ViewFooter from './components/view/_ViewFooter';
-// import ViewHeader from './components/view/_ViewHeader'; // ВРЕМЕННО ДЛЯ ТЕСТА
-// import ViewMain from './components/view/_ViewMainPage'; // ВРЕМЕННО ДЛЯ ТЕСТА
-// import ViewItemCardPage from './components/view/_ViewItemCardPage';
-
-// Отрисовка
-// const viewHeader = new ViewHeader();
-// const viewMain = new ViewMain(); // Запустит отрисовку основной секции main\
-// const viewItemCardPage = new ViewItemCardPage(); // Запустит отрисовку страницы карточки товара
-// const viewFooter = new ViewFooter();
-
 import ControllerMain from './components/controller/_ControllerMain'
-// import CreateFilterData from './components/model/_ModelCreateFilterData'
-// import ViewHeader from './components/model/_ModelCreateFilterData'
-
+import * as noUiSlider from 'nouislider';
+import 'nouislider/dist/nouislider.css';
 
 const APP = new ControllerMain()
 APP.init()
 
 
-//TESTING
-// import ViewBasketPage from './components/view/_ViewBasketPage';
-// const test = new ViewBasketPage();
+const fnSliderPrice = () => {
+  const sliderPrice = document.getElementById('sliderPrice') as noUiSlider.target;
 
-// APP.start()
+  if(sliderPrice) {
+    noUiSlider.create(sliderPrice, {
+      start: [1, 50],
+      connect: true,
+      step: 1,
+      range: {
+          'min': 1,
+          'max': 50
+      }
+    });
+  
+    const inputPrice1 = document.querySelector('.item-price__from') as HTMLInputElement;
+    const inputPrice2 = document.querySelector('.item-price__to') as HTMLInputElement;
+    const inputs = [inputPrice1, inputPrice2];
+  
+    sliderPrice.noUiSlider?.on('update', function(values: (string | number)[], handle: number): void { 
+      inputs[handle].textContent = String(Math.round(Number(values[handle])));
+    });
+  }
+}
+
+const fnSliderStock = () => {
+  const sliderStock = document.getElementById('sliderStock') as noUiSlider.target;
+
+  if(sliderStock) {
+    noUiSlider.create(sliderStock, {
+      start: [1, 999],
+      connect: true,
+      step: 1,
+      range: {
+          'min': 1,
+          'max': 999
+      }
+    });
+  
+    const inputStock1 = document.querySelector('.item-stock__from') as HTMLInputElement;
+    const inputStock2 = document.querySelector('.item-stock__to') as HTMLInputElement;
+    const inputs = [inputStock1, inputStock2];
+  
+    sliderStock.noUiSlider?.on('update', function(values: (string | number)[], handle: number): void { 
+      inputs[handle].textContent = String(Math.round(Number(values[handle])));
+    });
+  }
+}
+
+
+fnSliderPrice();
+fnSliderStock();

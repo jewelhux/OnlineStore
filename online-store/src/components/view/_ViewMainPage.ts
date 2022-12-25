@@ -64,7 +64,7 @@ class ViewMainPage {
     this.itemStockInputOne = this.customElement.createElement('input', { type: 'range', step: '1', id: 'slider3' }); // Stock Input One
     this.itemStockInputTwo = this.customElement.createElement('input', { type: 'range', step: '1', id: 'slider4' }); // Stock Input Two
     //------Right Top------//
-    this.viewSort = this.customElement.createElement('input', { className: 'view__sort', name: 'sort', placeholder: 'Sorting' }); // Сортировка
+    this.viewSort = this.customElement.createElement('select', { className: 'view__sort', name: 'sort', placeholder: 'Sorting', id: "sorting" }); // Сортировка
     this.findCount = this.customElement.createElement('span', { className: 'view__find-count-span', textContent: `${this.startServerData.length}` }); // Число найденных совпадений
     this.viewSearch = this.customElement.createElement('input', { className: 'view__search', type: 'search', placeholder: 'Search product' }); // Поиск
     this.viewBlock = this.customElement.createElement('div', { className: 'visible__item viewBlock' }); // Вид для блочной модели
@@ -195,14 +195,13 @@ class ViewMainPage {
 
     // Сортировка
     this.viewSort.setAttribute('list', 'sorting');
-    const dataListSort = this.customElement.createElement('datalist', { id: "sorting" });
-    const optionSortABC = this.customElement.createElement('option', { value: "SortABC" });
-    const optionSortCBA = this.customElement.createElement('option', { value: "SortCBA" });
-    const optionSortByPriceLow = this.customElement.createElement('option', { value: "SortByPriceLow" });
-    const optionSortByPriceUp = this.customElement.createElement('option', { value: "SortByPriceUp" });
-    const optionSortByRatingLow = this.customElement.createElement('option', { value: "SortByRatingLow" });
-    const optionSortByRatingUp = this.customElement.createElement('option', { value: "SortByRatingUp" });
-    this.customElement.addChildren(dataListSort, [optionSortABC, optionSortCBA, optionSortByPriceLow,
+    const optionSortABC = this.customElement.createElement('option', { value: "SortABC", textContent: "SortABC" });
+    const optionSortCBA = this.customElement.createElement('option', { value: "SortCBA", textContent: "SortCBA" });
+    const optionSortByPriceLow = this.customElement.createElement('option', { value: "SortByPriceLow", textContent: "SortByPriceLow" });
+    const optionSortByPriceUp = this.customElement.createElement('option', { value: "SortByPriceUp", textContent: "SortByPriceUp"  });
+    const optionSortByRatingLow = this.customElement.createElement('option', { value: "SortByRatingLow", textContent: "SortByRatingLow"  });
+    const optionSortByRatingUp = this.customElement.createElement('option', { value: "SortByRatingUp", textContent: "SortByRatingUp"  });
+    this.customElement.addChildren(this.viewSort, [optionSortABC, optionSortCBA, optionSortByPriceLow,
       optionSortByPriceUp, optionSortByRatingLow, optionSortByRatingUp]);
 
     //Число найденных товров
@@ -215,7 +214,7 @@ class ViewMainPage {
     this.customElement.addChildren(viewVisible, [this.viewBlock, this.viewList]);
 
     // Добавление в правый вернхнюю правую секцию
-    this.customElement.addChildren(rightView, [this.viewSort, dataListSort, viewFindCount, this.viewSearch, viewVisible]);
+    this.customElement.addChildren(rightView, [this.viewSort, viewFindCount, this.viewSearch, viewVisible]);
 
     // Создание ПРАВОЙ НИЖНЕЙ СЕКЦИИ!!!
     // this.customElement.addChildren(this.cardList, [...this.renderItemCard(startServerData)]);

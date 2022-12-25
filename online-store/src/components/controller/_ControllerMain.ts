@@ -170,7 +170,11 @@ class ControllerMain {
     this.handleLocation();
     this.HEADER.append(this.ViewHEADER.create())
     this.FOOTER.append(this.ViewFOOTER.create())
-    this.ViewHEADER.updateheaderBasketCount(this.BascetLocalStorage.length)
+
+    this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
+
+    const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
+    this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
   }
 
 
@@ -329,11 +333,14 @@ class ControllerMain {
     this.MAIN.addEventListener('clickOnProductAddInBascetMain', (e) => {
       const target = e.target as HTMLElement;
       const id = +target.id.split('|')[1]
-      console.log("target.id.split('|')[0]",target.id.split('|')[0])
-      const key: boolean = target.id.split('|')[0] === 'button-buy' ? false: true
-      console.log("key",key)
-        this.updateBascetLocalStorage(id, key)
-      this.ViewHEADER.updateheaderBasketCount(this.BascetLocalStorage.length)
+      console.log("target.id.split('|')[0]", target.id.split('|')[0])
+      const key: boolean = target.id.split('|')[0] === 'button-buy' ? false : true
+      console.log("key", key)
+      this.updateBascetLocalStorage(id, key)
+      this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
+
+      const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
+      this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
 
     })
   }

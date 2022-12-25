@@ -43,6 +43,11 @@
   }
 }
 
+.inputRange_container {
+  background-color: #FFF;
+  padding: 0 10px;
+}
+
 .filter__item-container-scroll {
   overflow-y: scroll;
 }
@@ -55,6 +60,8 @@
 }
 
 .filter__item-data {
+  margin-top: 5px;
+  display: flex;
   width: 100%;
   justify-content: space-around;
 }
@@ -252,4 +259,38 @@
 
 .range-slider input[type=range]::-ms-tooltip {
   display: none;
+}
+
+.noUi-target {
+  margin: 10px !important;
+  background: #FFF !important;
+}
+
+.noUi-connect {
+
+  background: $mainColor !important;
+}
+
+.noUi-handle {
+  cursor: pointer !important;
+  border-radius: 50% !important;
+  border: 1px solid $mainColor !important;
+}
+
+.noUi-handle:before, .noUi-handle:after {
+    content: "";
+    display: none !important;
+    position: absolute;
+    height: 14px;
+    width: 1px;
+    background: #E8E7E6;
+    left: 14px;
+    top: 6px;
+}
+
+.noUi-horizontal .noUi-handle {
+  width: 25px !important;
+  height: 25px !important;
+  right: -12px !important;
+  top: -5px !important;
 }

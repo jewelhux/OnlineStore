@@ -60,7 +60,7 @@ class ViewItemCardPage {
     this.customElement.addChildren(itemCardCrumbs, [crumbsOne, paragraf1, crumbsTwo, paragraf2, crumbsThree, paragraf3, crumbsFour]);
 
     // Заполнение itemCardMain
-    const itemCardName = this.customElement.createElement('h3', { className: 'itemCard__name', textContent: 'iPhone 9' });
+    const itemCardName = this.customElement.createElement('h3', { className: 'itemCard__name', textContent: `${product.title}` });
     const itemCardContainer = this.customElement.createElement('div', { className: 'itemCard__container' });
 
     this.customElement.addChildren(itemCardMain, [itemCardName, itemCardContainer]);

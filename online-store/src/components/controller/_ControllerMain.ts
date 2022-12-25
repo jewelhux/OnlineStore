@@ -21,13 +21,6 @@ import FormatURL from '../utils/_formatUrl';
 
 
 
-
-
-
-
-
-
-
 class ControllerMain {
 
   BascetLocalStorage: IBascetLocalStorage[]
@@ -70,8 +63,6 @@ class ControllerMain {
   readonly searchOfFILTER: string[];
 
   constructor() {
-
-
 
     const readlocalStorage = localStorage.getItem('BascetLocalStorage')
     if (readlocalStorage) {
@@ -230,8 +221,27 @@ class ControllerMain {
     // const id = this._formatURL.createIDFromURLSearchParams(search).id
 
     this.MAIN.innerHTML = ''
-    this.MAIN.append(this.ViewBASKETPAGE.create(this.MODEL.startServerData)) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
+    this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet())) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
   }
+
+  // Метод получения товаров в корзину по Списку из ЛОКАЛ СТОРИДЖ
+
+  generateProductsForBascet(localData: IBascetLocalStorage[] = this.BascetLocalStorage): IitemDATA[] {
+    return this.startServerData.filter((el) => {
+
+for (let index = 0; index < localData.length; index++) {
+  if (el.id === localData[index].id) return true
+  
+}
+
+      // localData.forEach((local) => {
+      //   if (el.id === local.id) return true
+      // })
+
+
+    })
+  }
+
 
   routesFuntion(name: string) {
     document.title = `Store - ${name}`;
@@ -304,7 +314,8 @@ class ControllerMain {
     // Клик по корзине из Хедера и запуск страницы корзины
     this.BODY.addEventListener('clickOnBacket', (e) => {
       this.MAIN.innerHTML = ''
-      this.MAIN.append(this.ViewBASKETPAGE.create(this.MODEL.startServerData)) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
+      console.log('this.generateProductsForBascet()====',this.generateProductsForBascet())
+      this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet())) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
       window.history.pushState({}, '', '/basket')
     })
 

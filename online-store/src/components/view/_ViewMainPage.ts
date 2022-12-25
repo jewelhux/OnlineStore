@@ -64,7 +64,7 @@ class ViewMainPage {
     this.itemStockInputOne = this.customElement.createElement('input', { type: 'range', step: '1', id: 'slider3' }); // Stock Input One
     this.itemStockInputTwo = this.customElement.createElement('input', { type: 'range', step: '1', id: 'slider4' }); // Stock Input Two
     //------Right Top------//
-    this.viewSort = this.customElement.createElement('select', { className: 'view__sort', name: 'sort', placeholder: 'Sorting', id: "sorting" }); // Сортировка
+    this.viewSort = this.customElement.createElement('select', { className: 'view__sort', name: 'sort', placeholder: 'Sorting', id: "sorting" }) as HTMLSelectElement; // Сортировка
     this.findCount = this.customElement.createElement('span', { className: 'view__find-count-span', textContent: `${this.startServerData.length}` }); // Число найденных совпадений
     this.viewSearch = this.customElement.createElement('input', { className: 'view__search', type: 'search', placeholder: 'Search product' }); // Поиск
     this.viewBlock = this.customElement.createElement('div', { className: 'visible__item viewBlock' }); // Вид для блочной модели
@@ -105,9 +105,9 @@ class ViewMainPage {
         target.dispatchEvent(this.EVENT.changeOnSearchMain)
       }
 
-      this.viewSort.addEventListener('change', (e) => {
-        console.log(e)
-      })
+      // this.viewSort.addEventListener('change', (e) => {
+      //   console.log(this.viewSort)
+      // })
     })
 
     this.cardList.addEventListener('click', (e) => {
@@ -121,12 +121,6 @@ class ViewMainPage {
       } else {
         addToCard?.dispatchEvent(this.EVENT.clickOnProductAddInBascetMain)
       }
-
-      // if (target.className = 'carlist_item card') {
-      //         const id = target.id
-      // console.log(id)
-      // }
-
     })
 
     // cлушаетль на кнопке копирования адресса
@@ -134,12 +128,10 @@ class ViewMainPage {
       this.copyPageUrl()
     })
 
-   // cлушаетль на кнопке сброса ФИЛЬТРОВ
+    // cлушаетль на кнопке сброса ФИЛЬТРОВ
     this.buttonReset.addEventListener('click', (e) => {
       this.buttonReset.dispatchEvent(this.EVENT.clickOnbuttonResetMain)
     })
-
-
   }
 
   async copyPageUrl() {
@@ -162,6 +154,7 @@ class ViewMainPage {
     // const pageMain = this.customElement.createElement('div', { className: 'page-main-one _main-container' });
     const mainOne = this.customElement.createElement('section', { className: 'main-one _container' });
     this.pageMain.innerHTML = ''
+    this.viewSort.innerHTML = ''
     this.customElement.addChildren(this.pageMain, [mainOne]);
 
     // Создание ЛЕВОЙ СЕКЦИИ!!!
@@ -198,12 +191,12 @@ class ViewMainPage {
 
     // Сортировка
     this.viewSort.setAttribute('list', 'sorting');
-    const optionSortABC = this.customElement.createElement('option', { value: "SortABC", textContent: "SortABC" });
-    const optionSortCBA = this.customElement.createElement('option', { value: "SortCBA", textContent: "SortCBA" });
-    const optionSortByPriceLow = this.customElement.createElement('option', { value: "SortByPriceLow", textContent: "SortByPriceLow" });
-    const optionSortByPriceUp = this.customElement.createElement('option', { value: "SortByPriceUp", textContent: "SortByPriceUp"  });
-    const optionSortByRatingLow = this.customElement.createElement('option', { value: "SortByRatingLow", textContent: "SortByRatingLow"  });
-    const optionSortByRatingUp = this.customElement.createElement('option', { value: "SortByRatingUp", textContent: "SortByRatingUp"  });
+    const optionSortABC = this.customElement.createElement('option', { value: "SortABC", textContent: "SortABC" }) as HTMLOptionElement;
+    const optionSortCBA = this.customElement.createElement('option', { value: "SortCBA", textContent: "SortCBA" }) as HTMLOptionElement;
+    const optionSortByPriceLow = this.customElement.createElement('option', { value: "SortByPriceLow", textContent: "SortByPriceLow" }) as HTMLOptionElement;
+    const optionSortByPriceUp = this.customElement.createElement('option', { value: "SortByPriceUp", textContent: "SortByPriceUp" }) as HTMLOptionElement;
+    const optionSortByRatingLow = this.customElement.createElement('option', { value: "SortByRatingLow", textContent: "SortByRatingLow" }) as HTMLOptionElement;
+    const optionSortByRatingUp = this.customElement.createElement('option', { value: "SortByRatingUp", textContent: "SortByRatingUp" }) as HTMLOptionElement;
     this.customElement.addChildren(this.viewSort, [optionSortABC, optionSortCBA, optionSortByPriceLow,
       optionSortByPriceUp, optionSortByRatingLow, optionSortByRatingUp]);
 
@@ -222,6 +215,14 @@ class ViewMainPage {
     // Создание ПРАВОЙ НИЖНЕЙ СЕКЦИИ!!!
     // this.customElement.addChildren(this.cardList, [...this.renderItemCard(startServerData)]);
     this.customElement.addChildren(mainRight, [this.cardList]);
+
+
+    this.viewSort.addEventListener('change', (e) => {
+      const target = e.target as HTMLSelectElement;
+      console.log(target.value)
+    })
+
+    // this.listenersMain();
 
     return this.pageMain
   }

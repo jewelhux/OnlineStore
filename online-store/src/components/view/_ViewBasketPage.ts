@@ -87,9 +87,9 @@ class ViewBasketPage {
   // Создание ItemCard корзины
   renderProductCard(dataServerItem: IitemDATA[]) {
     const itemContainer: HTMLElement[] = [];
-    const test: IitemDATA[] = dataServerItem.slice(0, 6)
+    // const test: IitemDATA[] = dataServerItem.slice(0, 6)
 
-    for (const item of test) {
+    for (const item of dataServerItem) {
       // Обертка карточки
       const itemBasket = this.customElement.createElement('div', { className: 'product__itemBasket itemBasket' });
 

@@ -12,6 +12,7 @@ import ViewMainPage from '../view/_ViewMainPage';
 import ViewFooter from '../view/_ViewFooter';
 import ViewItemCardPage from '../view/_ViewItemCardPage';
 import ViewBasketPage from '../view/_ViewBasketPage';
+import ViewNotFound from '../view/_ViewNotFoundPage';
 
 // Служебные программки
 import CustomElement from '../utils/_createCustomElement';
@@ -39,7 +40,8 @@ class ControllerMain {
   ViewMainPAGE: ViewMainPage;
   ViewFOOTER: ViewFooter;
   ViewItemCardPAGE: ViewItemCardPage;
-  ViewBASKETPAGE: ViewBasketPage
+  ViewBASKETPAGE: ViewBasketPage;
+  ViewNotFound: ViewNotFound;
 
   _formatURL: FormatURL;
 
@@ -87,6 +89,7 @@ class ControllerMain {
     this.MODEL = new CreateFilterData();
     this.ViewHEADER = new ViewHeader();
     this.ViewFOOTER = new ViewFooter();
+    this.ViewNotFound = new ViewNotFound()
 
 
     this.FILTER = this.MODEL.FILTER
@@ -117,7 +120,7 @@ class ControllerMain {
     this.routes = {
       '/page404': {
         name: 'Page not found',
-        routesPage: this.routesFuntion.bind(this)
+        routesPage: this.pageNotFound.bind(this)
       },
       '/product': {
         name: 'Product details',
@@ -275,9 +278,10 @@ console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ �
   }
 
 
-  routesFuntion(name: string) {
+  pageNotFound(name: string) {
     document.title = `Store - ${name}`;
-    this.MAIN.innerHTML = 'СТРАНИЦА НЕ НАЙДЕНА.'
+    this.MAIN.innerHTML = ''
+    this.MAIN.append(this.ViewNotFound.create())
     window.history.pushState({}, '', `/page404`)
   }
 
@@ -371,7 +375,7 @@ console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ �
       // console.log('EEEEEEEEEEEEEEEEEEEEE', e)
       this.rerenderMainPageComponents()
       this.pushStateFilter()
-      // window.history.pushState({}, '', '/')
+      window.history.pushState({}, '', '/')
     })
 
 

@@ -18,7 +18,7 @@ class ViewBasketPage {
   productItemsInputView: HTMLElement;
   // startServerData: IitemDATA[];
 
-  constructor(data: IitemDATA[] ) {
+  constructor(serverData: IitemDATA[] ) {
     // this._controller = new ControllerMain();
     this.customElement = new CustomElement();
 
@@ -33,7 +33,7 @@ class ViewBasketPage {
 
     // this.startServerData = this._controller.startServerData;
 
-    this.create(data);
+    this.create(serverData);
   }
 
   create(data: IitemDATA[]) {
@@ -87,9 +87,9 @@ class ViewBasketPage {
   // Создание ItemCard корзины
   renderProductCard(dataServerItem: IitemDATA[]) {
     const itemContainer: HTMLElement[] = [];
-    const test: IitemDATA[] = dataServerItem.slice(0, 6)
+    // const test: IitemDATA[] = dataServerItem.slice(0, 6)
 
-    for (const item of test) {
+    for (const item of dataServerItem) {
       // Обертка карточки
       const itemBasket = this.customElement.createElement('div', { className: 'product__itemBasket itemBasket' });
 

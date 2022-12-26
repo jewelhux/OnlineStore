@@ -48,8 +48,12 @@ class ViewHeader {
   }
 
   // фунция обновления счетчика на корзине
-  updateheaderBasketCount(count: number = 0) {
+  updateHeaderBasketCount(count: number = 0) {
     this.headerBasketCount.textContent = count.toString()
+  }
+  // фунция обновления Суммы заказа 
+  updateHeaderTotalPrice(count: number = 0) {
+    this.headerTotalPrice.textContent = count.toString()
   }
 
   headerListeners() {

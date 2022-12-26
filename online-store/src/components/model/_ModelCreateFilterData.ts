@@ -24,6 +24,7 @@ class CreateFilterData {
   protected readonly _priceOfFILTER: number[];
   protected readonly _stockOfFILTER: number[];
   protected readonly _searchOfFILTER: string[];
+  // protected readonly _sortOfFILTER: string[];
 
   constructor() {
     this._baseData = new CreateBaseDate();
@@ -45,9 +46,10 @@ class CreateFilterData {
       "search": [''],
       "sort": [''],
     };
-    this._FILTER = state
+    this._FILTER = {...this._startServerFILTER}
     this._FILTER.price = [...this.baseData.price]
     this._FILTER.stock = [...this.baseData.stock],
+    // this._FILTER.stock = [...this.baseData.stock],
 
 
     this._startPriceOfFILTER = this._startServerFILTER.price
@@ -57,6 +59,7 @@ class CreateFilterData {
     this._priceOfFILTER = this._FILTER.price
     this._stockOfFILTER = this._FILTER.stock
     this._searchOfFILTER = this._FILTER.search
+    // this._sortOfFILTER = this._FILTER.sort
 
     this._startCategoryData = this.getCategoryAndBrandData(this.startCategoryArray, "category");
     this._filtredCategoryData = this.getCategoryAndBrandData(this.startCategoryArray, "category", this.filtredData);
@@ -68,6 +71,20 @@ class CreateFilterData {
   public get baseData() {
     return this._baseData
   }
+  // ссылка на класс Базы данных
+  public get sortOfFILTER() {
+    console.log('100 = this._FILTER.sort из СоРТ', this._FILTER.sort)
+    return this._FILTER.sort
+  }
+
+    // метод Установки Сортировки товара фильтра
+    setSortOfFILTER(data: string = this.startServerFILTER.sort[0]) {
+      // console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА ФИЛЬТДАТА', data)
+      this._FILTER.sort[0] = data;
+      console.log('600 = ОБНОВИЛАСЬ ЛИ this._FILTER.sort в конструкторе', this._FILTER.sort)
+      this.updateFiltredData()
+      // this.updateFILTER_Price_Stock()
+    }
 
   // медод обновляющий отфильтрованный Объект c данными ПРОДУКТА по измененному FILTER
   updateFiltredData(): IitemDATA[] {
@@ -161,7 +178,6 @@ class CreateFilterData {
     return this._filtredData
   }
 
-
   // обновляем мин и мак цены и количества товара в FILTER
   updateFILTER_Price_Stock(data: IitemDATA[] = this.filtredData) {
     // console.log("DDDDDDDDDDthis.filtredData", this.filtredData)
@@ -199,20 +215,13 @@ class CreateFilterData {
 
   // метод добавления и удаления значений в FILTER.category
   setFILTERCategory(data: string) {
-    // console.log("START setFILTERCategory", this.FILTER)
     const index = this._FILTER.category.indexOf(data);
     if (index !== -1) {
       this._FILTER.category.splice(index, 1);
     } else {
       this._FILTER.category.push(data)
-      // console.log("this._FILTER.category.push(data)", this._FILTER.category)
     }
-    // console.log("middle setFILTERCategory", this.FILTER)
     this.updateFiltredData()
-    // this.updateFILTER_Price_Stock()
-    // console.log("FINISH setFILTERCategory", this.FILTER)
-    // console.log("FINISH setFILTERCategory", this.FILTER)
-
   }
 
   // метод добавления и удаления значений в FILTER.brand
@@ -249,6 +258,15 @@ class CreateFilterData {
     // this.updateFILTER_Price_Stock()
   }
 
+  // // метод Установки Сортировки товара фильтра
+  // setSortOfFILTER(data: string = this.startServerFILTER.sort[0]) {
+  //   // console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА ФИЛЬТДАТА', data)
+  //   this._FILTER.sort[0] = data;
+  //   console.log('ОБНОВИЛАСЬ ЛИ this._FILTER.sort', this._FILTER.sort)
+  //   this.updateFiltredData()
+  //   // this.updateFILTER_Price_Stock()
+  // }
+
 
   setFILTER(filter: IFilter) {
     this.FILTER.brand = [...filter.brand]
@@ -257,6 +275,7 @@ class CreateFilterData {
     this.FILTER.stock = filter.stock.length ? [...filter.stock] : [...this.baseData.stock]
     this.FILTER.search = filter.search.length ? [...filter.search] : ['']
     this.FILTER.sort = filter.sort.length ? [...filter.sort] : ['']
+    console.log('this.FILTER.sort ЭТО ИЗ МОДЕЛИ',this.FILTER.sort)
     this.updateFiltredData()
   }
 
@@ -401,209 +420,3 @@ class CreateFilterData {
 }
 
 export default CreateFilterData
-
-
-// const App = new CreateFilterData()
-
-
-// function returnObjForURLSearch(obj: IFilter) {
-//   const result: stringObject = {}
-//   let prop: keyof typeof obj
-//   for (prop in obj) {
-//     result[prop] = obj[prop].join("|")
-//   }
-//   return result
-// }
-
-// console.log("77", returnObjForURLSearch(App.FILTER))
-
-
-// const params = new URLSearchParams(returnObjForURLSearch(App.FILTER))
-
-
-// // window.history.pushState({}, '', `?${params.toString()}`)
-// window.history.pushState({}, '', `?id=${2}`)
-// // window.history.pushState({}, '', `/watch1?${params.toString()}`)
-// // window.history.pushState({}, '', `/watch2?${params.toString()}`)
-// // window.history.pushState({}, '', `/watch3?${params.toString()}`)
-// console.log("80 =window.location.search =", window.location.search)
-
-
-// const ABC: { [x: string]: string[] } = {}
-
-// for (const [key, value] of params.entries()) {
-//   // console.log("100=", key, value)
-//   ABC[key] = value.split("|")
-// }
-
-// console.log("ABC ВЕРНУЛ из строки= ", ABC)
-
-
-
-
-// // console.log("10",App.serverData)
-// console.log("20", App.filtredData)
-// console.log("30",App.serverFILTER)
-// console.log("40", App.FILTER)
-
-// // App.clearFILTER()
-
-// App.FILTER.category.push("smartphones")
-// // App.FILTER.search[0] = "Lo"
-// App.updateFiltredData()
-// // App.categoryData()
-
-// // console.log("50",App.serverData)
-// console.log("60", App.filtredData)
-// // console.log("70",App.serverFILTER)
-// console.log("80 App.FILTER =", App.FILTER)
-
-// // App.clearFILTER()
-
-// // console.log("90",App.serverData)
-// console.log("100", App.filtredData)
-// // console.log("110",App.serverFILTER)
-// console.log("120", App.FILTER)
-
-
-// // console.log("App.baseData.brand", App.baseData.brand)
-// // console.log("App.categoryArray", App.categoryArray)
-// console.log("App.brandData", App.brandData)
-// console.log("App.categoryData", App.categoryData)
-
-
-// App.clearFILTER()
-
-// console.log("App.brandData", App.brandData)
-// console.log("App.categoryData", App.categoryData)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// for (const value of params.values()) {
-//   console.log("200",value)
-// }
-
-// function updateURL() {
-//   if (history.pushState) {
-//       const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-//       const newUrl = baseUrl + '?tyapk=awesome';
-//       history.pushState(null, "", newUrl);
-//   }
-//   else {
-//       console.warn('History API не поддерживается');
-//   }
-// }
-
-// window.onpopstate = updateURL;
-
-// window.history.pushState({},'',params.toString())
-
-
-// console.log(window.location.search)
-// console.log(window.location.origin)
-
-
-// window.location.assign(
-//   `${window.location.origin}${window.location.pathname}?${params.toString()}`
-// )
-
-
-
-
-
-
-// const route = (event: Event) => {
-//   event = event || window.event;
-//   event.preventDefault();
-//   window.history.pushState({}, "", params.toString());
-//   handleLocation();
-// };
-
-// const routes = {
-//   404: "/pages/404.html",
-//   "/": "/pages/index.html",
-//   "/about": "/pages/about.html",
-//   "/lorem": "/pages/lorem.html",
-// };
-
-// const handleLocation = async () => {
-//   const path = window.location.pathname;
-//   const route = routes[path] || routes[404];
-//   const html = await fetch(route).then((data) => data.text());
-//   document.getElementById("main-page").innerHTML = html;
-// };
-
-// window.onpopstate = handleLocation;
-// window.route = route;
-
-// handleLocation();
-
-
-
-//   changeFiltredData(obj = this._FILTER): IitemDATA[] {
-//     let filterData: IitemDATA[] = []
-
-//     filterData = this._serverData.filter((item) => {
-//       let keyObj: keyof typeof this.FILTER
-//       for (keyObj in obj) {
-//         if (keyObj === "category") {
-//           let keyObjCategory: keyof typeof this.FILTER.category
-//           for (keyObjCategory in this.FILTER.category) {
-//             if (this.FILTER.category[keyObjCategory] && item.category === keyObjCategory) return true
-//           }
-//         }
-//         if (keyObj === "brand") {
-//           let keyObjBrand: keyof typeof this.FILTER.brand
-//           for (keyObjBrand in this.FILTER.brand) {
-//             if (this.FILTER.brand[keyObjBrand] && item.brand === keyObjBrand) return true
-//           }
-//         }
-//         if (keyObj === "price") {
-//           this.FILTER.price.sort((a, b) => a - b)
-//           if (this.FILTER.price[0] <= item.price && item.price <= this.FILTER.price[1]) return true
-//         }
-//         if (keyObj === "stock") {
-//           this.FILTER.stock.sort((a, b) => a - b)
-//           if (this.FILTER.stock[0] <= item.stock && item.stock <= this.FILTER.stock[1]) return true
-//         }
-//       }
-//       return false
-//     })
-//     this._filtredData = filterData
-//     return this._filtredData
-//   }

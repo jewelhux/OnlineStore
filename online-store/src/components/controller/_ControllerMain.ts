@@ -225,7 +225,7 @@ console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ �
       // this.ViewMainPAGE.itemPriceNumberFrom.textContent = '40'
       // this.ViewMainPAGE.itemPriceNumberTo.textContent = '50'
     }
-
+this.updateTextContent()
   }
   // Подфунция рендора Компанента главной страниц из роутера Мейна
   viewMainPAGEupdate() {

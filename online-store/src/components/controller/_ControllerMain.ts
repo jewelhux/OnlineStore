@@ -16,8 +16,8 @@ import ViewBasketPage from '../view/_ViewBasketPage';
 // Служебные программки
 import CustomElement from '../utils/_createCustomElement';
 import FormatURL from '../utils/_formatUrl';
-// import state from '../utils/state';
-// import Router from '../router';
+import * as noUiSlider from 'nouislider';
+import 'nouislider/dist/nouislider.css';
 
 
 
@@ -192,7 +192,7 @@ console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ �
     if (this.MAIN.firstChild === this.ViewMainPAGE.pageMain) {
       // console.log('this.MAIN.firstChild первая ветка', this.MAIN.firstChild)
       // this.MAIN.append(this.ViewMainPAGE.create())
-      this.viewMainPAGEupdate()
+      this.viewMainPAGEupdate();
     } else {
       // console.log('this.MAIN.firstChild вторая ветка', this.MAIN.firstChild)
       this.MAIN.innerHTML = ''
@@ -206,6 +206,11 @@ console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ �
         this.priceOfFILTER,
         this.stockOfFILTER,
         this.sortOfFILTER))
+    }
+
+    if (document.querySelector('.noUi-base') === null) {
+      this.fnSliderPrice(); // Создание noUISlider на цену
+      this.fnSliderStock(); // Создание noUISlider на количество 
     }
   }
   // Подфунция рендора Компанента главной страниц из роутера Мейна
@@ -381,6 +386,53 @@ console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ �
     })
   }
 
+  fnSliderPrice() {
+    const sliderPrice = document.getElementById('sliderPrice') as noUiSlider.target;
+
+    if(sliderPrice) {
+      noUiSlider.create(sliderPrice, {
+        start: [1, 50],
+        connect: true,
+        step: 1,
+        range: {
+            'min': 1,
+            'max': 50
+        }
+      });
+    
+      const inputPrice1 = document.querySelector('.item-price__from') as HTMLInputElement;
+      const inputPrice2 = document.querySelector('.item-price__to') as HTMLInputElement;
+      const inputs = [inputPrice1, inputPrice2];
+    
+      sliderPrice.noUiSlider?.on('update', function(values: (string | number)[], handle: number): void { 
+        inputs[handle].textContent = String(Math.round(Number(values[handle])));
+      });
+    }
+  }
+
+  fnSliderStock() {
+    const sliderStock = document.getElementById('sliderStock') as noUiSlider.target;
+  
+    if(sliderStock) {
+      noUiSlider.create(sliderStock, {
+        start: [1, 999],
+        connect: true,
+        step: 1,
+        range: {
+            'min': 1,
+            'max': 999
+        }
+      });
+    
+      const inputStock1 = document.querySelector('.item-stock__from') as HTMLInputElement;
+      const inputStock2 = document.querySelector('.item-stock__to') as HTMLInputElement;
+      const inputs = [inputStock1, inputStock2];
+    
+      sliderStock.noUiSlider?.on('update', function(values: (string | number)[], handle: number): void { 
+        inputs[handle].textContent = String(Math.round(Number(values[handle])));
+      });
+    }
+  }
 
 }
 

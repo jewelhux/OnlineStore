@@ -142,8 +142,10 @@ class ViewBasketPage {
     return itemContainer
   }
 
-  changeItemsForList(itemData: IitemDATA[], countItems: number) {
-    console.log('123')
+  changeItemsForList(countItems: number) {
+    // Логика программы
+
+    updateBrandBlock(itemData) // Откуда брать itemData
   }
 
   updateBrandBlock(itemData: IitemDATA[]) {

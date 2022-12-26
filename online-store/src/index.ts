@@ -2,7 +2,7 @@ import './_global.scss';
 import '../index.html';
 import './components/_add_favicon';
 import ControllerMain from './components/controller/_ControllerMain'
-import * as noUiSlider from 'nouislider';
+// import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 
 const APP = new ControllerMain()

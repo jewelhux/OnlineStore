@@ -47,8 +47,7 @@ class CreateFilterData {
       "sort": [''],
     };
     this._FILTER = {...this._startServerFILTER}
-    this._FILTER.price = [...this.baseData.price]
-    this._FILTER.stock = [...this.baseData.stock],
+    // this._FILTER.price = [...this.baseData.price]
     // this._FILTER.stock = [...this.baseData.stock],
 
 
@@ -88,6 +87,8 @@ class CreateFilterData {
 
   // медод обновляющий отфильтрованный Объект c данными ПРОДУКТА по измененному FILTER
   updateFiltredData(): IitemDATA[] {
+
+    // Временно отключил
     if (this.FILTER.brand.length === 0
       && this.FILTER.category.length === 0
       && this.FILTER.sort[0] === ''
@@ -95,6 +96,8 @@ class CreateFilterData {
       this.FILTER.price = [...this.baseData.price];
       this.FILTER.stock = [...this.baseData.stock];
     }
+    // Временно отключил
+
 
     let resultfilterData: IitemDATA[] = this.startServerData.slice()
     // console.log("769 =resultfilterData", resultfilterData)
@@ -246,7 +249,9 @@ class CreateFilterData {
   }
   // метод Установки массива колличества товара фильтра
   setStockOfFILTER(data: number[] = this.startServerFILTER.stock) {
-    this._FILTER.stock = data;
+    this._FILTER.stock = [...data];
+    console.log("1000 this._FILTER.stock",this._FILTER.stock)
+    console.log("2000 this._FILTER",this._FILTER)
     this.updateFiltredData()
     // this.updateFILTER_Price_Stock()
   }

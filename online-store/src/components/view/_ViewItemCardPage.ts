@@ -22,9 +22,7 @@ class ViewItemCardPage {
     this.startServerProduct = product;
     this.customElement = new CustomElement();
     this.pageMainItemCard = this.customElement.createElement('div', { className: 'page-main-itemCard _main-container' }); // Основная сакция картчоки
-    // this.startServerData = this._controller.startServerData;
     this.itemCardImagePhotoImg = this.customElement.createElement('img', { className: 'itemCard__imagePhoto-img' });
-    // this.create(product);
 
     this.cardBtnButtonAdd = this.customElement.createElement('button', { className: 'card__btn-button _btn button-add', textContent: 'Add to Cart' });
     this.cardBtnButtonBuy = this.customElement.createElement('button', { className: 'card__btn-button _btn button-buy', textContent: 'Buy now' });

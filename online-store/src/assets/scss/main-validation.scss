@@ -1,0 +1,90 @@
+
+.popup-wrapper-active {
+  display: block;
+}
+
+.popup {
+  padding: 25px;
+  height: 100%;
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popup__block {
+  position: relative;
+  max-width: 600px;
+  background-color: #FFF;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+  padding: 40px 20px;
+}
+
+.creditInput__image {
+  width: 100px;
+  height: 50px;
+  display: flex;
+  img {
+    object-fit: contain;
+    width: 100%;
+  }
+}
+
+.popup__dataInput {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.popup__persona, .creditInput__title {
+  font-weight: 700;
+  color: $mainColor;
+  align-self: center;
+  font-size: 32px;
+}
+
+.popup__creditInput {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.creditInput__cardNumber {
+  justify-content: space-between;
+  display: flex;
+  column-gap: 50px;
+}
+
+.creditInput__cardSecret {
+  display: flex;
+  column-gap: 100px;
+}
+
+.product__itemsView {
+  display: flex;
+}
+
+.product__items-inputView {
+  font-size: 18px;
+  font-weight: 700;
+  color: $mainColor;
+  padding: 5px;
+  align-self: center;
+  width: 35px;
+  height: 30px;
+  outline: none;
+  border-radius: 5px;
+}
+
+.confirm__button {
+  width: 250px;
+  padding: 15px 20px;
+  font-size: 24px;
+  align-self: center;
+}

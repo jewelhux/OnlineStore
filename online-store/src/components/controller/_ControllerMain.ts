@@ -212,7 +212,20 @@ console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ �
       // console.log('this.MAIN.firstChild третья ветка', this.MAIN.firstChild)
       this.fnSliderPrice(); // Создание noUISlider на цену
       this.fnSliderStock(); // Создание noUISlider на количество 
+    } else {
+      (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.destroy();
+      this.fnSliderPrice();
+      (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.destroy();
+      this.fnSliderStock()
     }
+
+
+
+
+
+
+
+
   }
   // Подфунция рендора Компанента главной страниц из роутера Мейна
   viewMainPAGEupdate() {

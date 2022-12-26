@@ -36,10 +36,12 @@ class ViewBasketPage {
     this.create(serverData);
   }
 
-  create(data: IitemDATA[]) {
-    this.pageMainBasket.innerHTML = ''
-    this.productList.innerHTML = ''
-    this.summaryInfo.innerHTML = ''
+  create(data: IitemDATA[], count: number = 3, page:number = 1) {
+    this.pageMainBasket.innerHTML = '';
+    this.productList.innerHTML = '';
+    this.summaryInfo.innerHTML = '';
+
+    this.createData = [...data];
     // Отрисовка контейнера (для попапа и секции)
     // const pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
     const popupWrapper = this.customElement.createElement('div', { className: 'popup-wrapper' });
@@ -70,7 +72,8 @@ class ViewBasketPage {
     this.customElement.addChildren(productPages, [productItemsPages, this.pagesButtonPrev, this.pagesCurrent, this.pagesButtonNext]);
 
     // Отрисовка Листа товаров корзины
-    this.customElement.addChildren(this.productList, [...this.renderProductCard(data)]);
+    // this.customElement.addChildren(this.productList, [...this.renderProductCard(data)]);
+    this.updateBrandBlock(data, count, page);
 
     // Отрисовка mainBasketSummary
     const summaryName = this.customElement.createElement('h3', { className: 'summary__name', textContent: 'Summary' });
@@ -145,12 +148,16 @@ class ViewBasketPage {
   changeItemsForList(countItems: number) {
     // Логика программы
 
-    updateBrandBlock(itemData) // Откуда брать itemData
+    // updateBrandBlock(itemData) // Откуда брать itemData
   }
 
-  updateBrandBlock(itemData: IitemDATA[]) {
-    this.productList.innerHTML = ''
-    this.customElement.addChildren(this.productList, [...this.renderProductCard(itemData)]);
+  updateCount(event:number, itemData: IitemDATA[] = this.createData, page:number = this.cretePage) {
+     //page по аналогии с itemData // проверка по эвенту значения
+     // перезаписать page и count в create()
+     // вероятно itemData тоже можно убрать как и другие аргументы
+    this.productList.innerHTML = '';
+    const sortData = itemData.filter(element => element.rating === 4); // логика перерисовки 
+    this.customElement.addChildren(this.productList, [...this.renderProductCard(sortData)]);
   }
 }
 

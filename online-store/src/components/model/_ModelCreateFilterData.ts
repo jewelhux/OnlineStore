@@ -19,6 +19,8 @@ class CreateFilterData {
 
   protected readonly _startPriceOfFILTER: number[];
   protected readonly _startStockOfFILTER: number[];
+  _FILTERpriceTEXT: number[];
+  _FILTERstockTEXT: number[];
   protected readonly _startSearchOfFILTER: string[];
 
   protected readonly _priceOfFILTER: number[];
@@ -47,8 +49,8 @@ class CreateFilterData {
       "sort": [''],
     };
     this._FILTER = {...this._startServerFILTER}
-    // this._FILTER.price = [...this.baseData.price]
-    // this._FILTER.stock = [...this.baseData.stock],
+    this._FILTERpriceTEXT = [...this.baseData.price]
+    this._FILTERstockTEXT = [...this.baseData.stock],
 
 
     this._startPriceOfFILTER = this._startServerFILTER.price
@@ -186,32 +188,33 @@ console.log('this._filtredData из модели',this._filtredData)
     // console.log("DDDDDDDDDDthis.filtredData", this.filtredData)
     const price: number[] = []
     const stock: number[] = []
+    console.log('DATADATA', data)
 
     if (data.length === 0) {
-      this._FILTER.price = new Array(2).fill(this.startServerFILTER.price[0])
-      this._FILTER.stock = new Array(2).fill(this.startServerFILTER.stock[0])
+      this._FILTERpriceTEXT = new Array(2).fill(0)
+      this._FILTERstockTEXT = new Array(2).fill(0)
       // this._FILTER.price = [0,0]
       // this._FILTER.stock = [0,0]
 
     } else if (data.length === 1) {
       // console.log("new Array(2).fill(data[0].price)",new Array(2).fill(data[0].price))
-      this._FILTER.price = new Array(2).fill(data[0].price)
-      this._FILTER.stock = new Array(2).fill(data[0].stock)
+      this._FILTERpriceTEXT = new Array(2).fill(data[0].price)
+      this._FILTERstockTEXT = new Array(2).fill(data[0].stock)
     } else {
-      this._FILTER.price = data.reduce((res, product) => {
+      this._FILTERpriceTEXT = data.reduce((res, product) => {
         res.push(product.price)
         return res
       }, price).sort((a, b) => a - b)
         .filter((item, index, arr) => index === 0 || index === (arr.length - 1))
 
-      this._FILTER.stock = data.reduce((res, product) => {
+      this._FILTERstockTEXT = data.reduce((res, product) => {
         res.push(product.stock)
         return res
       }, stock).sort((a, b) => a - b)
         .filter((item, index, arr) => index === 0 || index === (arr.length - 1))
     }
-    // console.log("DDDDDDDDDDthis._FILTER.stock", this._FILTER.stock)
-    // console.log("DDDDDDDDDDDthis._FILTER.price", this._FILTER.price)
+    console.log("DDDDDDDDDDthis._FILTERpriceTEXT", this._FILTERpriceTEXT)
+    console.log("DDDDDDDDDDDthis._FILTERstockTEXT", this._FILTERstockTEXT)
 
 
   }
@@ -262,16 +265,6 @@ console.log('this._filtredData из модели',this._filtredData)
     this.updateFiltredData()
     // this.updateFILTER_Price_Stock()
   }
-
-  // // метод Установки Сортировки товара фильтра
-  // setSortOfFILTER(data: string = this.startServerFILTER.sort[0]) {
-  //   // console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА ФИЛЬТДАТА', data)
-  //   this._FILTER.sort[0] = data;
-  //   console.log('ОБНОВИЛАСЬ ЛИ this._FILTER.sort', this._FILTER.sort)
-  //   this.updateFiltredData()
-  //   // this.updateFILTER_Price_Stock()
-  // }
-
 
   setFILTER(filter: IFilter) {
     this.FILTER.brand = [...filter.brand]

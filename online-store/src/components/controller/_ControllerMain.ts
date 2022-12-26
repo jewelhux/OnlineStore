@@ -215,19 +215,16 @@ console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ �
       // console.log('this.MAIN.firstChild третья ветка', this.MAIN.firstChild)
       this.fnSliderPrice(); // Создание noUISlider на цену
       this.fnSliderStock(); // Создание noUISlider на количество 
+      // const inputs = [this.ViewMainPAGE.itemPriceNumberFrom,  this.ViewMainPAGE.itemPriceNumberTo];
+
     } else {
       (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.destroy();
       this.fnSliderPrice();
       (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.destroy();
       this.fnSliderStock()
+      // this.ViewMainPAGE.itemPriceNumberFrom.textContent = '40'
+      // this.ViewMainPAGE.itemPriceNumberTo.textContent = '50'
     }
-
-
-
-
-
-
-
 
   }
   // Подфунция рендора Компанента главной страниц из роутера Мейна
@@ -312,6 +309,15 @@ console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ �
     }
   }
 
+  updateTextContent(){
+    this.MODEL.updateFILTER_Price_Stock()
+    // console.log('!!!!!!!!!',this.MODEL._FILTERpriceTEXT, this.MODEL._FILTERstockTEXT)
+    this.ViewMainPAGE.itemPriceNumberFrom.textContent = this.MODEL._FILTERpriceTEXT[0].toString()
+    this.ViewMainPAGE.itemPriceNumberTo.textContent = this.MODEL._FILTERpriceTEXT[1].toString()
+    this.ViewMainPAGE.itemStockNumberFrom.textContent = this.MODEL._FILTERstockTEXT[0].toString()
+     this.ViewMainPAGE.itemStockNumberTo.textContent = this.MODEL._FILTERstockTEXT[1].toString()
+  }
+
   // СЛУШАТЕЛИ СОБЫТИЙ
   ListenersController() {
 
@@ -321,6 +327,7 @@ console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ �
       this.MODEL.setFILTERCategory(target.id)
       this.rerenderMainPageComponents()
       this.pushStateFilter()
+      this.updateTextContent()
     })
     // Ловля клика по Инпутам brend из Мейна
     this.MAIN.addEventListener('clickOnBrandMain', (e) => {
@@ -328,6 +335,11 @@ console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ �
       this.MODEL.setFILTERBrand(target.id)
       this.rerenderMainPageComponents()
       this.pushStateFilter()
+      this.updateTextContent()
+      // this.MODEL.updateFILTER_Price_Stock()
+      // // console.log('!!!!!!!!!',this.MODEL._FILTERpriceTEXT, this.MODEL._FILTERstockTEXT)
+      // this.ViewMainPAGE.itemPriceNumberFrom.textContent = this.MODEL._FILTERpriceTEXT[0].toString()
+      // this.ViewMainPAGE.itemPriceNumberTo.textContent = this.MODEL._FILTERpriceTEXT[1].toString()
     })
 
     // Ловля изменения инпута СЕРЧ
@@ -337,20 +349,20 @@ console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ �
       this.MODEL.setSearchOfFILTER(target.value)
       this.rerenderMainPageComponents()
       this.pushStateFilter()
+      this.updateTextContent()
     })
 
     // Ловля изменения СОРТИРОВКИ
     this.MAIN.addEventListener('choiceOnSortMain', (e) => {
       const target = e.target as HTMLSelectElement;
-      console.log('500 = target.value', target.value)
-
-
+      // console.log('500 = target.value', target.value)
       this.MODEL.setSortOfFILTER(target.value)
       // this.sortOfFILTER = this.MODEL.sortOfFILTER
       console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА', this.sortOfFILTER)
       console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА модель', this.MODEL.sortOfFILTER)
       this.rerenderMainPageComponents()
       this.pushStateFilter()
+      this.updateTextContent()
     })
 
     // Клик по кнопке РЕСЕТ сброса фильтров из Мейна

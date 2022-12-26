@@ -58,8 +58,8 @@ class ControllerMain {
   readonly startStockOfFILTER: number[];
   readonly startSearchOfFILTER: string[];
 
-  readonly priceOfFILTER: number[];
-  readonly stockOfFILTER: number[];
+  protected priceOfFILTER: number[];
+  protected stockOfFILTER: number[];
   readonly searchOfFILTER: string[];
   sortOfFILTER: string[];
 
@@ -181,7 +181,7 @@ class ControllerMain {
     document.title = `Store - ${name}`;
     const search = new URLSearchParams(window.location.search);
     const filter = this._formatURL.createObjectFromURLSearchParams(search)
-// console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ СТРОКИ',filter)
+console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ СТРОКИ',filter)
 
     this.MODEL.setFILTER(filter)
     this.rerenderMainPageComponents()
@@ -209,6 +209,7 @@ class ControllerMain {
     }
 
     if (document.querySelector('.noUi-base') === null) {
+      // console.log('this.MAIN.firstChild третья ветка', this.MAIN.firstChild)
       this.fnSliderPrice(); // Создание noUISlider на цену
       this.fnSliderStock(); // Создание noUISlider на количество 
     }
@@ -216,6 +217,8 @@ class ControllerMain {
   // Подфунция рендора Компанента главной страниц из роутера Мейна
   viewMainPAGEupdate() {
     this.sortOfFILTER = this.MODEL.sortOfFILTER
+    this.priceOfFILTER = this.MODEL.priceOfFILTER
+    this.stockOfFILTER = this.MODEL.stockOfFILTER
     this.ViewMainPAGE.updateCardList(this.MODEL.filtredData)
     this.ViewMainPAGE.updateBrandBlock(this.MODEL.filtredBrandData)
     this.ViewMainPAGE.updateCategoryBlock(this.MODEL.filtredCategoryData)
@@ -392,6 +395,10 @@ class ControllerMain {
     // this.silderStock = this.customElement.createElement('div', { id: 'sliderStock' }); // No Ui Slider Stock
 
     // const sliderPrice = document.getElementById('sliderPrice') as noUiSlider.target;
+
+// console.log(' fnSliderPrice()',this.priceOfFILTER[0],this.priceOfFILTER[1])
+// console.log(' fnSliderPrice()',this.MODEL.priceOfFILTER[0],this.MODEL.priceOfFILTER[1])
+
 
     if(this.ViewMainPAGE.silderPrice) {
       noUiSlider.create(this.ViewMainPAGE.silderPrice, {

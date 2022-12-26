@@ -89,13 +89,13 @@ class CreateFilterData {
   updateFiltredData(): IitemDATA[] {
 
     // Временно отключил
-    if (this.FILTER.brand.length === 0
-      && this.FILTER.category.length === 0
-      && this.FILTER.sort[0] === ''
-      && this.FILTER.search[0] === '') {
-      this.FILTER.price = [...this.baseData.price];
-      this.FILTER.stock = [...this.baseData.stock];
-    }
+    // if (this.FILTER.brand.length === 0
+    //   && this.FILTER.category.length === 0
+    //   && this.FILTER.sort[0] === ''
+    //   && this.FILTER.search[0] === '') {
+    //   this.FILTER.price = [...this.baseData.price];
+    //   this.FILTER.stock = [...this.baseData.stock];
+    // }
     // Временно отключил
 
 
@@ -176,7 +176,7 @@ class CreateFilterData {
     }
 
     this._filtredData = resultfilterData
-
+console.log('this._filtredData из модели',this._filtredData)
 
     return this._filtredData
   }
@@ -280,7 +280,8 @@ class CreateFilterData {
     this.FILTER.stock = filter.stock.length ? [...filter.stock] : [...this.baseData.stock]
     this.FILTER.search = filter.search.length ? [...filter.search] : ['']
     this.FILTER.sort = filter.sort.length ? [...filter.sort] : ['']
-    console.log('this.FILTER.sort ЭТО ИЗ МОДЕЛИ',this.FILTER.sort)
+    // console.log('this.FILTER.sort ЭТО ИЗ МОДЕЛИ',this.FILTER.sort)
+    console.log('this.FILTER ЭТО ИЗ Конструктора',this.FILTER)
     this.updateFiltredData()
   }
 

@@ -142,6 +142,14 @@ class ViewBasketPage {
     return itemContainer
   }
 
+  changeItemsForList(itemData: IitemDATA[], countItems: number) {
+    console.log('123')
+  }
+
+  updateBrandBlock(itemData: IitemDATA[]) {
+    this.productList.innerHTML = ''
+    this.customElement.addChildren(this.productList, [...this.renderProductCard(itemData)]);
+  }
 }
 
 export default ViewBasketPage

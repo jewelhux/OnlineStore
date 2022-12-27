@@ -7,6 +7,7 @@ class ViewValidation {
   confirmButton: HTMLElement;
   InputName: HTMLInputElement;
   InputPhone: HTMLInputElement;
+  InputAdress: HTMLInputElement;
 
   EVENT: { [x: string]: Event }
 
@@ -21,7 +22,8 @@ class ViewValidation {
       { className: '_inp popup__dataInput-name', type: 'text', placeholder: 'Your Name: Lia Maf' }) as HTMLInputElement;
     this.InputPhone = this.customElement.createElement('input',
       { className: '_inp popup__dataInput-phone', type: 'text', placeholder: 'Phone number: +123456789' }) as HTMLInputElement;
-
+      this.InputAdress = this.customElement.createElement('input',
+       { className: '_inp popup__dataInput-adress', type: 'text', placeholder: 'Adress: as1** **c/4 a*s*9' }) as HTMLInputElement;
 
     console.log('this.InputName', this.InputName.value)
 
@@ -39,6 +41,7 @@ class ViewValidation {
 
       console.log('isValidInputName() = ', this.isValidInputName())
       console.log('isValidInputPhone() = ', this.isValidInputPhone())
+      console.log('isValidInputAdress() = ', this.isValidInputAdress())
 
     });
 
@@ -79,6 +82,15 @@ class ViewValidation {
     }
     return false
   }
+  
+  isValidInputAdress() {
+    const array = this.InputAdress.value.split(' ').filter(item => item)
+    console.log('array', array)
+    if (array.length > 2 && array.every(item => item.length > 4)) {
+      return true
+    }
+    return false
+  }
 
 
 
@@ -107,9 +119,9 @@ class ViewValidation {
     const popupPersona = this.customElement.createElement('h3', { className: 'popup__persona', textContent: 'Personal details' });
     // const popupDataInputName = this.customElement.createElement('input', { className: '_inp popup__dataInput-name', type: 'text', placeholder: 'Your Name' });
     // const popupDataInputPhone = this.customElement.createElement('input', { className: '_inp popup__dataInput-phone', type: 'text', placeholder: 'Phone number' });
-    const popupDataInputAdress = this.customElement.createElement('input', { className: '_inp popup__dataInput-adress', type: 'text', placeholder: 'Adress' });
+    // const popupDataInputAdress = this.customElement.createElement('input', { className: '_inp popup__dataInput-adress', type: 'text', placeholder: 'Adress' });
     const popupDataInputMail = this.customElement.createElement('input', { className: '_inp popup__dataInput-mail', type: 'mail', placeholder: 'E-mail' });
-    this.customElement.addChildren(popupDataInput, [popupPersona, this.InputName, this.InputPhone, popupDataInputAdress, popupDataInputMail]);
+    this.customElement.addChildren(popupDataInput, [popupPersona, this.InputName, this.InputPhone, this.InputAdress, popupDataInputMail]);
 
 
     popupDataInputMail.classList.add('placeholder-red');

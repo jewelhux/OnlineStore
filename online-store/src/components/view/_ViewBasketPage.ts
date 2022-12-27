@@ -16,15 +16,21 @@ class ViewBasketPage {
   productList: HTMLElement;
   summaryInfo: HTMLElement;
   productItemsInputView: HTMLElement;
-  summaryInfoDataButton:HTMLElement;
+  EVENT: { [x: string]: Event };
+  objectItemsPages: { [x: string]: number };
+  serverData: IitemDATA[];
+  summaryInfoDataButton: HTMLElement;
+  numberPage: number;
+  numberItem: number;
+  maxPage: number;
   // startServerData: IitemDATA[];
-  EVENT: { [x: string]: Event }
 
-  constructor(serverData: IitemDATA[] ) {
+  constructor(serverData: IitemDATA[], objectItemPage:{ [x: string]: number } = { items: 4, pages: 2} ) {
     // this._controller = new ControllerMain();
     this.customElement = new CustomElement();
 
     this.pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
+    this.summaryInfoDataButton = this.customElement.createElement('button', { className: 'card__btn-button _btn', textContent: 'Buy now' });
 
     this.productList = this.customElement.createElement('div', { className: 'product__list' }); // Лист карточек
     this.productItemsInputView = this.customElement.createElement('input', { className: 'product__items-inputView', type: 'text', value: '4' }); // Количество отображаемых на странице карточек товара
@@ -33,28 +39,31 @@ class ViewBasketPage {
     this.pagesCurrent = this.customElement.createElement('p', { className: 'product__pages-current', textContent: '2' }); // Лист карточек
     this.summaryInfo = this.customElement.createElement('div', { className: 'summary__info summaryInfo' }); // Итоговая информация
 
-    this.summaryInfoDataButton = this.customElement.createElement('button', { className: 'card__btn-button _btn', textContent: 'Buy now' });
-
-    // this.startServerData = this._controller.startServerData;
     this.EVENT = {
-      clickOnProductAddInBascetBuy: new Event('clickOnProductAddInBascetBuy', { bubbles: true }),// Клик на контейнере с Карточками
-    }
-    this.listenersCardPage();
-    this.create(serverData);
+      inputOnItemsVisible: new Event('inputOnItemsVisible', { bubbles: true }),
+    };
+
+    this.serverData = serverData; // Сюда будем перезаписывать данные
+    this.objectItemsPages = { ...objectItemPage }; // Создадим копию нашего входящего объекта с инпутом и страничкой
+    this.numberPage = this.objectItemsPages.pages;
+    this.numberItem = this.objectItemsPages.items;
+    this.maxPage = this.serverData.length / this.numberItem;
+
+    this.listenersMain();
   }
 
-  listenersCardPage() {
-
-    this.summaryInfoDataButton.addEventListener('click', (e) => {
-      this.summaryInfoDataButton.dispatchEvent(this.EVENT.clickOnProductAddInBascetBuy)
-    })
-
+  listenersMain() {
+    this.productItemsInputView.addEventListener('input', (event) => this.changeNumberItems(event));
+    this.pagesButtonPrev.addEventListener('click', (event) => this.changeNumberPage(event))
+    this.pagesButtonNext.addEventListener('click', (event) => this.changeNumberPage(event))
   }
 
-  create(data: IitemDATA[]) {
-    this.pageMainBasket.innerHTML = ''
-    this.productList.innerHTML = ''
-    this.summaryInfo.innerHTML = ''
+  create(data: IitemDATA[], basketItem:{ [x: string]: number } = { items: 3, pages: 1}) {
+    this.pageMainBasket.innerHTML = '';
+    this.productList.innerHTML = '';
+    this.summaryInfo.innerHTML = '';
+    this.serverData = [...data]; // Запишем входящие данные, чтобы не потерять
+
     // Отрисовка контейнера (для попапа и секции)
     // const pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
     const popupWrapper = this.customElement.createElement('div', { className: 'popup-wrapper' });
@@ -85,7 +94,8 @@ class ViewBasketPage {
     this.customElement.addChildren(productPages, [productItemsPages, this.pagesButtonPrev, this.pagesCurrent, this.pagesButtonNext]);
 
     // Отрисовка Листа товаров корзины
-    this.customElement.addChildren(this.productList, [...this.renderProductCard(data)]);
+    // this.customElement.addChildren(this.productList, [...this.renderProductCard(data)]);
+    this.changeItemsForList();
 
     // Отрисовка mainBasketSummary
     const summaryName = this.customElement.createElement('h3', { className: 'summary__name', textContent: 'Summary' });
@@ -155,6 +165,49 @@ class ViewBasketPage {
 
     itemContainer.push(summaryInfoDataProducts, summaryInfoDataTotal, summaryInfoDataSearch, summaryInfoDataProme, this.summaryInfoDataButton)
     return itemContainer
+  }
+
+  changeItemsForList() {
+    this.pagesCurrent.textContent = String(this.numberPage);
+    (this.productItemsInputView as HTMLInputElement).value = String(this.numberItem);
+
+    this.productList.innerHTML = '';
+    const newListElement = this.serverData.slice((this.numberPage - 1) * this.numberItem, Number(this.numberItem) * this.numberPage); // Создадим новый массив из старого
+    this.customElement.addChildren(this.productList, [...this.renderProductCard(newListElement)]);
+  }
+
+  changeNumberPage(event:Event) {
+    const target = event.target as HTMLElement
+    this.maxPage = Math.ceil(this.serverData.length / this.numberItem);
+
+    if (this.numberPage < this.maxPage && this.numberPage >= 1) {
+      if (target.classList.contains('product__pages-btnNext')) {
+        this.numberPage += 1;
+      }
+    } 
+    
+    if (this.numberPage <= this.maxPage && this.numberPage > 1) {
+      if (target.classList.contains('product__pages-btnPrev')) {
+        this.numberPage -= 1;
+      } 
+    }
+    
+    this.changeItemsForList();
+  }
+
+  changeNumberItems(event:Event) {
+    const target = event.target as HTMLInputElement
+    if (target.value === '') { // Проверка на ввод пустого значения
+      return 
+    }
+
+    this.numberItem = Number(target.value); // Перезапишем количество указанных карточек
+    (this.productItemsInputView as HTMLInputElement).value = String(this.numberItem); // Запишем в инпут указанное значение
+    if (this.numberItem > this.serverData.length) { // Проверка на то, чтобы введенное число было не более карточек в корзине
+      target.value = String(this.serverData.length);
+    }
+    
+    this.changeItemsForList();
   }
 
 }

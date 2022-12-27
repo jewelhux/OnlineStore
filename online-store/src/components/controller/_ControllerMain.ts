@@ -12,6 +12,8 @@ import ViewMainPage from '../view/_ViewMainPage';
 import ViewFooter from '../view/_ViewFooter';
 import ViewItemCardPage from '../view/_ViewItemCardPage';
 import ViewBasketPage from '../view/_ViewBasketPage';
+import ViewNotFound from '../view/_ViewNotFoundPage';
+import ViewValidation from '../view/_ViewValidation';
 
 // Служебные программки
 import CustomElement from '../utils/_createCustomElement';
@@ -39,7 +41,9 @@ class ControllerMain {
   ViewMainPAGE: ViewMainPage;
   ViewFOOTER: ViewFooter;
   ViewItemCardPAGE: ViewItemCardPage;
-  ViewBASKETPAGE: ViewBasketPage
+  ViewBASKETPAGE: ViewBasketPage;
+  ViewNotFound: ViewNotFound;
+  ViewValidation:ViewValidation;
 
   _formatURL: FormatURL;
 
@@ -58,8 +62,8 @@ class ControllerMain {
   readonly startStockOfFILTER: number[];
   readonly startSearchOfFILTER: string[];
 
-  readonly priceOfFILTER: number[];
-  readonly stockOfFILTER: number[];
+  protected priceOfFILTER: number[];
+  protected stockOfFILTER: number[];
   readonly searchOfFILTER: string[];
   sortOfFILTER: string[];
 
@@ -87,6 +91,8 @@ class ControllerMain {
     this.MODEL = new CreateFilterData();
     this.ViewHEADER = new ViewHeader();
     this.ViewFOOTER = new ViewFooter();
+    this.ViewNotFound = new ViewNotFound();
+    this.ViewValidation = new ViewValidation();
 
 
     this.FILTER = this.MODEL.FILTER
@@ -117,7 +123,7 @@ class ControllerMain {
     this.routes = {
       '/page404': {
         name: 'Page not found',
-        routesPage: this.routesFuntion.bind(this)
+        routesPage: this.pageNotFound.bind(this)
       },
       '/product': {
         name: 'Product details',
@@ -126,6 +132,10 @@ class ControllerMain {
       '/basket': {
         name: 'Backet',
         routesPage: this.renderBacket.bind(this)
+      },
+      '/validation': {
+        name: 'Validation',
+        routesPage: this.renderValidation.bind(this)
       },
       '/': {
         name: 'Home',
@@ -139,17 +149,14 @@ class ControllerMain {
 
   // МЕТОД добавления и удаления  ПО ID из КОРЗИНЫ
   updateBascetLocalStorage(id: number, key: boolean = true): IBascetLocalStorage[] {
-
     const index = this.BascetLocalStorage.findIndex((el, index) => {
       return el.id === id
     })
-
     if (index === -1) {
       this.BascetLocalStorage.push(this.convertIDtoBascetObject(id))
     } else if (index !== -1 && key) {
       this.BascetLocalStorage.splice(index, 1);
     }
-
     localStorage.setItem('BascetLocalStorage', JSON.stringify(this.BascetLocalStorage))
     return this.BascetLocalStorage
   }
@@ -170,19 +177,24 @@ class ControllerMain {
     this.FOOTER.append(this.ViewFOOTER.create())
 
     this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
-
     const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
     this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
   }
 
+    // Рендер Validation страницы из роутера
+  renderValidation(name: string){
+    document.title = `Store - ${name}`;
+    this.MAIN.innerHTML = '';
+    this.MAIN.append(this.ViewValidation.create())
+
+  }
 
   // Рендер главной страницы из роутера
   renderMainPageFromRouter(name: string) {
     document.title = `Store - ${name}`;
     const search = new URLSearchParams(window.location.search);
     const filter = this._formatURL.createObjectFromURLSearchParams(search)
-// console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ СТРОКИ',filter)
-
+    // console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ СТРОКИ', filter)
     this.MODEL.setFILTER(filter)
     this.rerenderMainPageComponents()
   }
@@ -209,13 +221,27 @@ class ControllerMain {
     }
 
     if (document.querySelector('.noUi-base') === null) {
+      // console.log('this.MAIN.firstChild третья ветка', this.MAIN.firstChild)
       this.fnSliderPrice(); // Создание noUISlider на цену
       this.fnSliderStock(); // Создание noUISlider на количество 
+      // const inputs = [this.ViewMainPAGE.itemPriceNumberFrom,  this.ViewMainPAGE.itemPriceNumberTo];
+
+    } else {
+      (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.destroy();
+      this.fnSliderPrice();
+      (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.destroy();
+      this.fnSliderStock()
+      // this.ViewMainPAGE.itemPriceNumberFrom.textContent = '40'
+      // this.ViewMainPAGE.itemPriceNumberTo.textContent = '50'
     }
+    this.updateTextContent()
   }
   // Подфунция рендора Компанента главной страниц из роутера Мейна
   viewMainPAGEupdate() {
+    this.MODEL.updateFiltredData() // Добавил сюда и отключил на элементах в модели
     this.sortOfFILTER = this.MODEL.sortOfFILTER
+    this.priceOfFILTER = this.MODEL.priceOfFILTER
+    this.stockOfFILTER = this.MODEL.stockOfFILTER
     this.ViewMainPAGE.updateCardList(this.MODEL.filtredData)
     this.ViewMainPAGE.updateBrandBlock(this.MODEL.filtredBrandData)
     this.ViewMainPAGE.updateCategoryBlock(this.MODEL.filtredCategoryData)
@@ -226,8 +252,8 @@ class ControllerMain {
   renderItemCardPAGEFromRouter(name: string) {
     document.title = `Store - ${name}`;
     const search = new URLSearchParams(window.location.search);
-    console.log('search!!!!!!!!', this._formatURL.createIDFromURLSearchParams(search))
-    const id = this._formatURL.createIDFromURLSearchParams(search).id
+    // console.log('search!!!!!!!!', this._formatURL.createFromURLSearchParams(search))
+    const id = this._formatURL.createFromURLSearchParams(search).id
     // const filter = this._formatURL.createObjectFromURLSearchParams(search)
     // this.MODEL.setFILTER(filter)
     // this.rerenderMainPageComponents()
@@ -241,27 +267,65 @@ class ControllerMain {
     // const search = new URLSearchParams(window.location.search);
     // console.log('search!!!!!!!!', this._formatURL.createIDFromURLSearchParams(search))
     // const id = this._formatURL.createIDFromURLSearchParams(search).id
+    
+    
+    // Логика из корзины временно тут
+    const basketObject1 = {
+      items: 5,
+      pages: 2,
+    }
+    console.log('50 =basketObject1', basketObject1)
+       const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject1)
+           window.history.pushState({}, '', `/basket?${params}`)
+
+    // Логика из корзины временно тут
+
+
+    const search = new URLSearchParams(window.location.search);
+    console.log('600 =window.location.search!!!!', window.location.search)
+    console.log('70 =search', search.toString())
+
+    const basketObject = search.toString() ? this._formatURL.createFromURLSearchParams(search) : {
+      items: 3,
+      pages: 1,
+    } 
+
+    console.log('100 =basketObject!!!!!!', basketObject)
+    // const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject)
+    // window.history.pushState({}, '', `/basket?${params}`)
+    // console.log('300 =search!!!!!!!!', search)
+    // const returnbasketObject = this._formatURL.createFromURLSearchParams(search)
+    // console.log('400 = returnbasketObject!!!!!!!!', returnbasketObject)
+
 
     this.MAIN.innerHTML = ''
-    this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet())) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
+    this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet())) // НЕ ДОРАБОТАНО нудно  пушить объект
+
+
+
+
+
+
+
+
+
+
   }
 
   // Метод получения товаров в корзину по Списку из ЛОКАЛ СТОРИДЖ
   generateProductsForBascet(localData: IBascetLocalStorage[] = this.BascetLocalStorage): IitemDATA[] {
     return this.startServerData.filter((el) => {
-
       for (let index = 0; index < localData.length; index++) {
         if (el.id === localData[index].id) return true
-
       }
-
     })
   }
 
 
-  routesFuntion(name: string) {
+  pageNotFound(name: string) {
     document.title = `Store - ${name}`;
-    this.MAIN.innerHTML = 'СТРАНИЦА НЕ НАЙДЕНА.'
+    this.MAIN.innerHTML = ''
+    this.MAIN.append(this.ViewNotFound.create())
     window.history.pushState({}, '', `/page404`)
   }
 
@@ -292,6 +356,15 @@ class ControllerMain {
     }
   }
 
+  updateTextContent() {
+    this.MODEL.updateFILTER_Price_Stock()
+    // console.log('!!!!!!!!!',this.MODEL._FILTERpriceTEXT, this.MODEL._FILTERstockTEXT)
+    this.ViewMainPAGE.itemPriceNumberFrom.textContent = this.MODEL._FILTERpriceTEXT[0].toString()
+    this.ViewMainPAGE.itemPriceNumberTo.textContent = this.MODEL._FILTERpriceTEXT[1].toString()
+    this.ViewMainPAGE.itemStockNumberFrom.textContent = this.MODEL._FILTERstockTEXT[0].toString()
+    this.ViewMainPAGE.itemStockNumberTo.textContent = this.MODEL._FILTERstockTEXT[1].toString()
+  }
+
   // СЛУШАТЕЛИ СОБЫТИЙ
   ListenersController() {
 
@@ -301,6 +374,7 @@ class ControllerMain {
       this.MODEL.setFILTERCategory(target.id)
       this.rerenderMainPageComponents()
       this.pushStateFilter()
+      this.updateTextContent()
     })
     // Ловля клика по Инпутам brend из Мейна
     this.MAIN.addEventListener('clickOnBrandMain', (e) => {
@@ -308,6 +382,11 @@ class ControllerMain {
       this.MODEL.setFILTERBrand(target.id)
       this.rerenderMainPageComponents()
       this.pushStateFilter()
+      this.updateTextContent()
+      // this.MODEL.updateFILTER_Price_Stock()
+      // // console.log('!!!!!!!!!',this.MODEL._FILTERpriceTEXT, this.MODEL._FILTERstockTEXT)
+      // this.ViewMainPAGE.itemPriceNumberFrom.textContent = this.MODEL._FILTERpriceTEXT[0].toString()
+      // this.ViewMainPAGE.itemPriceNumberTo.textContent = this.MODEL._FILTERpriceTEXT[1].toString()
     })
 
     // Ловля изменения инпута СЕРЧ
@@ -317,20 +396,20 @@ class ControllerMain {
       this.MODEL.setSearchOfFILTER(target.value)
       this.rerenderMainPageComponents()
       this.pushStateFilter()
+      this.updateTextContent()
     })
 
     // Ловля изменения СОРТИРОВКИ
     this.MAIN.addEventListener('choiceOnSortMain', (e) => {
       const target = e.target as HTMLSelectElement;
-      console.log('500 = target.value', target.value)
-
-
+      // console.log('500 = target.value', target.value)
       this.MODEL.setSortOfFILTER(target.value)
       // this.sortOfFILTER = this.MODEL.sortOfFILTER
-      console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА', this.sortOfFILTER)
-      console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА модель', this.MODEL.sortOfFILTER)
+      // console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА', this.sortOfFILTER)
+      // console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА модель', this.MODEL.sortOfFILTER)
       this.rerenderMainPageComponents()
       this.pushStateFilter()
+      this.updateTextContent()
     })
 
     // Клик по кнопке РЕСЕТ сброса фильтров из Мейна
@@ -349,13 +428,14 @@ class ControllerMain {
       window.history.pushState({}, '', '/basket')
     })
 
-    // Клик по ЛОГОТИПУ из Хедера и запуск страницы корзины
+
+    // Клик по ЛОГОТИПУ из Хедера и запуск страницы main
     this.BODY.addEventListener('clickOnLogo', (e) => {
       // this.MAIN.innerHTML = ''
       // console.log('EEEEEEEEEEEEEEEEEEEEE', e)
+      window.history.pushState({}, '', '/')
       this.rerenderMainPageComponents()
       this.pushStateFilter()
-      // window.history.pushState({}, '', '/')
     })
 
 
@@ -374,9 +454,9 @@ class ControllerMain {
     this.MAIN.addEventListener('clickOnProductAddInBascetMain', (e) => {
       const target = e.target as HTMLElement;
       const id = +target.id.split('|')[1]
-      console.log("target.id.split('|')[0]", target.id.split('|')[0])
+      // console.log("target.id.split('|')[0]", target.id.split('|')[0])
       const key: boolean = target.id.split('|')[0] === 'button-buy' ? false : true
-      console.log("key", key)
+      // console.log("key", key)
       this.updateBascetLocalStorage(id, key)
       this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
 
@@ -384,6 +464,19 @@ class ControllerMain {
       this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
 
     })
+
+    // Клик по карточке для запуска страниц Validation из Мейна
+    this.MAIN.addEventListener('clickOnProductAddInBascetBuy', (e) => {
+      // const target = e.target as HTMLElement;
+      // const id = target.id
+      window.history.pushState({}, '', `/validation`)
+      this.MAIN.innerHTML = ''
+      this.MAIN.append(this.ViewValidation.create())
+      // console.log(`ПУШНУЛ ИСТОРИ ОДНОГО ПРОДУКТА /product?id=${id}`)
+    })
+
+
+
   }
 
   fnSliderPrice() {
@@ -392,74 +485,84 @@ class ControllerMain {
     // this.silderStock = this.customElement.createElement('div', { id: 'sliderStock' }); // No Ui Slider Stock
     // const sliderPrice = document.getElementById('sliderPrice') as noUiSlider.target;
 
-    if(this.ViewMainPAGE.silderPrice) {
+    // console.log(' fnSliderPrice()',this.priceOfFILTER[0],this.priceOfFILTER[1])
+    // console.log(' fnSliderPrice()',this.MODEL.priceOfFILTER[0],this.MODEL.priceOfFILTER[1])
+
+
+    if (this.ViewMainPAGE.silderPrice) {
       noUiSlider.create(this.ViewMainPAGE.silderPrice, {
         start: [this.priceOfFILTER[0], this.priceOfFILTER[1]],
         connect: true,
         step: 1,
         range: {
-            'min': this.startPriceOfFILTER[0],
-            'max': this.startPriceOfFILTER[1],
+          'min': this.startPriceOfFILTER[0],
+          'max': this.startPriceOfFILTER[1],
         }
       });
 
-       // const inputPrice1 = document.querySelector('.item-price__from') as HTMLInputElement;
+      // const inputPrice1 = document.querySelector('.item-price__from') as HTMLInputElement;
       // const inputPrice2 = document.querySelector('.item-price__to') as HTMLInputElement;
-      const inputs = [this.ViewMainPAGE.itemPriceNumberFrom,  this.ViewMainPAGE.itemPriceNumberTo];
-    
+      const inputs = [this.ViewMainPAGE.itemPriceNumberFrom, this.ViewMainPAGE.itemPriceNumberTo];
+
       (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.on('update',
-       function(values: (string | number)[], handle: number): void { 
-        inputs[handle].textContent = String(Math.round(Number(values[handle])));
-      });
+        function (values: (string | number)[], handle: number): void {
+          inputs[handle].textContent = String(Math.round(Number(values[handle])));
+        });
 
       (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.on('set', (values, handle) => {
         const valueArray = values.map(el => Math.round(+el))
-        console.log('roundVal',valueArray)
+        // console.log('roundVal', valueArray)
         this.MODEL.setPriceOfFILTER(valueArray)
         this.rerenderMainPageComponents()
         this.pushStateFilter()
+        this.MODEL.updateFILTER_Price_Stock()
+        // console.log('!!!!!!!!!',this.MODEL._FILTERpriceTEXT, this.MODEL._FILTERstockTEXT)
+        this.ViewMainPAGE.itemStockNumberFrom.textContent = this.MODEL._FILTERstockTEXT[0].toString()
+        this.ViewMainPAGE.itemStockNumberTo.textContent = this.MODEL._FILTERstockTEXT[1].toString()
       });
-
-
 
     }
   }
 
   fnSliderStock() {
     // const sliderStock = document.getElementById('sliderStock') as noUiSlider.target;
-  
-    if(this.ViewMainPAGE.silderStock) {
+
+    if (this.ViewMainPAGE.silderStock) {
       noUiSlider.create(this.ViewMainPAGE.silderStock, {
         start: [this.stockOfFILTER[0], this.stockOfFILTER[1]],
         connect: true,
         step: 1,
         range: {
-            'min': this.startStockOfFILTER[0],
-            'max': this.startStockOfFILTER[1],
+          'min': this.startStockOfFILTER[0],
+          'max': this.startStockOfFILTER[1],
         }
       });
 
 
-    // this.ViewMainPAGE.itemStockNumberFrom  this.itemStockNumberFrom = this.customElement.createElement('div', { className: 'item-stock__from' }); // Stock Text Min
-    // this.itemStockNumberTo = this.customElement.createElement('div', { className: 'item-stock__to' }); // Stock Text Max
-    
+      // this.ViewMainPAGE.itemStockNumberFrom  this.itemStockNumberFrom = this.customElement.createElement('div', { className: 'item-stock__from' }); // Stock Text Min
+      // this.itemStockNumberTo = this.customElement.createElement('div', { className: 'item-stock__to' }); // Stock Text Max
+
       // const inputStock1 = document.querySelector('.item-stock__from') as HTMLInputElement;
       // const inputStock2 = document.querySelector('.item-stock__to') as HTMLInputElement;
       const inputs = [this.ViewMainPAGE.itemStockNumberFrom, this.ViewMainPAGE.itemStockNumberTo];
-    
-      (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('update',
-       function(values: (string | number)[], handle: number): void { 
-        inputs[handle].textContent = String(Math.round(Number(values[handle])));
 
-        // this.ViewMainPAGE.silderStock.noUiSlider.get(true)
-      });
+      (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('update',
+        function (values: (string | number)[], handle: number): void {
+          inputs[handle].textContent = String(Math.round(Number(values[handle])));
+
+          // this.ViewMainPAGE.silderStock.noUiSlider.get(true)
+        });
 
       (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('set', (values, handle) => {
         const valueArray = values.map(el => Math.round(+el))
-        console.log('roundVal',valueArray)
+        // console.log('roundVal', valueArray)
         this.MODEL.setStockOfFILTER(valueArray)
         this.rerenderMainPageComponents()
         this.pushStateFilter()
+        this.MODEL.updateFILTER_Price_Stock()
+        this.ViewMainPAGE.itemPriceNumberFrom.textContent = this.MODEL._FILTERpriceTEXT[0].toString()
+        this.ViewMainPAGE.itemPriceNumberTo.textContent = this.MODEL._FILTERpriceTEXT[1].toString()
+
       });
 
 

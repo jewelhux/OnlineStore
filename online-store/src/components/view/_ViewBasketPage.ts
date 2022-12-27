@@ -19,13 +19,18 @@ class ViewBasketPage {
   EVENT: { [x: string]: Event };
   objectItemsPages: { [x: string]: number };
   serverData: IitemDATA[];
+  summaryInfoDataButton: HTMLElement;
+  numberPage: number;
+  numberItem: number;
+  maxPage: number;
   // startServerData: IitemDATA[];
 
-  constructor(serverData: IitemDATA[], objectItemPage:{ [x: string]: number } = { items: 1, pages: 3} ) {
+  constructor(serverData: IitemDATA[], objectItemPage:{ [x: string]: number } = { items: 4, pages: 2} ) {
     // this._controller = new ControllerMain();
     this.customElement = new CustomElement();
 
     this.pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
+    this.summaryInfoDataButton = this.customElement.createElement('button', { className: 'card__btn-button _btn', textContent: 'Buy now' });
 
     this.productList = this.customElement.createElement('div', { className: 'product__list' }); // Лист карточек
     this.productItemsInputView = this.customElement.createElement('input', { className: 'product__items-inputView', type: 'text', value: '4' }); // Количество отображаемых на странице карточек товара
@@ -40,14 +45,20 @@ class ViewBasketPage {
 
     this.serverData = serverData; // Сюда будем перезаписывать данные
     this.objectItemsPages = { ...objectItemPage }; // Создадим копию нашего входящего объекта с инпутом и страничкой
+    this.numberPage = this.objectItemsPages.pages;
+    this.numberItem = this.objectItemsPages.items;
+    this.maxPage = this.serverData.length / this.numberItem;
+
     this.listenersMain();
   }
 
   listenersMain() {
-    this.productItemsInputView.addEventListener('input', (event) => this.changeItemsForList(event))
+    this.productItemsInputView.addEventListener('input', (event) => this.changeItemsForList(event));
+    this.pagesButtonPrev.addEventListener('click', (event) => this.changeNumberPage(event))
+    this.pagesButtonNext.addEventListener('click', (event) => this.changeNumberPage(event))
   }
 
-  create(data: IitemDATA[], basketItem:{ [x: string]: number } = { items: 1, pages: 3}) {
+  create(data: IitemDATA[], basketItem:{ [x: string]: number } = { items: 3, pages: 1}) {
     this.pageMainBasket.innerHTML = '';
     this.productList.innerHTML = '';
     this.summaryInfo.innerHTML = '';
@@ -150,22 +161,75 @@ class ViewBasketPage {
     const summaryInfoDataTotal = this.customElement.createElement('p', { className: 'summaryInfo__total', textContent: 'Total: $10.000' });
     const summaryInfoDataSearch = this.customElement.createElement('input', { className: 'summaryInfo__search', type: 'search', placeholder: 'Search promocode' });
     const summaryInfoDataProme = this.customElement.createElement('p', { className: 'summaryInfo__name', textContent: 'Test promo: Jik, Sydery' });
-    const summaryInfoDataButton = this.customElement.createElement('button', { className: 'card__btn-button _btn', textContent: 'Buy now' });
+    // const summaryInfoDataButton = this.customElement.createElement('button', { className: 'card__btn-button _btn', textContent: 'Buy now' });
 
-    itemContainer.push(summaryInfoDataProducts, summaryInfoDataTotal, summaryInfoDataSearch, summaryInfoDataProme, summaryInfoDataButton)
+    itemContainer.push(summaryInfoDataProducts, summaryInfoDataTotal, summaryInfoDataSearch, summaryInfoDataProme, this.summaryInfoDataButton)
     return itemContainer
   }
 
   changeItemsForList(event:Event | null = null) {
-    if (event === null) {
-      this.customElement.addChildren(this.productList, [...this.renderProductCard(this.serverData)]);
+    this.pagesCurrent.textContent = String(this.numberPage);
+
+    if (event === null) { // Проверка на то откуда вызвана функция, в данном случае из create
+      this.productList.innerHTML = '';
+      const newListElement = this.serverData.slice((this.numberPage - 1) * this.numberItem, Number(this.numberItem) * this.numberPage); // Создадим новый массив из старого
+      (this.productItemsInputView as HTMLInputElement).value = String(this.numberItem);
+      this.customElement.addChildren(this.productList, [...this.renderProductCard(newListElement)]);
       return
     }
 
-    console.log(this.productList)
+    const target = event.target as HTMLInputElement
+    if (target.value === '') { // Проверка на ввод пустого значения
+      return 
+    }
 
+    this.numberItem = Number(target.value); // Перезапишем количество указанных карточек
+    (this.productItemsInputView as HTMLInputElement).value = String(this.numberItem); // Запишем в инпут указанное значение
+    if (this.numberItem > this.serverData.length) { // Проверка на то, чтобы введенное число было не более карточек в корзине
+      target.value = String(this.serverData.length);
+    }
+
+    const newListElement = this.serverData.slice((this.numberPage - 1) * Number(this.numberItem), Number(this.numberItem) * this.numberPage); // Создадим новый массив из старого
     this.productList.innerHTML = ''; // Очистим старый список
-    // Логика программы
+    this.customElement.addChildren(this.productList, [...this.renderProductCard(newListElement)]);
+  }
+
+  changeNumberPage(event:Event) {
+    const target = event.target as HTMLElement
+    this.maxPage = Math.ceil(this.serverData.length / this.numberItem);
+
+    if (this.numberPage < this.maxPage && this.numberPage >= 1) {
+      if (target.classList.contains('product__pages-btnNext')) {
+        this.numberPage += 1;
+      }
+    } 
+    
+    if (this.numberPage <= this.maxPage && this.numberPage > 1) {
+      if (target.classList.contains('product__pages-btnPrev')) {
+        this.numberPage -= 1;
+      } 
+    }
+    
+    this.changeItemsForList(null);
+  }
+
+  changeNumberItems(event:Event) {
+    const target = event.target as HTMLElement
+    this.maxPage = Math.ceil(this.serverData.length / this.numberItem);
+
+    if (this.numberPage < this.maxPage && this.numberPage >= 1) {
+      if (target.classList.contains('product__pages-btnNext')) {
+        this.numberPage += 1;
+      }
+    } 
+    
+    if (this.numberPage <= this.maxPage && this.numberPage > 1) {
+      if (target.classList.contains('product__pages-btnPrev')) {
+        this.numberPage -= 1;
+      } 
+    }
+    
+    this.changeItemsForList(null);
   }
 
   updateCount(event:Event) {

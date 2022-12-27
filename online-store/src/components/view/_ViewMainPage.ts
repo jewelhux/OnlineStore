@@ -25,6 +25,7 @@ class ViewMainPage {
   viewBlock: HTMLElement;
   viewList: HTMLElement;
   cardList: HTMLElement;
+  filterPrice: HTMLElement;
   silderPrice: HTMLElement;
   silderStock: HTMLElement;
   customElement: CustomElement;
@@ -43,7 +44,7 @@ class ViewMainPage {
     startStockOfFILTER: number[],
     startSortOfFILTER: string[]) {
 
-    console.log("200 = startSortOfFILTER КОНСТРУКТОР МАЙН ПАЙДЖ", startSortOfFILTER)
+    // console.log("200 = startSortOfFILTER КОНСТРУКТОР МАЙН ПАЙДЖ", startSortOfFILTER)
 
     this.startServerData = startServerData;
     this.startCategoryData = startCategoryData;
@@ -62,6 +63,9 @@ class ViewMainPage {
     this.filterCategoryMain = this.customElement.createElement('div', { className: 'filter__item filter__category category filter__item-scroll' }); // Category
     this.filterBrandMain = this.customElement.createElement('div', { className: 'filter__item filter__brand brand filter__item-scroll' }); // Brand
     //------Price------//
+
+    this.filterPrice = this.customElement.createElement('div', { className: 'filter__item filter__price price' });
+
     this.silderPrice = this.customElement.createElement('div', { id: 'sliderPrice' }); // No Ui Slider Price
     this.silderStock = this.customElement.createElement('div', { id: 'sliderStock' }); // No Ui Slider Stock
     this.itemPriceNumberFrom = this.customElement.createElement('div', { className: 'item-price__from' }); // Price Text Min
@@ -162,7 +166,7 @@ class ViewMainPage {
     startStockOfFILTER: number[] = this.startStockOfFILTER,
     startSortOfFILTER: string[]) {
 
-    console.log('700 = startSortOfFILTER из create МАИН ПАДЖЕ', startSortOfFILTER)
+    // console.log('700 = startSortOfFILTER из create МАИН ПАДЖЕ', startSortOfFILTER)
     // Создание основной секции
     // const pageMain = this.customElement.createElement('div', { className: 'page-main-one _main-container' });
     const mainOne = this.customElement.createElement('section', { className: 'main-one _container' });
@@ -217,59 +221,6 @@ if ((option as HTMLOptionElement).value === startSortOfFILTER[0]) {
 }
 this.customElement.addChildren(this.viewSort, [option])
     })
-
-
-
-    // const optionSortABC = this.customElement.createElement('option', { value: "SortABC", textContent: "SortABC" }) as HTMLOptionElement;
-    // const optionSortCBA = this.customElement.createElement('option', { value: "SortCBA", textContent: "SortCBA" }) as HTMLOptionElement;
-    // const optionSortByPriceLow = this.customElement.createElement('option', { value: "SortByPriceLow", textContent: "SortByPriceLow" }) as HTMLOptionElement;
-    // const optionSortByPriceUp = this.customElement.createElement('option', { value: "SortByPriceUp", textContent: "SortByPriceUp" }) as HTMLOptionElement;
-    // const optionSortByRatingLow = this.customElement.createElement('option', { value: "SortByRatingLow", textContent: "SortByRatingLow" }) as HTMLOptionElement;
-    // const optionSortByRatingUp = this.customElement.createElement('option', { value: "SortByRatingUp", textContent: "SortByRatingUp" }) as HTMLOptionElement;
-    // this.customElement.addChildren(this.viewSort, [optionSortABC, optionSortCBA, optionSortByPriceLow,
-    //   optionSortByPriceUp, optionSortByRatingLow, optionSortByRatingUp]);
-
-    // // optionSortCBA.setAttribute("selected","selected")
-    // // optionSortCBA.selected = true
-    // const children: NodeListOf<ChildNode> = this.viewSort.childNodes;
-
-    // children.forEach(child => {
-    //   if ((child as HTMLOptionElement).value === startSortOfFILTER[0]) {
-    //     console.log('800 child РАВЕН СОРТИРОВКЕ', child);
-    //     (child as HTMLOptionElement).selected = true
-    //     console.log('900 child =', child, 'startSortOfFILTER[0]=', startSortOfFILTER[0]);
-
-    //   } else {
-    //     optionSortABC.selected = true
-    //   }
-
-    // })
-
-    // for (let i = 0; i < children.length; ++i) {
-
-    //   // (children[2]as HTMLOptionElement).selected === true
-
-
-
-    //   console.log((children[i] as HTMLOptionElement).getAttribute('value'))
-
-
-    //   // if ((children[i] as HTMLOptionElement).getAttribute('value') === startSortOfFILTER[0])  {
-    //   //   (children[i]as HTMLOptionElement).selected === true;
-    //   //   console.log(children[i])
-    //   // } else {
-    //   //   optionSortABC.selected = true
-    //   // }
-
-
-
-    // }
-
-
-
-
-
-
 
 
 
@@ -338,10 +289,11 @@ this.customElement.addChildren(this.viewSort, [option])
 
   // Создание Price
   renderPriceBlock(dataFilterPrice: number[] = this.startPriceOfFILTER): HTMLElement {
-    const filterPrice = this.customElement.createElement('div', { className: 'filter__item filter__price price' });
+    this.filterPrice.innerHTML=''
+    // const filterPrice = this.customElement.createElement('div', { className: 'filter__item filter__price price' });
     const filterPriceItemName = this.customElement.createElement('h3', { className: 'filter__item-name price__name', textContent: 'Price' });
     const filterPriceContainer = this.customElement.createElement('div', { className: 'inputRange_container price__container' });
-    this.customElement.addChildren(filterPrice, [filterPriceItemName, filterPriceContainer]);
+    this.customElement.addChildren(this.filterPrice, [filterPriceItemName, filterPriceContainer]);
 
     const itemPriceNumberContainer = this.customElement.createElement('div', { className: 'filter__item-data item-price' });
     this.customElement.addChildren(filterPriceContainer, [itemPriceNumberContainer, this.silderPrice]);
@@ -351,7 +303,7 @@ this.customElement.addChildren(this.viewSort, [option])
     const itemPriceNumberMid = this.customElement.createElement('div', { textContent: '⟷' });
     this.customElement.addChildren(itemPriceNumberContainer, [this.itemPriceNumberFrom, itemPriceNumberMid, this.itemPriceNumberTo]);
 
-    return filterPrice
+    return this.filterPrice
   }
 
   // Создание Stock

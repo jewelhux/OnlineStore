@@ -16,7 +16,9 @@ class ViewBasketPage {
   productList: HTMLElement;
   summaryInfo: HTMLElement;
   productItemsInputView: HTMLElement;
+  summaryInfoDataButton:HTMLElement;
   // startServerData: IitemDATA[];
+  EVENT: { [x: string]: Event }
 
   constructor(serverData: IitemDATA[] ) {
     // this._controller = new ControllerMain();
@@ -31,9 +33,22 @@ class ViewBasketPage {
     this.pagesCurrent = this.customElement.createElement('p', { className: 'product__pages-current', textContent: '2' }); // Лист карточек
     this.summaryInfo = this.customElement.createElement('div', { className: 'summary__info summaryInfo' }); // Итоговая информация
 
-    // this.startServerData = this._controller.startServerData;
+    this.summaryInfoDataButton = this.customElement.createElement('button', { className: 'card__btn-button _btn', textContent: 'Buy now' });
 
+    // this.startServerData = this._controller.startServerData;
+    this.EVENT = {
+      clickOnProductAddInBascetBuy: new Event('clickOnProductAddInBascetBuy', { bubbles: true }),// Клик на контейнере с Карточками
+    }
+    this.listenersCardPage();
     this.create(serverData);
+  }
+
+  listenersCardPage() {
+
+    this.summaryInfoDataButton.addEventListener('click', (e) => {
+      this.summaryInfoDataButton.dispatchEvent(this.EVENT.clickOnProductAddInBascetBuy)
+    })
+
   }
 
   create(data: IitemDATA[]) {
@@ -136,9 +151,9 @@ class ViewBasketPage {
     const summaryInfoDataTotal = this.customElement.createElement('p', { className: 'summaryInfo__total', textContent: 'Total: $10.000' });
     const summaryInfoDataSearch = this.customElement.createElement('input', { className: 'summaryInfo__search', type: 'search', placeholder: 'Search promocode' });
     const summaryInfoDataProme = this.customElement.createElement('p', { className: 'summaryInfo__name', textContent: 'Test promo: Jik, Sydery' });
-    const summaryInfoDataButton = this.customElement.createElement('button', { className: 'card__btn-button _btn', textContent: 'Buy now' });
+    // const summaryInfoDataButton = this.customElement.createElement('button', { className: 'card__btn-button _btn', textContent: 'Buy now' });
 
-    itemContainer.push(summaryInfoDataProducts, summaryInfoDataTotal, summaryInfoDataSearch, summaryInfoDataProme, summaryInfoDataButton)
+    itemContainer.push(summaryInfoDataProducts, summaryInfoDataTotal, summaryInfoDataSearch, summaryInfoDataProme, this.summaryInfoDataButton)
     return itemContainer
   }
 

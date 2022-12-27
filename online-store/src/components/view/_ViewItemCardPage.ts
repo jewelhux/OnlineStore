@@ -29,6 +29,7 @@ class ViewItemCardPage {
 
     this.EVENT = {
       clickOnProductAddInBascetMain: new Event('clickOnProductAddInBascetMain', { bubbles: true }),// Клик на контейнере с Карточками
+      clickOnProductAddInBascetBuy: new Event('clickOnProductAddInBascetBuy', { bubbles: true }),// Клик на контейнере с Карточками
     }
 
     this.listenersCardPage();
@@ -44,6 +45,7 @@ class ViewItemCardPage {
     this.cardBtnButtonBuy.addEventListener('click', (e) => {
       console.log('this.cardBtnButtonBuy')
       this.cardBtnButtonBuy.dispatchEvent(this.EVENT.clickOnProductAddInBascetMain)
+      this.cardBtnButtonBuy.dispatchEvent(this.EVENT.clickOnProductAddInBascetBuy)
     })
 
   }

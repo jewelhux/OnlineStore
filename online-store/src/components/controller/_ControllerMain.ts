@@ -13,6 +13,7 @@ import ViewFooter from '../view/_ViewFooter';
 import ViewItemCardPage from '../view/_ViewItemCardPage';
 import ViewBasketPage from '../view/_ViewBasketPage';
 import ViewNotFound from '../view/_ViewNotFoundPage';
+import ViewValidation from '../view/_ViewValidation';
 
 // Служебные программки
 import CustomElement from '../utils/_createCustomElement';
@@ -42,6 +43,7 @@ class ControllerMain {
   ViewItemCardPAGE: ViewItemCardPage;
   ViewBASKETPAGE: ViewBasketPage;
   ViewNotFound: ViewNotFound;
+  ViewValidation:ViewValidation;
 
   _formatURL: FormatURL;
 
@@ -89,7 +91,8 @@ class ControllerMain {
     this.MODEL = new CreateFilterData();
     this.ViewHEADER = new ViewHeader();
     this.ViewFOOTER = new ViewFooter();
-    this.ViewNotFound = new ViewNotFound()
+    this.ViewNotFound = new ViewNotFound();
+    this.ViewValidation = new ViewValidation();
 
 
     this.FILTER = this.MODEL.FILTER
@@ -181,6 +184,8 @@ class ControllerMain {
     // Рендер Validation страницы из роутера
   renderValidation(name: string){
     document.title = `Store - ${name}`;
+    this.MAIN.innerHTML = '';
+    this.MAIN.append(this.ViewValidation.create())
 
   }
 
@@ -247,7 +252,7 @@ class ControllerMain {
   renderItemCardPAGEFromRouter(name: string) {
     document.title = `Store - ${name}`;
     const search = new URLSearchParams(window.location.search);
-    console.log('search!!!!!!!!', this._formatURL.createFromURLSearchParams(search))
+    // console.log('search!!!!!!!!', this._formatURL.createFromURLSearchParams(search))
     const id = this._formatURL.createFromURLSearchParams(search).id
     // const filter = this._formatURL.createObjectFromURLSearchParams(search)
     // this.MODEL.setFILTER(filter)
@@ -262,48 +267,40 @@ class ControllerMain {
     // const search = new URLSearchParams(window.location.search);
     // console.log('search!!!!!!!!', this._formatURL.createIDFromURLSearchParams(search))
     // const id = this._formatURL.createIDFromURLSearchParams(search).id
-    const basketObject = {
+    
+    
+    // Логика из корзины временно тут
+    const basketObject1 = {
+      items: 5,
+      pages: 2,
+    }
+    console.log('50 =basketObject1', basketObject1)
+       const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject1)
+           window.history.pushState({}, '', `/basket?${params}`)
+
+    // Логика из корзины временно тут
+
+
+    const search = new URLSearchParams(window.location.search);
+    console.log('600 =window.location.search!!!!', window.location.search)
+    console.log('70 =search', search.toString())
+
+    const basketObject = search.toString() ? this._formatURL.createFromURLSearchParams(search) : {
       items: 3,
       pages: 1,
-    }
+    } 
 
     console.log('100 =basketObject!!!!!!', basketObject)
-    const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject)
-    window.history.pushState({}, '', `/basket?${params}`)
-    const search = new URLSearchParams(window.location.search);
-    console.log('200 =window.location.search!!!!', window.location.search)
-    console.log('300 =search!!!!!!!!', search)
-
-    const returnbasketObject = this._formatURL.createFromURLSearchParams(search)
-
-
-    console.log('400 = returnbasketObject!!!!!!!!', returnbasketObject)
-    // console.log('search!!!!!!!!', this._formatURL.createFromURLSearchParams(search))
-
-    // const params: URLSearchParams = this._formatURL.createURLSearchParams(basketObject)
-
-
-    // const basketObjectFromSearch = this._formatURL.createFromURLSearchParams(search)
-
-
-
-    // const search = new URLSearchParams(window.location.search);
-    // console.log('search!Backet', search)
-    // console.log('search!Backet', this._formatURL.createFromURLSearchParams(search))
+    // const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject)
+    // window.history.pushState({}, '', `/basket?${params}`)
+    // console.log('300 =search!!!!!!!!', search)
+    // const returnbasketObject = this._formatURL.createFromURLSearchParams(search)
+    // console.log('400 = returnbasketObject!!!!!!!!', returnbasketObject)
 
 
     this.MAIN.innerHTML = ''
-    this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet())) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
+    this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet())) // НЕ ДОРАБОТАНО нудно  пушить объект
 
-    // const params: URLSearchParams = this._formatURL.createURLSearchParams(filter)
-    // if (JSON.stringify(this.FILTER) === JSON.stringify(this.MODEL.startServerFILTER)) {
-    //   // console.log('pushStateFilter ПЕРВАЯ ВЕТКА фильтрованный массив равен стартовому')
-    //   window.history.replaceState({}, '', '/')
-    // } else {
-    //   // console.log('pushStateFilter Вторая ВЕТКА фильтрованный массив НЕ равен стартовому')
-    //   // console.log(`{window.location.pathname}`)
-    //   window.history.pushState({}, '', `/?${params}`)
-    // }
 
 
 
@@ -431,13 +428,14 @@ class ControllerMain {
       window.history.pushState({}, '', '/basket')
     })
 
-    // Клик по ЛОГОТИПУ из Хедера и запуск страницы корзины
+
+    // Клик по ЛОГОТИПУ из Хедера и запуск страницы main
     this.BODY.addEventListener('clickOnLogo', (e) => {
       // this.MAIN.innerHTML = ''
       // console.log('EEEEEEEEEEEEEEEEEEEEE', e)
+      window.history.pushState({}, '', '/')
       this.rerenderMainPageComponents()
       this.pushStateFilter()
-      window.history.pushState({}, '', '/')
     })
 
 
@@ -466,6 +464,19 @@ class ControllerMain {
       this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
 
     })
+
+    // Клик по карточке для запуска страниц Validation из Мейна
+    this.MAIN.addEventListener('clickOnProductAddInBascetBuy', (e) => {
+      // const target = e.target as HTMLElement;
+      // const id = target.id
+      window.history.pushState({}, '', `/validation`)
+      this.MAIN.innerHTML = ''
+      this.MAIN.append(this.ViewValidation.create())
+      // console.log(`ПУШНУЛ ИСТОРИ ОДНОГО ПРОДУКТА /product?id=${id}`)
+    })
+
+
+
   }
 
   fnSliderPrice() {

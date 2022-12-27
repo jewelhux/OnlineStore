@@ -186,7 +186,7 @@ class ControllerMain {
     document.title = `Store - ${name}`;
     this.MAIN.innerHTML = '';
     this.MAIN.append(this.ViewValidation.create())
-
+    this.updateBascetCountAndTotaPriseHeader()
   }
 
   // Рендер главной страницы из роутера
@@ -235,6 +235,7 @@ class ControllerMain {
       // this.ViewMainPAGE.itemPriceNumberTo.textContent = '50'
     }
     this.updateTextContent()
+    this.updateBascetCountAndTotaPriseHeader()
   }
   // Подфунция рендора Компанента главной страниц из роутера Мейна
   viewMainPAGEupdate() {
@@ -259,6 +260,7 @@ class ControllerMain {
     // this.rerenderMainPageComponents()
     this.MAIN.innerHTML = ''
     this.MAIN.append(this.ViewItemCardPAGE.create(this.MODEL.startServerData[Number(id) - 1]))
+    this.updateBascetCountAndTotaPriseHeader()
   }
 
   // Рендер корзины
@@ -267,19 +269,17 @@ class ControllerMain {
     // const search = new URLSearchParams(window.location.search);
     // console.log('search!!!!!!!!', this._formatURL.createIDFromURLSearchParams(search))
     // const id = this._formatURL.createIDFromURLSearchParams(search).id
-    
-    
+       
     // // Логика из корзины временно тут
-    // const basketObject1 = {
-    //   items: 5,
-    //   pages: 2,
-    // }
-    // console.log('50 =basketObject1', basketObject1)
-    //    const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject1)
-    //        window.history.pushState({}, '', `/basket?${params}`)
+    const basketObject1 = {
+      items: 5,
+      pages: 2,
+    }
+    console.log('50 =basketObject1', basketObject1)
+       const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject1)
+           window.history.pushState({}, '', `/basket?${params}`)
 
     // // Логика из корзины временно тут
-
 
     const search = new URLSearchParams(window.location.search);
     console.log('600 =window.location.search!!!!', window.location.search)
@@ -299,21 +299,27 @@ class ControllerMain {
 
 
     this.MAIN.innerHTML = ''
-    this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet())) // НЕ ДОРАБОТАНО нудно  пушить объект
+    this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet(), basketObject)) // НЕ ДОРАБОТАНО нудно  пушить объект
 
-
-
-
-
-
-
-
-
-
+    this.updateBascetCountAndTotaPriseHeader()
   }
+
+
+  updateBascetFROMLocalStorage(){
+      const readlocalStorage = localStorage.getItem('BascetLocalStorage')
+  if (readlocalStorage) {
+    this.BascetLocalStorage = JSON.parse(readlocalStorage)
+  } else {
+    this.BascetLocalStorage = []
+  }
+  }
+
+
+
 
   // Метод получения товаров в корзину по Списку из ЛОКАЛ СТОРИДЖ
   generateProductsForBascet(localData: IBascetLocalStorage[] = this.BascetLocalStorage): IitemDATA[] {
+    this.updateBascetFROMLocalStorage()
     return this.startServerData.filter((el) => {
       for (let index = 0; index < localData.length; index++) {
         if (el.id === localData[index].id) return true
@@ -327,6 +333,7 @@ class ControllerMain {
     this.MAIN.innerHTML = ''
     this.MAIN.append(this.ViewNotFound.create())
     window.history.pushState({}, '', `/page404`)
+    this.updateBascetCountAndTotaPriseHeader()
   }
 
   // Главыный слушаетль на кнопках АДРЕССНОЙ СТРОКИ
@@ -436,6 +443,7 @@ class ControllerMain {
       window.history.pushState({}, '', '/')
       this.rerenderMainPageComponents()
       this.pushStateFilter()
+      this.updateBascetCountAndTotaPriseHeader()
     })
 
 
@@ -458,10 +466,10 @@ class ControllerMain {
       const key: boolean = target.id.split('|')[0] === 'button-buy' ? false : true
       // console.log("key", key)
       this.updateBascetLocalStorage(id, key)
-      this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
-
-      const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
-      this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
+      // this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
+      // const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
+      // this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
+      this.updateBascetCountAndTotaPriseHeader()
 
     })
 
@@ -478,6 +486,14 @@ class ControllerMain {
 
 
   }
+
+updateBascetCountAndTotaPriseHeader(){
+  this.updateBascetFROMLocalStorage()
+  this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
+  const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
+  this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
+}
+
 
   fnSliderPrice() {
 

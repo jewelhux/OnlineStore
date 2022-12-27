@@ -483,7 +483,6 @@ class ControllerMain {
 
     // this.silderPrice = this.customElement.createElement('div', { id: 'sliderPrice' }); // No Ui Slider Price
     // this.silderStock = this.customElement.createElement('div', { id: 'sliderStock' }); // No Ui Slider Stock
-
     // const sliderPrice = document.getElementById('sliderPrice') as noUiSlider.target;
 
     // console.log(' fnSliderPrice()',this.priceOfFILTER[0],this.priceOfFILTER[1])

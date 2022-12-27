@@ -44,7 +44,7 @@ class ViewMainPage {
     startStockOfFILTER: number[],
     startSortOfFILTER: string[]) {
 
-    console.log("200 = startSortOfFILTER КОНСТРУКТОР МАЙН ПАЙДЖ", startSortOfFILTER)
+    // console.log("200 = startSortOfFILTER КОНСТРУКТОР МАЙН ПАЙДЖ", startSortOfFILTER)
 
     this.startServerData = startServerData;
     this.startCategoryData = startCategoryData;
@@ -166,7 +166,7 @@ class ViewMainPage {
     startStockOfFILTER: number[] = this.startStockOfFILTER,
     startSortOfFILTER: string[]) {
 
-    console.log('700 = startSortOfFILTER из create МАИН ПАДЖЕ', startSortOfFILTER)
+    // console.log('700 = startSortOfFILTER из create МАИН ПАДЖЕ', startSortOfFILTER)
     // Создание основной секции
     // const pageMain = this.customElement.createElement('div', { className: 'page-main-one _main-container' });
     const mainOne = this.customElement.createElement('section', { className: 'main-one _container' });

@@ -15,10 +15,21 @@ class FormatURL {
     return new URLSearchParams(result)
   }
 
-  createIDFromURLSearchParams(params: URLSearchParams) {
-    const result: { [x: string]: string } = {}
+  createURLSearchParamsBasket(obj: {[x:string]: number}) {
+    const result: stringObject = {}
+    let prop: keyof typeof obj
+    for (prop in obj) {
+      // if (obj[prop].length !== 0) {
+      result[prop] = obj[prop].toString()
+      // }
+    }
+    return new URLSearchParams(result)
+  }
+
+  createFromURLSearchParams(params: URLSearchParams) {
+    const result: { [x: string]: number } = {}
     for (const [key, value] of params.entries()) {
-      result[key] = value
+      result[key] = +value
     }
     return result
   }
@@ -28,12 +39,15 @@ class FormatURL {
     for (const [key, value] of params.entries()) {
       result[key] = value.split("|")
     }
-    return this.strTonumbder(result)
+    return this.strToNumber(result)
   }
+
+
+  // createIDFromURLSearchParams
   // const result1: IFilter ={}
 
 
-  private strTonumbder(obj: { [x: string]: string[] }) {
+  private strToNumber(obj: { [x: string]: string[] }) {
     const result: IFilter = {
       "category": [],
       "brand": [],

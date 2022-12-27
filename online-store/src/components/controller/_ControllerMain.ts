@@ -130,6 +130,10 @@ class ControllerMain {
         name: 'Backet',
         routesPage: this.renderBacket.bind(this)
       },
+      '/validation': {
+        name: 'Validation',
+        routesPage: this.renderValidation.bind(this)
+      },
       '/': {
         name: 'Home',
         routesPage: this.renderMainPageFromRouter.bind(this)
@@ -142,17 +146,14 @@ class ControllerMain {
 
   // МЕТОД добавления и удаления  ПО ID из КОРЗИНЫ
   updateBascetLocalStorage(id: number, key: boolean = true): IBascetLocalStorage[] {
-
     const index = this.BascetLocalStorage.findIndex((el, index) => {
       return el.id === id
     })
-
     if (index === -1) {
       this.BascetLocalStorage.push(this.convertIDtoBascetObject(id))
     } else if (index !== -1 && key) {
       this.BascetLocalStorage.splice(index, 1);
     }
-
     localStorage.setItem('BascetLocalStorage', JSON.stringify(this.BascetLocalStorage))
     return this.BascetLocalStorage
   }
@@ -177,13 +178,18 @@ class ControllerMain {
     this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
   }
 
+    // Рендер Validation страницы из роутера
+  renderValidation(name: string){
+    document.title = `Store - ${name}`;
+
+  }
 
   // Рендер главной страницы из роутера
   renderMainPageFromRouter(name: string) {
     document.title = `Store - ${name}`;
     const search = new URLSearchParams(window.location.search);
     const filter = this._formatURL.createObjectFromURLSearchParams(search)
-    console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ СТРОКИ', filter)
+    // console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ СТРОКИ', filter)
     this.MODEL.setFILTER(filter)
     this.rerenderMainPageComponents()
   }
@@ -241,8 +247,8 @@ class ControllerMain {
   renderItemCardPAGEFromRouter(name: string) {
     document.title = `Store - ${name}`;
     const search = new URLSearchParams(window.location.search);
-    console.log('search!!!!!!!!', this._formatURL.createIDFromURLSearchParams(search))
-    const id = this._formatURL.createIDFromURLSearchParams(search).id
+    console.log('search!!!!!!!!', this._formatURL.createFromURLSearchParams(search))
+    const id = this._formatURL.createFromURLSearchParams(search).id
     // const filter = this._formatURL.createObjectFromURLSearchParams(search)
     // this.MODEL.setFILTER(filter)
     // this.rerenderMainPageComponents()
@@ -256,20 +262,65 @@ class ControllerMain {
     // const search = new URLSearchParams(window.location.search);
     // console.log('search!!!!!!!!', this._formatURL.createIDFromURLSearchParams(search))
     // const id = this._formatURL.createIDFromURLSearchParams(search).id
+    const basketObject = {
+      items: 3,
+      pages: 1,
+    }
+
+    console.log('100 =basketObject!!!!!!', basketObject)
+    const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject)
+    window.history.pushState({}, '', `/basket?${params}`)
+    const search = new URLSearchParams(window.location.search);
+    console.log('200 =window.location.search!!!!', window.location.search)
+    console.log('300 =search!!!!!!!!', search)
+
+    const returnbasketObject = this._formatURL.createFromURLSearchParams(search)
+
+
+    console.log('400 = returnbasketObject!!!!!!!!', returnbasketObject)
+    // console.log('search!!!!!!!!', this._formatURL.createFromURLSearchParams(search))
+
+    // const params: URLSearchParams = this._formatURL.createURLSearchParams(basketObject)
+
+
+    // const basketObjectFromSearch = this._formatURL.createFromURLSearchParams(search)
+
+
+
+    // const search = new URLSearchParams(window.location.search);
+    // console.log('search!Backet', search)
+    // console.log('search!Backet', this._formatURL.createFromURLSearchParams(search))
+
 
     this.MAIN.innerHTML = ''
     this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet())) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
+
+    // const params: URLSearchParams = this._formatURL.createURLSearchParams(filter)
+    // if (JSON.stringify(this.FILTER) === JSON.stringify(this.MODEL.startServerFILTER)) {
+    //   // console.log('pushStateFilter ПЕРВАЯ ВЕТКА фильтрованный массив равен стартовому')
+    //   window.history.replaceState({}, '', '/')
+    // } else {
+    //   // console.log('pushStateFilter Вторая ВЕТКА фильтрованный массив НЕ равен стартовому')
+    //   // console.log(`{window.location.pathname}`)
+    //   window.history.pushState({}, '', `/?${params}`)
+    // }
+
+
+
+
+
+
+
+
+
   }
 
   // Метод получения товаров в корзину по Списку из ЛОКАЛ СТОРИДЖ
   generateProductsForBascet(localData: IBascetLocalStorage[] = this.BascetLocalStorage): IitemDATA[] {
     return this.startServerData.filter((el) => {
-
       for (let index = 0; index < localData.length; index++) {
         if (el.id === localData[index].id) return true
-
       }
-
     })
   }
 
@@ -357,8 +408,8 @@ class ControllerMain {
       // console.log('500 = target.value', target.value)
       this.MODEL.setSortOfFILTER(target.value)
       // this.sortOfFILTER = this.MODEL.sortOfFILTER
-      console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА', this.sortOfFILTER)
-      console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА модель', this.MODEL.sortOfFILTER)
+      // console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА', this.sortOfFILTER)
+      // console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА модель', this.MODEL.sortOfFILTER)
       this.rerenderMainPageComponents()
       this.pushStateFilter()
       this.updateTextContent()
@@ -405,9 +456,9 @@ class ControllerMain {
     this.MAIN.addEventListener('clickOnProductAddInBascetMain', (e) => {
       const target = e.target as HTMLElement;
       const id = +target.id.split('|')[1]
-      console.log("target.id.split('|')[0]", target.id.split('|')[0])
+      // console.log("target.id.split('|')[0]", target.id.split('|')[0])
       const key: boolean = target.id.split('|')[0] === 'button-buy' ? false : true
-      console.log("key", key)
+      // console.log("key", key)
       this.updateBascetLocalStorage(id, key)
       this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
 
@@ -450,7 +501,7 @@ class ControllerMain {
 
       (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.on('set', (values, handle) => {
         const valueArray = values.map(el => Math.round(+el))
-        console.log('roundVal', valueArray)
+        // console.log('roundVal', valueArray)
         this.MODEL.setPriceOfFILTER(valueArray)
         this.rerenderMainPageComponents()
         this.pushStateFilter()
@@ -494,7 +545,7 @@ class ControllerMain {
 
       (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('set', (values, handle) => {
         const valueArray = values.map(el => Math.round(+el))
-        console.log('roundVal', valueArray)
+        // console.log('roundVal', valueArray)
         this.MODEL.setStockOfFILTER(valueArray)
         this.rerenderMainPageComponents()
         this.pushStateFilter()

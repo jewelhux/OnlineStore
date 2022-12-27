@@ -74,7 +74,7 @@ class CreateFilterData {
   }
   // ссылка на класс Базы данных
   public get sortOfFILTER() {
-    console.log('100 = this._FILTER.sort из СоРТ', this._FILTER.sort)
+    // console.log('100 = this._FILTER.sort из СоРТ', this._FILTER.sort)
     return this._FILTER.sort
   }
 
@@ -178,7 +178,7 @@ class CreateFilterData {
     }
 
     this._filtredData = resultfilterData
-console.log('this._filtredData из модели',this._filtredData)
+// console.log('this._filtredData из модели',this._filtredData)
 
     return this._filtredData
   }
@@ -188,7 +188,7 @@ console.log('this._filtredData из модели',this._filtredData)
     // console.log("DDDDDDDDDDthis.filtredData", this.filtredData)
     const price: number[] = []
     const stock: number[] = []
-    console.log('DATADATA', data)
+    // console.log('DATADATA', data)
 
     if (data.length === 0) {
       this._FILTERpriceTEXT = new Array(2).fill(0)
@@ -213,8 +213,8 @@ console.log('this._filtredData из модели',this._filtredData)
       }, stock).sort((a, b) => a - b)
         .filter((item, index, arr) => index === 0 || index === (arr.length - 1))
     }
-    console.log("DDDDDDDDDDthis._FILTERpriceTEXT", this._FILTERpriceTEXT)
-    console.log("DDDDDDDDDDDthis._FILTERstockTEXT", this._FILTERstockTEXT)
+    // console.log("DDDDDDDDDDthis._FILTERpriceTEXT", this._FILTERpriceTEXT)
+    // console.log("DDDDDDDDDDDthis._FILTERstockTEXT", this._FILTERstockTEXT)
 
 
   }
@@ -253,8 +253,8 @@ console.log('this._filtredData из модели',this._filtredData)
   // метод Установки массива колличества товара фильтра
   setStockOfFILTER(data: number[] = this.startServerFILTER.stock) {
     this._FILTER.stock = [...data];
-    console.log("1000 this._FILTER.stock",this._FILTER.stock)
-    console.log("2000 this._FILTER",this._FILTER)
+    // console.log("1000 this._FILTER.stock",this._FILTER.stock)
+    // console.log("2000 this._FILTER",this._FILTER)
     // this.updateFiltredData()
     // this.updateFILTER_Price_Stock()
   }
@@ -274,7 +274,7 @@ console.log('this._filtredData из модели',this._filtredData)
     this.FILTER.search = filter.search.length ? [...filter.search] : ['']
     this.FILTER.sort = filter.sort.length ? [...filter.sort] : ['']
     // console.log('this.FILTER.sort ЭТО ИЗ МОДЕЛИ',this.FILTER.sort)
-    console.log('this.FILTER ЭТО ИЗ Конструктора',this.FILTER)
+    // console.log('this.FILTER ЭТО ИЗ Конструктора',this.FILTER)
     // this.updateFiltredData()
   }
 

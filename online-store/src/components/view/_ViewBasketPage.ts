@@ -17,10 +17,11 @@ class ViewBasketPage {
   summaryInfo: HTMLElement;
   productItemsInputView: HTMLElement;
   EVENT: { [x: string]: Event };
+  objectItemsPages: { [x: string]: number };
   serverData: IitemDATA[];
   // startServerData: IitemDATA[];
 
-  constructor(serverData: IitemDATA[] ) {
+  constructor(serverData: IitemDATA[], objectItemPage:{ [x: string]: number } = { items: 1, pages: 3} ) {
     // this._controller = new ControllerMain();
     this.customElement = new CustomElement();
 
@@ -38,19 +39,19 @@ class ViewBasketPage {
     };
 
     this.serverData = serverData; // Сюда будем перезаписывать данные
+    this.objectItemsPages = { ...objectItemPage }; // Создадим копию нашего входящего объекта с инпутом и страничкой
     this.listenersMain();
   }
 
   listenersMain() {
-    this.productItemsInputView.addEventListener('input', this.changeItemsForList)
+    this.productItemsInputView.addEventListener('input', (event) => this.changeItemsForList(event))
   }
 
-  create(data: IitemDATA[]) {
+  create(data: IitemDATA[], basketItem:{ [x: string]: number } = { items: 1, pages: 3}) {
     this.pageMainBasket.innerHTML = '';
     this.productList.innerHTML = '';
     this.summaryInfo.innerHTML = '';
     this.serverData = [...data]; // Запишем входящие данные, чтобы не потерять
-    console.log(this.productList)
 
     // Отрисовка контейнера (для попапа и секции)
     // const pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
@@ -84,7 +85,7 @@ class ViewBasketPage {
     // Отрисовка Листа товаров корзины
     // this.customElement.addChildren(this.productList, [...this.renderProductCard(data)]);
     this.changeItemsForList();
-    console.log(this.productList)
+
     // Отрисовка mainBasketSummary
     const summaryName = this.customElement.createElement('h3', { className: 'summary__name', textContent: 'Summary' });
     this.customElement.addChildren(mainBasketSummary, [summaryName, this.summaryInfo]);
@@ -161,10 +162,10 @@ class ViewBasketPage {
       return
     }
 
-    console.log(this.serverData)
+    console.log(this.productList)
+
     this.productList.innerHTML = ''; // Очистим старый список
     // Логика программы
-    console.log(event)
   }
 
   updateCount(event:Event) {

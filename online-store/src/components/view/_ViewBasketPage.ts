@@ -16,6 +16,8 @@ class ViewBasketPage {
   productList: HTMLElement;
   summaryInfo: HTMLElement;
   productItemsInputView: HTMLElement;
+  EVENT: { [x: string]: Event };
+  serverData: IitemDATA[];
   // startServerData: IitemDATA[];
 
   constructor(serverData: IitemDATA[] ) {
@@ -31,17 +33,25 @@ class ViewBasketPage {
     this.pagesCurrent = this.customElement.createElement('p', { className: 'product__pages-current', textContent: '2' }); // Лист карточек
     this.summaryInfo = this.customElement.createElement('div', { className: 'summary__info summaryInfo' }); // Итоговая информация
 
-    // this.startServerData = this._controller.startServerData;
+    this.EVENT = {
+      inputOnItemsVisible: new Event('inputOnItemsVisible', { bubbles: true }),
+    };
 
-    this.create(serverData);
+    this.serverData = serverData; // Сюда будем перезаписывать данные
+    this.listenersMain();
   }
 
-  create(data: IitemDATA[], count: number = 3, page:number = 1) {
+  listenersMain() {
+    this.productItemsInputView.addEventListener('input', this.changeItemsForList)
+  }
+
+  create(data: IitemDATA[]) {
     this.pageMainBasket.innerHTML = '';
     this.productList.innerHTML = '';
     this.summaryInfo.innerHTML = '';
+    this.serverData = [...data]; // Запишем входящие данные, чтобы не потерять
+    console.log(this.productList)
 
-    this.createData = [...data];
     // Отрисовка контейнера (для попапа и секции)
     // const pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
     const popupWrapper = this.customElement.createElement('div', { className: 'popup-wrapper' });
@@ -73,8 +83,8 @@ class ViewBasketPage {
 
     // Отрисовка Листа товаров корзины
     // this.customElement.addChildren(this.productList, [...this.renderProductCard(data)]);
-    this.updateBrandBlock(data, count, page);
-
+    this.changeItemsForList();
+    console.log(this.productList)
     // Отрисовка mainBasketSummary
     const summaryName = this.customElement.createElement('h3', { className: 'summary__name', textContent: 'Summary' });
     this.customElement.addChildren(mainBasketSummary, [summaryName, this.summaryInfo]);
@@ -145,19 +155,25 @@ class ViewBasketPage {
     return itemContainer
   }
 
-  changeItemsForList(countItems: number) {
-    // Логика программы
+  changeItemsForList(event:Event | null = null) {
+    if (event === null) {
+      this.customElement.addChildren(this.productList, [...this.renderProductCard(this.serverData)]);
+      return
+    }
 
-    // updateBrandBlock(itemData) // Откуда брать itemData
+    console.log(this.serverData)
+    this.productList.innerHTML = ''; // Очистим старый список
+    // Логика программы
+    console.log(event)
   }
 
-  updateCount(event:number, itemData: IitemDATA[] = this.createData, page:number = this.cretePage) {
-     //page по аналогии с itemData // проверка по эвенту значения
-     // перезаписать page и count в create()
-     // вероятно itemData тоже можно убрать как и другие аргументы
-    this.productList.innerHTML = '';
-    const sortData = itemData.filter(element => element.rating === 4); // логика перерисовки 
-    this.customElement.addChildren(this.productList, [...this.renderProductCard(sortData)]);
+  updateCount(event:Event) {
+    //  page по аналогии с itemData // проверка по эвенту значения
+    //  перезаписать page и count в create()
+    //  вероятно itemData тоже можно убрать как и другие аргументы
+    // this.productList.innerHTML = '';
+    // const sortData = itemData.filter(element => element.rating === 4); // логика перерисовки 
+    // this.customElement.addChildren(this.productList, [...this.renderProductCard(sortData)]);
   }
 }
 

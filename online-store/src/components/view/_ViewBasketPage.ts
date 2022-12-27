@@ -40,7 +40,8 @@ class ViewBasketPage {
     this.summaryInfo = this.customElement.createElement('div', { className: 'summary__info summaryInfo' }); // Итоговая информация
 
     this.EVENT = {
-      inputOnItemsVisible: new Event('inputOnItemsVisible', { bubbles: true }),
+      // inputOnItemsVisible: new Event('inputOnItemsVisible', { bubbles: true }),
+      clickOnProductAddInBascetBuy: new Event('clickOnProductAddInBascetBuy', { bubbles: true }),
     };
 
     this.serverData = serverData; // Сюда будем перезаписывать данные
@@ -56,9 +57,15 @@ class ViewBasketPage {
     this.productItemsInputView.addEventListener('input', (event) => this.changeNumberItems(event));
     this.pagesButtonPrev.addEventListener('click', (event) => this.changeNumberPage(event))
     this.pagesButtonNext.addEventListener('click', (event) => this.changeNumberPage(event))
+
+    this.summaryInfoDataButton.addEventListener('click', (e) => {
+      this.summaryInfoDataButton.dispatchEvent(this.EVENT.clickOnProductAddInBascetBuy)
+    })
   }
 
   create(data: IitemDATA[], basketItem:{ [x: string]: number } = { items: 3, pages: 1}) {
+    console.log('DATA КРЕАТЕ КОРЗИНЫ',data)
+    console.log('basketItem КОРЗИНЫ',basketItem)
     this.pageMainBasket.innerHTML = '';
     this.productList.innerHTML = '';
     this.summaryInfo.innerHTML = '';

@@ -83,7 +83,7 @@ class CreateFilterData {
       // console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА ФИЛЬТДАТА', data)
       this._FILTER.sort[0] = data;
       console.log('600 = ОБНОВИЛАСЬ ЛИ this._FILTER.sort в конструкторе', this._FILTER.sort)
-      this.updateFiltredData()
+      // this.updateFiltredData()
       // this.updateFILTER_Price_Stock()
     }
 
@@ -227,7 +227,7 @@ console.log('this._filtredData из модели',this._filtredData)
     } else {
       this._FILTER.category.push(data)
     }
-    this.updateFiltredData()
+    // this.updateFiltredData()
   }
 
   // метод добавления и удаления значений в FILTER.brand
@@ -239,7 +239,7 @@ console.log('this._filtredData из модели',this._filtredData)
       this._FILTER.brand.push(data)
     }
 
-    this.updateFiltredData()
+    // this.updateFiltredData()
     // this.updateFILTER_Price_Stock()
 
   }
@@ -247,7 +247,7 @@ console.log('this._filtredData из модели',this._filtredData)
   // метод УСТАНОВКИ массива цены фильтра
   setPriceOfFILTER(data: number[] = this.startServerFILTER.price) {
     this._FILTER.price = data;
-    this.updateFiltredData()
+    // this.updateFiltredData()
     // this.updateFILTER_Price_Stock()
   }
   // метод Установки массива колличества товара фильтра
@@ -255,14 +255,14 @@ console.log('this._filtredData из модели',this._filtredData)
     this._FILTER.stock = [...data];
     console.log("1000 this._FILTER.stock",this._FILTER.stock)
     console.log("2000 this._FILTER",this._FILTER)
-    this.updateFiltredData()
+    // this.updateFiltredData()
     // this.updateFILTER_Price_Stock()
   }
 
   // метод Установки поиска товара фильтра
   setSearchOfFILTER(data: string = this.startServerFILTER.search[0]) {
     this._FILTER.search[0] = data;
-    this.updateFiltredData()
+    // this.updateFiltredData()
     // this.updateFILTER_Price_Stock()
   }
 
@@ -275,7 +275,7 @@ console.log('this._filtredData из модели',this._filtredData)
     this.FILTER.sort = filter.sort.length ? [...filter.sort] : ['']
     // console.log('this.FILTER.sort ЭТО ИЗ МОДЕЛИ',this.FILTER.sort)
     console.log('this.FILTER ЭТО ИЗ Конструктора',this.FILTER)
-    this.updateFiltredData()
+    // this.updateFiltredData()
   }
 
   // возвращает стартовый массив категорий

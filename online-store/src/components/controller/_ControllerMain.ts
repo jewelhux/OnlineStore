@@ -227,6 +227,7 @@ class ControllerMain {
   }
   // Подфунция рендора Компанента главной страниц из роутера Мейна
   viewMainPAGEupdate() {
+    this.MODEL.updateFiltredData() // Добавил сюда и отключил на элементах в модели
     this.sortOfFILTER = this.MODEL.sortOfFILTER
     this.priceOfFILTER = this.MODEL.priceOfFILTER
     this.stockOfFILTER = this.MODEL.stockOfFILTER

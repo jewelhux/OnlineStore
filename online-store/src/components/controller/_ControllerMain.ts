@@ -269,16 +269,16 @@ class ControllerMain {
     // const id = this._formatURL.createIDFromURLSearchParams(search).id
     
     
-    // Логика из корзины временно тут
-    const basketObject1 = {
-      items: 5,
-      pages: 2,
-    }
-    console.log('50 =basketObject1', basketObject1)
-       const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject1)
-           window.history.pushState({}, '', `/basket?${params}`)
+    // // Логика из корзины временно тут
+    // const basketObject1 = {
+    //   items: 5,
+    //   pages: 2,
+    // }
+    // console.log('50 =basketObject1', basketObject1)
+    //    const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject1)
+    //        window.history.pushState({}, '', `/basket?${params}`)
 
-    // Логика из корзины временно тут
+    // // Логика из корзины временно тут
 
 
     const search = new URLSearchParams(window.location.search);
@@ -489,17 +489,39 @@ class ControllerMain {
     // console.log(' fnSliderPrice()',this.priceOfFILTER[0],this.priceOfFILTER[1])
     // console.log(' fnSliderPrice()',this.MODEL.priceOfFILTER[0],this.MODEL.priceOfFILTER[1])
 
+  //   const format = {
+  //     to: function(value:string) {
+  //         return (this.ViewMainPAGE.silderPrice)[Math.round(+value)] as number
+  //     from: function (value:string) {
+  //         return valuesForSlider.indexOf(Number(value));
+  //     }
+  // };
+
 
     if (this.ViewMainPAGE.silderPrice) {
       noUiSlider.create(this.ViewMainPAGE.silderPrice, {
         start: [this.priceOfFILTER[0], this.priceOfFILTER[1]],
+        tooltips: true,
+        format: {
+          // 'to' the formatted value. Receives a number.
+          to: function (value) {
+              return Math.ceil(+value);
+          },
+          // 'from' the formatted value.
+          // Receives a string, should return a number.
+          from: function (value) {
+            return Math.ceil(+value);
+          }
+      },
         connect: true,
         step: 1,
         range: {
           'min': this.startPriceOfFILTER[0],
           'max': this.startPriceOfFILTER[1],
-        }
+        },
+
       });
+
 
       // const inputPrice1 = document.querySelector('.item-price__from') as HTMLInputElement;
       // const inputPrice2 = document.querySelector('.item-price__to') as HTMLInputElement;
@@ -531,6 +553,18 @@ class ControllerMain {
     if (this.ViewMainPAGE.silderStock) {
       noUiSlider.create(this.ViewMainPAGE.silderStock, {
         start: [this.stockOfFILTER[0], this.stockOfFILTER[1]],
+        tooltips: true,
+        format: {
+          // 'to' the formatted value. Receives a number.
+          to: function (value) {
+              return Math.ceil(+value);
+          },
+          // 'from' the formatted value.
+          // Receives a string, should return a number.
+          from: function (value) {
+            return Math.ceil(+value);
+          }
+      },
         connect: true,
         step: 1,
         range: {

@@ -95,10 +95,10 @@ class ViewMainPage {
       clickOnProductAddInBascetMain: new Event('clickOnProductAddInBascetMain', { bubbles: true }),// Клик на кнопке добавить с Карточками
       clickOnbuttonResetMain: new Event('clickOnbuttonResetMain', { bubbles: true }),// Клик на кнопке сброса
     }
-    this.listenersMain();
+    this.listenersMainPage();
   }
 
-  listenersMain() {
+  listenersMainPage() {
     this.filterCategoryMain.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       if (target.getAttribute('type') === "checkbox") {

@@ -5,6 +5,7 @@ import CustomElement from '../utils/_createCustomElement';
 class ViewValidation {
   customElement: CustomElement;
   confirmButton: HTMLElement;
+  InputName: HTMLInputElement;
 
   EVENT: { [x: string]: Event }
 
@@ -12,20 +13,59 @@ class ViewValidation {
     this.customElement = new CustomElement();
     this.confirmButton = this.customElement.createElement('button', { className: '_btn confirm__button', textContent: 'Confirm' });
 
+
+
+    // ИНПУТЫ
+    this.InputName = this.customElement.createElement('input',
+     { className: '_inp popup__dataInput-name', type: 'text', placeholder: 'Your Name' }) as  HTMLInputElement;
+
+
+
+
+
+     console.log('this.InputName',this.InputName.value)
+
     this.EVENT = {
       clickOnConfirm: new Event('clickOnConfirm', { bubbles: true }),// Клик на кнопку confirm
     }
 
-    this.listenersCardPage();
+    this.listenersValidationPage();
   }
 
-  listenersCardPage() {
+  listenersValidationPage() {
 
     this.confirmButton.addEventListener('click', (e) => {
-      this.confirmButton.dispatchEvent(this.EVENT.clickOnConfirm)
+      // this.confirmButton.dispatchEvent(this.EVENT.clickOnConfirm)
+
+console.log('isValidInputName() = ', this.isValidInputName())
+
+
     });
 
+
+    this.InputName.addEventListener('keyup', (e)=> {
+
+      this.InputName.value = this.InputName.value.replace(/[^a-z^A-Z ^А-ЯЁ^а-яё]/g, "")
+
+      // console.log(this.InputName.value)
+      // console.log(this.InputName.value.split(' ').filter(item => item))
+      // (e.target as HTMLInputElement).value).replace()
+    })
+
   }
+
+
+isValidInputName(){
+  const array = this.InputName.value.split(' ').filter(item => item)
+  console.log('array',array)
+  if (array.length > 1 && array.every(item => item.length > 2) ) {
+    return true
+  }
+  return false
+}
+
+
+
 
   create() {
     const pageMainValidation = this.customElement.createElement('div', { className: 'page-main-itemCard _main-container' }); // Основная cекция
@@ -49,11 +89,11 @@ class ViewValidation {
 
     // Создание popupDataInput
     const popupPersona = this.customElement.createElement('h3', { className: 'popup__persona', textContent: 'Personal details' });
-    const popupDataInputName = this.customElement.createElement('input', { className: '_inp popup__dataInput-name', type: 'text', placeholder: 'Your Name' });
+    // const popupDataInputName = this.customElement.createElement('input', { className: '_inp popup__dataInput-name', type: 'text', placeholder: 'Your Name' });
     const popupDataInputPhone = this.customElement.createElement('input', { className: '_inp popup__dataInput-phone', type: 'text', placeholder: 'Phone number' });
     const popupDataInputAdress = this.customElement.createElement('input', { className: '_inp popup__dataInput-adress', type: 'text', placeholder: 'Adress' });
     const popupDataInputMail = this.customElement.createElement('input', { className: '_inp popup__dataInput-mail', type: 'mail', placeholder: 'E-mail' });
-    this.customElement.addChildren(popupDataInput, [popupPersona, popupDataInputName,popupDataInputPhone, popupDataInputAdress, popupDataInputMail]);
+    this.customElement.addChildren(popupDataInput, [popupPersona, this.InputName,popupDataInputPhone, popupDataInputAdress, popupDataInputMail]);
 
 
 popupDataInputMail.classList.add('placeholder-red');
@@ -80,6 +120,11 @@ popupDataInputMail.classList.add('placeholder-red');
 
     return pageMainValidation
   }
+
+
+
+
+
 
 }
 

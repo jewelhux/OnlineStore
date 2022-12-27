@@ -173,7 +173,6 @@ class ControllerMain {
     this.FOOTER.append(this.ViewFOOTER.create())
 
     this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
-
     const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
     this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
   }
@@ -184,8 +183,7 @@ class ControllerMain {
     document.title = `Store - ${name}`;
     const search = new URLSearchParams(window.location.search);
     const filter = this._formatURL.createObjectFromURLSearchParams(search)
-console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ СТРОКИ',filter)
-
+    console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ СТРОКИ', filter)
     this.MODEL.setFILTER(filter)
     this.rerenderMainPageComponents()
   }
@@ -225,7 +223,7 @@ console.log('ИЗ ЛОВЛИ РОУТЕРА ФИЛЬТЕР С АДРЕСНОЙ �
       // this.ViewMainPAGE.itemPriceNumberFrom.textContent = '40'
       // this.ViewMainPAGE.itemPriceNumberTo.textContent = '50'
     }
-this.updateTextContent()
+    this.updateTextContent()
   }
   // Подфунция рендора Компанента главной страниц из роутера Мейна
   viewMainPAGEupdate() {
@@ -309,13 +307,13 @@ this.updateTextContent()
     }
   }
 
-  updateTextContent(){
+  updateTextContent() {
     this.MODEL.updateFILTER_Price_Stock()
     // console.log('!!!!!!!!!',this.MODEL._FILTERpriceTEXT, this.MODEL._FILTERstockTEXT)
     this.ViewMainPAGE.itemPriceNumberFrom.textContent = this.MODEL._FILTERpriceTEXT[0].toString()
     this.ViewMainPAGE.itemPriceNumberTo.textContent = this.MODEL._FILTERpriceTEXT[1].toString()
     this.ViewMainPAGE.itemStockNumberFrom.textContent = this.MODEL._FILTERstockTEXT[0].toString()
-     this.ViewMainPAGE.itemStockNumberTo.textContent = this.MODEL._FILTERstockTEXT[1].toString()
+    this.ViewMainPAGE.itemStockNumberTo.textContent = this.MODEL._FILTERstockTEXT[1].toString()
   }
 
   // СЛУШАТЕЛИ СОБЫТИЙ
@@ -425,78 +423,84 @@ this.updateTextContent()
 
     // const sliderPrice = document.getElementById('sliderPrice') as noUiSlider.target;
 
-// console.log(' fnSliderPrice()',this.priceOfFILTER[0],this.priceOfFILTER[1])
-// console.log(' fnSliderPrice()',this.MODEL.priceOfFILTER[0],this.MODEL.priceOfFILTER[1])
+    // console.log(' fnSliderPrice()',this.priceOfFILTER[0],this.priceOfFILTER[1])
+    // console.log(' fnSliderPrice()',this.MODEL.priceOfFILTER[0],this.MODEL.priceOfFILTER[1])
 
 
-    if(this.ViewMainPAGE.silderPrice) {
+    if (this.ViewMainPAGE.silderPrice) {
       noUiSlider.create(this.ViewMainPAGE.silderPrice, {
         start: [this.priceOfFILTER[0], this.priceOfFILTER[1]],
         connect: true,
         step: 1,
         range: {
-            'min': this.startPriceOfFILTER[0],
-            'max': this.startPriceOfFILTER[1],
+          'min': this.startPriceOfFILTER[0],
+          'max': this.startPriceOfFILTER[1],
         }
       });
 
-       // const inputPrice1 = document.querySelector('.item-price__from') as HTMLInputElement;
+      // const inputPrice1 = document.querySelector('.item-price__from') as HTMLInputElement;
       // const inputPrice2 = document.querySelector('.item-price__to') as HTMLInputElement;
-      const inputs = [this.ViewMainPAGE.itemPriceNumberFrom,  this.ViewMainPAGE.itemPriceNumberTo];
-    
+      const inputs = [this.ViewMainPAGE.itemPriceNumberFrom, this.ViewMainPAGE.itemPriceNumberTo];
+
       (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.on('update',
-       function(values: (string | number)[], handle: number): void { 
-        inputs[handle].textContent = String(Math.round(Number(values[handle])));
-      });
+        function (values: (string | number)[], handle: number): void {
+          inputs[handle].textContent = String(Math.round(Number(values[handle])));
+        });
 
       (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.on('set', (values, handle) => {
         const valueArray = values.map(el => Math.round(+el))
-        console.log('roundVal',valueArray)
+        console.log('roundVal', valueArray)
         this.MODEL.setPriceOfFILTER(valueArray)
         this.rerenderMainPageComponents()
         this.pushStateFilter()
+        this.MODEL.updateFILTER_Price_Stock()
+        // console.log('!!!!!!!!!',this.MODEL._FILTERpriceTEXT, this.MODEL._FILTERstockTEXT)
+        this.ViewMainPAGE.itemStockNumberFrom.textContent = this.MODEL._FILTERstockTEXT[0].toString()
+        this.ViewMainPAGE.itemStockNumberTo.textContent = this.MODEL._FILTERstockTEXT[1].toString()
       });
-
-
 
     }
   }
 
   fnSliderStock() {
     // const sliderStock = document.getElementById('sliderStock') as noUiSlider.target;
-  
-    if(this.ViewMainPAGE.silderStock) {
+
+    if (this.ViewMainPAGE.silderStock) {
       noUiSlider.create(this.ViewMainPAGE.silderStock, {
         start: [this.stockOfFILTER[0], this.stockOfFILTER[1]],
         connect: true,
         step: 1,
         range: {
-            'min': this.startStockOfFILTER[0],
-            'max': this.startStockOfFILTER[1],
+          'min': this.startStockOfFILTER[0],
+          'max': this.startStockOfFILTER[1],
         }
       });
 
 
-    // this.ViewMainPAGE.itemStockNumberFrom  this.itemStockNumberFrom = this.customElement.createElement('div', { className: 'item-stock__from' }); // Stock Text Min
-    // this.itemStockNumberTo = this.customElement.createElement('div', { className: 'item-stock__to' }); // Stock Text Max
-    
+      // this.ViewMainPAGE.itemStockNumberFrom  this.itemStockNumberFrom = this.customElement.createElement('div', { className: 'item-stock__from' }); // Stock Text Min
+      // this.itemStockNumberTo = this.customElement.createElement('div', { className: 'item-stock__to' }); // Stock Text Max
+
       // const inputStock1 = document.querySelector('.item-stock__from') as HTMLInputElement;
       // const inputStock2 = document.querySelector('.item-stock__to') as HTMLInputElement;
       const inputs = [this.ViewMainPAGE.itemStockNumberFrom, this.ViewMainPAGE.itemStockNumberTo];
-    
-      (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('update',
-       function(values: (string | number)[], handle: number): void { 
-        inputs[handle].textContent = String(Math.round(Number(values[handle])));
 
-        // this.ViewMainPAGE.silderStock.noUiSlider.get(true)
-      });
+      (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('update',
+        function (values: (string | number)[], handle: number): void {
+          inputs[handle].textContent = String(Math.round(Number(values[handle])));
+
+          // this.ViewMainPAGE.silderStock.noUiSlider.get(true)
+        });
 
       (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('set', (values, handle) => {
         const valueArray = values.map(el => Math.round(+el))
-        console.log('roundVal',valueArray)
+        console.log('roundVal', valueArray)
         this.MODEL.setStockOfFILTER(valueArray)
         this.rerenderMainPageComponents()
         this.pushStateFilter()
+        this.MODEL.updateFILTER_Price_Stock()
+        this.ViewMainPAGE.itemPriceNumberFrom.textContent = this.MODEL._FILTERpriceTEXT[0].toString()
+        this.ViewMainPAGE.itemPriceNumberTo.textContent = this.MODEL._FILTERpriceTEXT[1].toString()
+
       });
 
 

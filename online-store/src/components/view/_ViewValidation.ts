@@ -49,11 +49,15 @@ class ViewValidation {
 
     // Создание popupDataInput
     const popupPersona = this.customElement.createElement('h3', { className: 'popup__persona', textContent: 'Personal details' });
+    const popupDataInputName = this.customElement.createElement('input', { className: '_inp popup__dataInput-name', type: 'text', placeholder: 'Your Name' });
     const popupDataInputPhone = this.customElement.createElement('input', { className: '_inp popup__dataInput-phone', type: 'text', placeholder: 'Phone number' });
     const popupDataInputAdress = this.customElement.createElement('input', { className: '_inp popup__dataInput-adress', type: 'text', placeholder: 'Adress' });
     const popupDataInputMail = this.customElement.createElement('input', { className: '_inp popup__dataInput-mail', type: 'mail', placeholder: 'E-mail' });
-    this.customElement.addChildren(popupDataInput, [popupPersona, popupDataInputPhone, popupDataInputAdress, popupDataInputMail]);
+    this.customElement.addChildren(popupDataInput, [popupPersona, popupDataInputName,popupDataInputPhone, popupDataInputAdress, popupDataInputMail]);
 
+
+popupDataInputMail.classList.add('placeholder-red');
+(popupDataInputMail as HTMLInputElement).placeholder = 'ВВЕДИ НОРМ ЗНАЧЕНИЕ КУКУШКА'
     // Создание popupCreditInput
     const creditInputTitle = this.customElement.createElement('h3', { className: 'creditInput__title', textContent: 'Card Details' });
     const creditInputCardNumber = this.customElement.createElement('div', { className: 'creditInput__cardNumber' });

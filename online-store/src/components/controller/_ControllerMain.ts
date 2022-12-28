@@ -440,9 +440,9 @@ class ControllerMain {
         pages: 1,
       } 
   
-      console.log('100 =basketObject!!!!!!', basketObject)
+
       const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject)
-      console.log('150 =params!!!', params.toString())
+
       window.history.pushState({}, '', `/basket?${params}`)
       // console.log('300 =search!!!!!!!!', search)
       // const returnbasketObject = this._formatURL.createFromURLSearchParams(search)

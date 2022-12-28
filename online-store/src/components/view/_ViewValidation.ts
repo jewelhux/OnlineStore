@@ -4,16 +4,17 @@ import CustomElement from '../utils/_createCustomElement';
 
 class ViewValidation {
   customElement: CustomElement;
-  confirmButton: HTMLElement;
+  confirmButton: HTMLButtonElement;
   InputName: HTMLInputElement;
   InputPhone: HTMLInputElement;
   InputAdress: HTMLInputElement;
+  InputMail: HTMLInputElement;
 
   EVENT: { [x: string]: Event }
 
   constructor() {
     this.customElement = new CustomElement();
-    this.confirmButton = this.customElement.createElement('button', { className: '_btn confirm__button', textContent: 'Confirm' });
+    this.confirmButton = this.customElement.createElement('button', { className: '_btn confirm__button', type: "submit", textContent: 'Confirm' }) as HTMLButtonElement;
 
 
 
@@ -22,8 +23,10 @@ class ViewValidation {
       { className: '_inp popup__dataInput-name', type: 'text', placeholder: 'Your Name: Lia Maf' }) as HTMLInputElement;
     this.InputPhone = this.customElement.createElement('input',
       { className: '_inp popup__dataInput-phone', type: 'text', placeholder: 'Phone number: +123456789' }) as HTMLInputElement;
-      this.InputAdress = this.customElement.createElement('input',
-       { className: '_inp popup__dataInput-adress', type: 'text', placeholder: 'Adress: as1** **c/4 a*s*9' }) as HTMLInputElement;
+    this.InputAdress = this.customElement.createElement('input',
+      { className: '_inp popup__dataInput-adress', type: 'text', placeholder: 'Adress: as1** **c/4 a*s*9' }) as HTMLInputElement;
+    this.InputMail = this.customElement.createElement('input',
+      { className: '_inp popup__dataInput-mail', type: 'email', placeholder: 'E-mail' }) as HTMLInputElement;
 
     console.log('this.InputName', this.InputName.value)
 
@@ -35,8 +38,8 @@ class ViewValidation {
   }
 
   listenersValidationPage() {
-
     this.confirmButton.addEventListener('click', (e) => {
+      e.preventDefault()
       // this.confirmButton.dispatchEvent(this.EVENT.clickOnConfirm)
 
       console.log('isValidInputName() = ', this.isValidInputName())
@@ -48,16 +51,39 @@ class ViewValidation {
 
     this.InputName.addEventListener('keyup', (e) => {
       this.InputName.value = this.InputName.value.replace(/[^a-z^A-Z\s^А-ЯЁ^а-яё]/g, "")
+      if (this.isValidInputName()) {
+        this.InputName.style.borderColor = 'green';
+      } else {
+        this.InputName.style.borderColor = 'red';
+      }
     })
 
 
     this.InputPhone.addEventListener('keyup', (e) => {
       this.InputPhone.value = this.InputPhone.value.replace(/[^0-9+]/g, '')
       console.log(this.InputPhone.value)
+      if (this.isValidInputPhone()) {
+        this.InputPhone.style.borderColor = 'green';
+      } else {
+        this.InputPhone.style.borderColor = 'red';
+      }
     })
 
+    this.InputAdress.addEventListener('keyup', (e) => {
+      if (this.isValidInputAdress()) {
+        this.InputAdress.style.borderColor = 'green';
+      } else {
+        this.InputAdress.style.borderColor = 'red';
+      }
+    })
 
-
+    this.InputMail.addEventListener('keyup', (e) => {
+      if (this.isValidInputInputMail()) {
+        this.InputMail.style.borderColor = 'green';
+      } else {
+        this.InputMail.style.borderColor = 'red';
+      }
+    })
   }
 
 
@@ -76,17 +102,24 @@ class ViewValidation {
 
     if ((this.InputPhone.value[0] === '+') &&
       (this.InputPhone.value.length > 9) &&
-      (this.InputPhone.value.replace(/['+']/g, '').length === (this.InputPhone.value.length - 1)))
-    {
+      (this.InputPhone.value.replace(/['+']/g, '').length === (this.InputPhone.value.length - 1))) {
       return true
     }
     return false
   }
-  
+
   isValidInputAdress() {
     const array = this.InputAdress.value.split(' ').filter(item => item)
     console.log('array', array)
     if (array.length > 2 && array.every(item => item.length > 4)) {
+      return true
+    }
+    return false
+  }
+
+  isValidInputInputMail() {
+    const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
+    if (EMAIL_REGEXP.test(this.InputMail.value)) {
       return true
     }
     return false
@@ -107,7 +140,7 @@ class ViewValidation {
     this.customElement.addChildren(popupWrapper, [popup]);
 
     // Создание popup 
-    const popupBlock = this.customElement.createElement('div', { className: 'popup__block' });
+    const popupBlock = this.customElement.createElement('form', { className: 'popup__block' });
     this.customElement.addChildren(popup, [popupBlock]);
 
     // Создание popupBlock
@@ -120,12 +153,15 @@ class ViewValidation {
     // const popupDataInputName = this.customElement.createElement('input', { className: '_inp popup__dataInput-name', type: 'text', placeholder: 'Your Name' });
     // const popupDataInputPhone = this.customElement.createElement('input', { className: '_inp popup__dataInput-phone', type: 'text', placeholder: 'Phone number' });
     // const popupDataInputAdress = this.customElement.createElement('input', { className: '_inp popup__dataInput-adress', type: 'text', placeholder: 'Adress' });
-    const popupDataInputMail = this.customElement.createElement('input', { className: '_inp popup__dataInput-mail', type: 'mail', placeholder: 'E-mail' });
-    this.customElement.addChildren(popupDataInput, [popupPersona, this.InputName, this.InputPhone, this.InputAdress, popupDataInputMail]);
+    // const popupDataInputMail = this.customElement.createElement('input', { className: '_inp popup__dataInput-mail', type: 'mail', placeholder: 'E-mail' });
+    this.customElement.addChildren(popupDataInput, [popupPersona, this.InputName, this.InputPhone, this.InputAdress, this.InputMail]);
 
 
-    popupDataInputMail.classList.add('placeholder-red');
-    (popupDataInputMail as HTMLInputElement).placeholder = 'ВВЕДИ НОРМ ЗНАЧЕНИЕ КУКУШКА'
+    // popupDataInputMail.classList.add('placeholder-red');
+    // (popupDataInputMail as HTMLInputElement).placeholder = 'ВВЕДИ НОРМ ЗНАЧЕНИЕ КУКУШКА'
+
+
+
     // Создание popupCreditInput
     const creditInputTitle = this.customElement.createElement('h3', { className: 'creditInput__title', textContent: 'Card Details' });
     const creditInputCardNumber = this.customElement.createElement('div', { className: 'creditInput__cardNumber' });

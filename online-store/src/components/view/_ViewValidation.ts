@@ -1,5 +1,8 @@
 import CustomElement from '../utils/_createCustomElement';
 // import { createElement } from '../utils/utils';.
+import visa from './../../assets/img/png/visa.png';
+import mastercard from './../../assets/img/png/mastercard.png';
+import maestro from './../../assets/img/png/maestro.png';
 
 
 class ViewValidation {
@@ -15,6 +18,13 @@ class ViewValidation {
   InputCardNumberDate: HTMLInputElement;
   InputCardNumberCVV: HTMLInputElement;
 
+  spanDataInputName: HTMLElement;
+  spanDataInputPhone: HTMLElement;
+  spanDataInputAdress: HTMLElement;
+  spanDataInputMail: HTMLElement;
+  spanInputCardNumber: HTMLElement;
+  spanCardNumberDate: HTMLElement;
+  spanCardNumberCVV: HTMLElement;
 
   EVENT: { [x: string]: Event }
 
@@ -39,6 +49,18 @@ class ViewValidation {
       { className: '_inp creditInput__cardNumber-date', type: 'text', placeholder: 'Date: 01/22' }) as HTMLInputElement;
     this.InputCardNumberCVV = this.customElement.createElement('input',
       { className: '_inp creditInput__cardNumber-cvv', type: 'text', placeholder: 'CVV' }) as HTMLInputElement;
+
+
+    //СПАНЫ ДЛЯ ОШИБОК
+    this.spanDataInputName = this.customElement.createElement('span', { className: 'span__dataInput-name', textContent: 'ERROR' });
+    this.spanDataInputPhone = this.customElement.createElement('span', { className: 'span__dataInput-phone', textContent: 'ERROR' });
+    this.spanDataInputAdress = this.customElement.createElement('span', { className: 'span__dataInput-adress', textContent: 'ERROR' });
+    this.spanDataInputMail = this.customElement.createElement('span', { className: 'span__dataInput-mail', textContent: 'ERROR' });
+
+    this.spanInputCardNumber = this.customElement.createElement('span', { className: 'span__InputCardNumber', textContent: 'ERROR' });
+    this.spanCardNumberDate = this.customElement.createElement('span', { className: 'span__CardNumberDate', textContent: 'ERROR' });
+    this.spanCardNumberCVV = this.customElement.createElement('span', { className: 'span__CardNumberCVV', textContent: 'ERROR' });
+
 
     // console.log('this.InputName', this.InputName.value)
 
@@ -233,11 +255,21 @@ class ViewValidation {
 
     // Создание popupDataInput
     const popupPersona = this.customElement.createElement('h3', { className: 'popup__persona', textContent: 'Personal details' });
+    const divDataInputName = this.customElement.createElement('div', { className: 'div__dataInput-name' });
+    const divDataInputPhone = this.customElement.createElement('div', { className: 'div__dataInput-phone' });
+    const divDataInputAdress = this.customElement.createElement('div', { className: 'div__dataInput-adress' });
+    const divDataInputMail = this.customElement.createElement('div', { className: 'div__dataInput-mail' });
+
+    this.customElement.addChildren(divDataInputName, [this.InputName, this.spanDataInputName]);
+    this.customElement.addChildren(divDataInputPhone, [this.InputPhone, this.spanDataInputPhone]);
+    this.customElement.addChildren(divDataInputAdress, [this.InputAdress, this.spanDataInputAdress]);
+    this.customElement.addChildren(divDataInputMail, [this.InputMail, this.spanDataInputMail]);
+
     // const popupDataInputName = this.customElement.createElement('input', { className: '_inp popup__dataInput-name', type: 'text', placeholder: 'Your Name' });
     // const popupDataInputPhone = this.customElement.createElement('input', { className: '_inp popup__dataInput-phone', type: 'text', placeholder: 'Phone number' });
     // const popupDataInputAdress = this.customElement.createElement('input', { className: '_inp popup__dataInput-adress', type: 'text', placeholder: 'Adress' });
     // const popupDataInputMail = this.customElement.createElement('input', { className: '_inp popup__dataInput-mail', type: 'mail', placeholder: 'E-mail' });
-    this.customElement.addChildren(popupDataInput, [popupPersona, this.InputName, this.InputPhone, this.InputAdress, this.InputMail]);
+    this.customElement.addChildren(popupDataInput, [popupPersona, divDataInputName, divDataInputPhone, divDataInputAdress, divDataInputMail]);
 
 
     // popupDataInputMail.classList.add('placeholder-red');
@@ -251,19 +283,26 @@ class ViewValidation {
     const creditInputCardSecret = this.customElement.createElement('div', { className: 'creditInput__cardSecret' });
     this.customElement.addChildren(popupCreditInput, [creditInputTitle, creditInputCardNumber, creditInputCardSecret]);
 
+    const divInputCardNumber = this.customElement.createElement('div', { className: 'div__InputCardNumber' });
+    const divInputCardNumberDate = this.customElement.createElement('div', { className: 'div__InputCardNumberDate' });
+    const divInputCardNumberCVV = this.customElement.createElement('div', { className: 'div__InputCardNumberCVV' });
+    this.customElement.addChildren(divInputCardNumber, [this.InputCardNumber, this.spanInputCardNumber]);
+    this.customElement.addChildren(divInputCardNumberDate, [this.InputCardNumberDate, this.spanCardNumberDate]);
+    this.customElement.addChildren(divInputCardNumberCVV, [this.InputCardNumberCVV, this.spanCardNumberCVV]);
+
     // Создание creditInputCardNumber
     const creditInputImage = this.customElement.createElement('div', { className: 'creditInput__image' });
     // const creditInputCardNumberNumber = this.customElement.createElement('input', { className: '_inp creditInput__cardNumber-number', type: 'text', placeholder: 'Card number' });
-    this.customElement.addChildren(creditInputCardNumber, [creditInputImage, this.InputCardNumber]);
+    this.customElement.addChildren(creditInputCardNumber, [creditInputImage, divInputCardNumber]);
 
     // Создание creditInputImage
-    const creditInputImageImg = this.customElement.createElement('img', { src: '#' });
+    const creditInputImageImg = this.customElement.createElement('img', { src: visa });
     this.customElement.addChildren(creditInputImage, [creditInputImageImg]);
 
     // Создание creditInputCardSecret
     // const cardNumberDate = this.customElement.createElement('input', { className: '_inp creditInput__cardNumber-date', type: 'text', placeholder: 'Date' });
     // const cardNumberCVV = this.customElement.createElement('input', { className: '_inp creditInput__cardNumber-cvv', type: 'text', placeholder: 'CVV' });
-    this.customElement.addChildren(creditInputCardSecret, [this.InputCardNumberDate, this.InputCardNumberCVV]);
+    this.customElement.addChildren(creditInputCardSecret, [divInputCardNumberDate, divInputCardNumberCVV]);
 
     return pageMainValidation
   }

@@ -175,12 +175,18 @@ class ViewBasketPage {
   }
 
   changeItemsForList() {
-    this.pagesCurrent.textContent = String(this.numberPage);
-    (this.productItemsInputView as HTMLInputElement).value = String(this.numberItem);
-
     this.productList.innerHTML = '';
     const newListElement = this.serverData.slice((this.numberPage - 1) * this.numberItem, Number(this.numberItem) * this.numberPage); // Создадим новый массив из старого
     this.customElement.addChildren(this.productList, [...this.renderProductCard(newListElement)]);
+  
+    this.maxPage = Math.ceil(this.serverData.length / this.numberItem);
+    if (this.numberPage > this.maxPage) {
+      this.numberPage = this.maxPage;
+      this.pagesCurrent.textContent = String(this.numberPage);
+
+      this.changeItemsForList();
+    }
+
   }
 
   changeNumberPage(event:Event) {
@@ -198,7 +204,8 @@ class ViewBasketPage {
         this.numberPage -= 1;
       } 
     }
-    
+
+    this.pagesCurrent.textContent = String(this.numberPage);
     this.changeItemsForList();
   }
 
@@ -209,11 +216,11 @@ class ViewBasketPage {
     }
 
     this.numberItem = Number(target.value); // Перезапишем количество указанных карточек
-    (this.productItemsInputView as HTMLInputElement).value = String(this.numberItem); // Запишем в инпут указанное значение
-    if (this.numberItem > this.serverData.length) { // Проверка на то, чтобы введенное число было не более карточек в корзине
+    if (Number(target.value) > this.serverData.length) { // Проверка на то, чтобы введенное число было не более карточек в корзине
       target.value = String(this.serverData.length);
     }
-    
+
+    (this.productItemsInputView as HTMLInputElement).value = String(target.value); // Запишем в инпут указанное значение
     this.changeItemsForList();
   }
 

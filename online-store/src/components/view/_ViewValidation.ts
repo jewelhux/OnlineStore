@@ -52,7 +52,7 @@ class ViewValidation {
 
 
     //СПАНЫ ДЛЯ ОШИБОК
-    this.spanDataInputName = this.customElement.createElement('span', { className: 'span__dataInput-name', textContent: 'ERROR' });
+    this.spanDataInputName = this.customElement.createElement('span', { className: 'span__dataInput-name', textContent: '' });
     this.spanDataInputPhone = this.customElement.createElement('span', { className: 'span__dataInput-phone', textContent: 'ERROR' });
     this.spanDataInputAdress = this.customElement.createElement('span', { className: 'span__dataInput-adress', textContent: 'ERROR' });
     this.spanDataInputMail = this.customElement.createElement('span', { className: 'span__dataInput-mail', textContent: 'ERROR' });
@@ -65,21 +65,38 @@ class ViewValidation {
     // console.log('this.InputName', this.InputName.value)
 
     this.EVENT = {
-      clickOnConfirm: new Event('clickOnConfirm', { bubbles: true }),// Клик на кнопку confirm
+      clickOnLogo: new Event('clickOnLogo', { bubbles: true }),// Клик на кнопку confirm
     }
 
     this.listenersValidationPage();
   }
 
   listenersValidationPage() {
+
     this.confirmButton.addEventListener('click', (e) => {
       e.preventDefault()
       // this.confirmButton.dispatchEvent(this.EVENT.clickOnConfirm)
 
-      console.log('isValidInputName() = ', this.isValidInputName())
-      console.log('isValidInputPhone() = ', this.isValidInputPhone())
-      console.log('isValidInputAdress() = ', this.isValidInputAdress())
+      // console.log('isValidInputName() = ', this.isValidInputName())
+      // console.log('isValidInputPhone() = ', this.isValidInputPhone())
+      // console.log('isValidInputAdress() = ', this.isValidInputAdress())
 
+      if ([this.isValidInputName(),
+         this.isValidInputPhone(),
+        this.isValidInputAdress(),
+        this.isValidInputInputMail(),
+        this.isValidInputCardNumber(),
+        this.isValidInputCardNumberDate(),
+        this.isValidInputCardNumberCVV()].every((item) => item)) {
+
+        localStorage.removeItem('BascetLocalStorage');
+        this.confirmButton.disabled = true
+        this.confirmButton.textContent = 'Order paid'
+        setTimeout(() => {
+          this.confirmButton.dispatchEvent(this.EVENT.clickOnLogo)
+        }, 3000);
+
+      }
     });
 
 
@@ -91,7 +108,6 @@ class ViewValidation {
         this.InputName.style.borderColor = 'red';
       }
     })
-
 
     this.InputPhone.addEventListener('keyup', (e) => {
       this.InputPhone.value = this.InputPhone.value.replace(/[^0-9+]/g, '')
@@ -167,24 +183,45 @@ class ViewValidation {
 
   }
 
+  setDefauldValueInputs() {
+    this.InputName.value = '';
+    this.InputPhone.value = '';
+    this.InputAdress.value = '';
+    this.InputMail.value = '';
+    this.InputCardNumber.value = '';
+    this.InputCardNumberDate.value = '';
+    this.InputCardNumberCVV.value = ''
+  }
+
+  setDefauldTextSpanError() {
+    this.spanDataInputName.textContent = '';
+    this.spanDataInputPhone.textContent = '';
+    this.spanDataInputAdress.textContent = '';
+    this.spanDataInputMail.textContent = '';
+    this.spanInputCardNumber.textContent = '';
+    this.spanCardNumberDate.textContent = '';
+    this.spanCardNumberCVV.textContent = '';
+  }
+
   isValidInputName() {
     const array = this.InputName.value.split(' ').filter(item => item)
     console.log('array', array)
     if (array.length > 1 && array.every(item => item.length > 2)) {
+      this.spanDataInputName.textContent = '';
       return true
     }
+    this.spanDataInputName.textContent = 'ERROR';
     return false
   }
 
   isValidInputPhone() {
-    // const array = this.InputName.value.split(' ').filter(item => item)
-    console.log('this.InputPhone.value', this.InputPhone.value)
-
     if ((this.InputPhone.value[0] === '+') &&
       (this.InputPhone.value.length > 9) &&
       (this.InputPhone.value.replace(/['+']/g, '').length === (this.InputPhone.value.length - 1))) {
+      this.spanDataInputPhone.textContent = '';
       return true
     }
+    this.spanDataInputPhone.textContent = 'ERROR';
     return false
   }
 
@@ -192,41 +229,51 @@ class ViewValidation {
     const array = this.InputAdress.value.split(' ').filter(item => item)
     console.log('array', array)
     if (array.length > 2 && array.every(item => item.length > 4)) {
+      this.spanDataInputAdress.textContent = '';
       return true
     }
+    this.spanDataInputAdress.textContent = 'ERROR';
     return false
   }
 
   isValidInputInputMail() {
     const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
     if (EMAIL_REGEXP.test(this.InputMail.value)) {
+      this.spanDataInputMail.textContent = '';
       return true
     }
+    this.spanDataInputMail.textContent = 'ERROR';
     return false
   }
-
 
   isValidInputCardNumber() {
     const CardNumber_REGEXP = /(\d{4}([-]|)\d{4}([-]|)\d{4}([-]|)\d{4})/;
     if (CardNumber_REGEXP.test(this.InputCardNumber.value)) {
+      this.spanInputCardNumber.textContent = '';
       return true
     }
+    this.spanInputCardNumber.textContent = 'ERROR';
     return false
 
   }
+
   isValidInputCardNumberDate() {
     const CardNumberDate_REGEXP = /^(0[1-9]|1[0-2])\/([0-9]{2})/;
     if (CardNumberDate_REGEXP.test(this.InputCardNumberDate.value)) {
+      this.spanCardNumberDate.textContent = '';
       return true
     }
+    this.spanCardNumberDate.textContent = 'ERROR';
     return false
   }
 
   isValidInputCardNumberCVV() {
     const CardNumberCVV_REGEXP = /^\d{3}$/;
     if (CardNumberCVV_REGEXP.test(this.InputCardNumberCVV.value)) {
+      this.spanCardNumberCVV.textContent = '';
       return true
     }
+    this.spanCardNumberCVV.textContent = 'ERROR';
     return false
   }
 
@@ -235,6 +282,11 @@ class ViewValidation {
 
   create() {
     const pageMainValidation = this.customElement.createElement('div', { className: 'page-main-itemCard _main-container' }); // Основная cекция
+    this.confirmButton.disabled = false;
+    this.confirmButton.textContent = 'Confirm';
+    this.setDefauldValueInputs();
+    this.setDefauldTextSpanError();
+
 
     // Создание pageMainValidation
     const popupWrapper = this.customElement.createElement('div', { className: 'popupWrapper' });

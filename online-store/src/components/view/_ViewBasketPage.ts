@@ -25,7 +25,7 @@ class ViewBasketPage {
   maxPage: number;
   // startServerData: IitemDATA[];
 
-  constructor(serverData: IitemDATA[], objectItemPage:{ [x: string]: number } = { items: 1, pages: 1} ) {
+  constructor(serverData: IitemDATA[], objectItemPage:{ [x: string]: number } = { items: 3, pages: 1} ) {
     // this._controller = new ControllerMain();
     this.customElement = new CustomElement();
 
@@ -44,7 +44,7 @@ class ViewBasketPage {
       clickOnProductAddInBascetBuy: new Event('clickOnProductAddInBascetBuy', { bubbles: true }),
     };
 
-    this.serverData = serverData; // Сюда будем перезаписывать данные
+    this.serverData = [...serverData]; // Сюда будем перезаписывать данные
     this.objectItemsPages = { ...objectItemPage }; // Создадим копию нашего входящего объекта с инпутом и страничкой
     this.numberPage = this.objectItemsPages.pages;
     this.numberItem = this.objectItemsPages.items;
@@ -69,7 +69,8 @@ class ViewBasketPage {
 
     this.numberPage = basketItem.pages;
     this.numberItem = basketItem.items;
-
+    console.log('this.numberItem КОРЗИНЫ',this.numberItem)
+    console.log('this.numberPage КОРЗИНЫ',this.numberPage)
 
     this.pageMainBasket.innerHTML = '';
     this.productList.innerHTML = '';

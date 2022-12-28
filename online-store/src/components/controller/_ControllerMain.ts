@@ -264,7 +264,7 @@ class ControllerMain {
   }
 
   // Рендер корзины
-  renderBacket(name: string) {
+  renderBacket(name: string = 'Backet') {
     document.title = `Store - ${name}`;
     // const search = new URLSearchParams(window.location.search);
     // console.log('search!!!!!!!!', this._formatURL.createIDFromURLSearchParams(search))
@@ -429,10 +429,12 @@ class ControllerMain {
 
     // Клик по корзине из Хедера и запуск страницы корзины
     this.BODY.addEventListener('clickOnBacket', (e) => {
-      this.MAIN.innerHTML = ''
-      // console.log('this.generateProductsForBascet()====',this.generateProductsForBascet())
-      this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet())) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
-      window.history.pushState({}, '', '/basket')
+
+      this.renderBacket() 
+      // this.MAIN.innerHTML = ''
+      // // console.log('this.generateProductsForBascet()====',this.generateProductsForBascet())
+      // this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet())) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
+      // window.history.pushState({}, '', '/basket')
     })
 
 

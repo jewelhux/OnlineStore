@@ -10,6 +10,10 @@ class ViewValidation {
   InputAdress: HTMLInputElement;
   InputMail: HTMLInputElement;
 
+
+  InputCardNumberCVV: HTMLInputElement;
+
+
   EVENT: { [x: string]: Event }
 
   constructor() {
@@ -28,7 +32,16 @@ class ViewValidation {
     this.InputMail = this.customElement.createElement('input',
       { className: '_inp popup__dataInput-mail', type: 'email', placeholder: 'E-mail' }) as HTMLInputElement;
 
-    console.log('this.InputName', this.InputName.value)
+
+
+
+    this.InputCardNumberCVV = this.customElement.createElement('input',
+      { className: '_inp creditInput__cardNumber-cvv', type: 'text', placeholder: 'CVV' }) as HTMLInputElement;
+
+
+
+
+    // console.log('this.InputName', this.InputName.value)
 
     this.EVENT = {
       clickOnConfirm: new Event('clickOnConfirm', { bubbles: true }),// Клик на кнопку confirm
@@ -61,7 +74,7 @@ class ViewValidation {
 
     this.InputPhone.addEventListener('keyup', (e) => {
       this.InputPhone.value = this.InputPhone.value.replace(/[^0-9+]/g, '')
-      console.log(this.InputPhone.value)
+      console.log('this.InputPhone.value.length',this.InputPhone.value.length)
       if (this.isValidInputPhone()) {
         this.InputPhone.style.borderColor = 'green';
       } else {
@@ -84,6 +97,24 @@ class ViewValidation {
         this.InputMail.style.borderColor = 'red';
       }
     })
+
+
+
+
+    this.InputCardNumberCVV.addEventListener('keyup', (e) => {
+      this.InputCardNumberCVV.value = this.InputCardNumberCVV.value.replace(/[^0-9+]/g, '')
+      if (this.InputCardNumberCVV.value.length > 3) {
+        this.InputCardNumberCVV.value = this.InputCardNumberCVV.value.slice(0,3)
+      }
+      // console.log(this.InputCardNumberCVV.value)
+      // console.log(this.InputPhone.value.length)
+      if (this.isValidInputCardNumberCVV()) {
+        this.InputCardNumberCVV.style.borderColor = 'green';
+      } else {
+        this.InputCardNumberCVV.style.borderColor = 'red';
+      }
+    })
+
   }
 
 
@@ -120,6 +151,18 @@ class ViewValidation {
   isValidInputInputMail() {
     const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
     if (EMAIL_REGEXP.test(this.InputMail.value)) {
+      return true
+    }
+    return false
+  }
+
+
+  
+
+
+  isValidInputCardNumberCVV() {
+    const CardNumberCVV_REGEXP = /^\d{3}$/;
+    if (CardNumberCVV_REGEXP.test(this.InputCardNumberCVV.value)) {
       return true
     }
     return false
@@ -179,8 +222,8 @@ class ViewValidation {
 
     // Создание creditInputCardSecret
     const cardNumberDate = this.customElement.createElement('input', { className: '_inp creditInput__cardNumber-date', type: 'text', placeholder: 'Date' });
-    const cardNumberCVV = this.customElement.createElement('input', { className: '_inp creditInput__cardNumber-cvv', type: 'text', placeholder: 'CVV' });
-    this.customElement.addChildren(creditInputCardSecret, [cardNumberDate, cardNumberCVV]);
+    // const cardNumberCVV = this.customElement.createElement('input', { className: '_inp creditInput__cardNumber-cvv', type: 'text', placeholder: 'CVV' });
+    this.customElement.addChildren(creditInputCardSecret, [cardNumberDate, this.InputCardNumberCVV]);
 
     return pageMainValidation
   }

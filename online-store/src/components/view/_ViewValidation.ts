@@ -11,6 +11,8 @@ class ViewValidation {
   InputMail: HTMLInputElement;
 
 
+  InputCardNumber: HTMLInputElement;
+  InputCardNumberDate: HTMLInputElement;
   InputCardNumberCVV: HTMLInputElement;
 
 
@@ -31,15 +33,12 @@ class ViewValidation {
       { className: '_inp popup__dataInput-adress', type: 'text', placeholder: 'Adress: as1** **c/4 a*s*9' }) as HTMLInputElement;
     this.InputMail = this.customElement.createElement('input',
       { className: '_inp popup__dataInput-mail', type: 'email', placeholder: 'E-mail' }) as HTMLInputElement;
-
-
-
-
+    this.InputCardNumber = this.customElement.createElement('input',
+      { className: '_inp creditInput__cardNumber-number', type: 'text', placeholder: 'Card number: 1111222233334444' }) as HTMLInputElement;
+    this.InputCardNumberDate = this.customElement.createElement('input',
+      { className: '_inp creditInput__cardNumber-date', type: 'text', placeholder: 'Date: 01/22' }) as HTMLInputElement;
     this.InputCardNumberCVV = this.customElement.createElement('input',
       { className: '_inp creditInput__cardNumber-cvv', type: 'text', placeholder: 'CVV' }) as HTMLInputElement;
-
-
-
 
     // console.log('this.InputName', this.InputName.value)
 
@@ -74,7 +73,7 @@ class ViewValidation {
 
     this.InputPhone.addEventListener('keyup', (e) => {
       this.InputPhone.value = this.InputPhone.value.replace(/[^0-9+]/g, '')
-      console.log('this.InputPhone.value.length',this.InputPhone.value.length)
+      console.log('this.InputPhone.value.length', this.InputPhone.value.length)
       if (this.isValidInputPhone()) {
         this.InputPhone.style.borderColor = 'green';
       } else {
@@ -98,16 +97,45 @@ class ViewValidation {
       }
     })
 
+    this.InputCardNumber.addEventListener('input', (e) => {
+      const length = this.InputCardNumber.value.length;
+      this.InputCardNumber.value = this.InputCardNumber.value.replace(/[^0-9+]/g, '')
+      // if (((length === 4 ) ||
+      //  (length === 9) ||
+      //  (length === 14))) {
+      //   this.InputCardNumber.value = this.InputCardNumber.value + ' '
+      // }
+      if (length > 16) {
+        this.InputCardNumber.value = this.InputCardNumber.value.slice(0, 16)
+      }
+      if (this.isValidInputCardNumber()) {
+        this.InputCardNumber.style.borderColor = 'green';
+      } else {
+        this.InputCardNumber.style.borderColor = 'red';
+      }
+    })
 
-
+    this.InputCardNumberDate.addEventListener('input', (e) => {
+      const length = this.InputCardNumberDate.value.length;
+      this.InputCardNumberDate.value = this.InputCardNumberDate.value.replace(/[^0-9+/]/g, '')
+      if (length === 2) {
+        this.InputCardNumberDate.value = this.InputCardNumberDate.value + '/'
+      }
+      if (length > 5) {
+        this.InputCardNumberDate.value = this.InputCardNumberDate.value.slice(0, 5)
+      }
+      if (this.isValidInputCardNumberDate()) {
+        this.InputCardNumberDate.style.borderColor = 'green';
+      } else {
+        this.InputCardNumberDate.style.borderColor = 'red';
+      }
+    })
 
     this.InputCardNumberCVV.addEventListener('keyup', (e) => {
       this.InputCardNumberCVV.value = this.InputCardNumberCVV.value.replace(/[^0-9+]/g, '')
       if (this.InputCardNumberCVV.value.length > 3) {
-        this.InputCardNumberCVV.value = this.InputCardNumberCVV.value.slice(0,3)
+        this.InputCardNumberCVV.value = this.InputCardNumberCVV.value.slice(0, 3)
       }
-      // console.log(this.InputCardNumberCVV.value)
-      // console.log(this.InputPhone.value.length)
       if (this.isValidInputCardNumberCVV()) {
         this.InputCardNumberCVV.style.borderColor = 'green';
       } else {
@@ -116,7 +144,6 @@ class ViewValidation {
     })
 
   }
-
 
   isValidInputName() {
     const array = this.InputName.value.split(' ').filter(item => item)
@@ -157,8 +184,21 @@ class ViewValidation {
   }
 
 
-  
+  isValidInputCardNumber() {
+    const CardNumber_REGEXP = /(\d{4}([-]|)\d{4}([-]|)\d{4}([-]|)\d{4})/;
+    if (CardNumber_REGEXP.test(this.InputCardNumber.value)) {
+      return true
+    }
+    return false
 
+  }
+  isValidInputCardNumberDate() {
+    const CardNumberDate_REGEXP = /^(0[1-9]|1[0-2])\/([0-9]{2})/;
+    if (CardNumberDate_REGEXP.test(this.InputCardNumberDate.value)) {
+      return true
+    }
+    return false
+  }
 
   isValidInputCardNumberCVV() {
     const CardNumberCVV_REGEXP = /^\d{3}$/;
@@ -213,23 +253,20 @@ class ViewValidation {
 
     // Создание creditInputCardNumber
     const creditInputImage = this.customElement.createElement('div', { className: 'creditInput__image' });
-    const creditInputCardNumberNumber = this.customElement.createElement('input', { className: '_inp creditInput__cardNumber-number', type: 'text', placeholder: 'Card number' });
-    this.customElement.addChildren(creditInputCardNumber, [creditInputImage, creditInputCardNumberNumber]);
+    // const creditInputCardNumberNumber = this.customElement.createElement('input', { className: '_inp creditInput__cardNumber-number', type: 'text', placeholder: 'Card number' });
+    this.customElement.addChildren(creditInputCardNumber, [creditInputImage, this.InputCardNumber]);
 
     // Создание creditInputImage
     const creditInputImageImg = this.customElement.createElement('img', { src: '#' });
     this.customElement.addChildren(creditInputImage, [creditInputImageImg]);
 
     // Создание creditInputCardSecret
-    const cardNumberDate = this.customElement.createElement('input', { className: '_inp creditInput__cardNumber-date', type: 'text', placeholder: 'Date' });
+    // const cardNumberDate = this.customElement.createElement('input', { className: '_inp creditInput__cardNumber-date', type: 'text', placeholder: 'Date' });
     // const cardNumberCVV = this.customElement.createElement('input', { className: '_inp creditInput__cardNumber-cvv', type: 'text', placeholder: 'CVV' });
-    this.customElement.addChildren(creditInputCardSecret, [cardNumberDate, this.InputCardNumberCVV]);
+    this.customElement.addChildren(creditInputCardSecret, [this.InputCardNumberDate, this.InputCardNumberCVV]);
 
     return pageMainValidation
   }
-
-
-
 
 
 

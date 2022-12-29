@@ -239,14 +239,15 @@ class ViewBasketPage {
   changeNumberItems(event:Event) {
     const target = event.target as HTMLInputElement
     // Проверка на ввод пустого значения
-    if (target.value === '') {
+    if (target.value === '' || ((Number(target.value) > this.serverData.length))) {
+      target.value = this.objectItemsPages.items.toString()
       return 
     }
 
     // Перезапишем количество указанных карточек
     this.objectItemsPages.items = Number(target.value);
 
-    if (this.objectItemsPages.items < this.serverData.length) {
+    if (this.objectItemsPages.items <= this.serverData.length) {
       this.pushState()
     }
 

@@ -67,8 +67,8 @@ class ViewBasketPage {
     console.log('DATA КРЕАТЕ КОРЗИНЫ',data)
     console.log('basketItem КОРЗИНЫ',basketItem)
 
-    this.numberPage = basketItem.pages;
-    this.numberItem = basketItem.items;
+    this.numberPage = basketItem.pages || this.numberPage;
+    this.numberItem = basketItem.items || this.numberItem;
     console.log('this.numberItem КОРЗИНЫ',this.numberItem)
     console.log('this.numberPage КОРЗИНЫ',this.numberPage)
 

@@ -276,8 +276,8 @@ class ControllerMain {
     //   pages: 2,
     // }
     // console.log('50 =basketObject1', basketObject1)
-    //    const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject1)
-    //        window.history.pushState({}, '', `/basket?${params}`)
+      //  const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject1)
+          //  window.history.pushState({}, '', `/basket?${params}`)
 
     // // Логика из корзины временно тут
 

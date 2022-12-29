@@ -1,6 +1,6 @@
-import { IFilter } from "../typingTS/_interfaces";
+// import { IFilter } from "../typingTS/_interfaces";
 
-const state: IFilter = {
+const state = {
   "category": [],
   "brand": [],
   "price": [],
@@ -9,4 +9,4 @@ const state: IFilter = {
   "sort":[''],
 };
 
-export default state
+// export default state

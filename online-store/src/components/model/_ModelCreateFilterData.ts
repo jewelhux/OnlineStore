@@ -1,6 +1,6 @@
 import { IitemDATA, IFilter } from '../typingTS/_interfaces'
 import { stringObject, stringArrayObject } from '../typingTS/_type';
-import state from '../utils/state'
+// import state from '../utils/state'
 
 import CreateBaseDate from "./_CreateBaseData"
 
@@ -47,13 +47,14 @@ class CreateFilterData {
       // "stock": [2, 150],
       "search": [''],
       "sort": [''],
+      "view": ['Big'],
     };
-    this._FILTER = {...this._startServerFILTER}
+    this._FILTER = { ...this._startServerFILTER }
     this._FILTERpriceTEXT = [...this.baseData.price]
     this._FILTERstockTEXT = [...this.baseData.stock],
 
 
-    this._startPriceOfFILTER = this._startServerFILTER.price
+      this._startPriceOfFILTER = this._startServerFILTER.price
     this._startStockOfFILTER = this._startServerFILTER.stock
     this._startSearchOfFILTER = this._startServerFILTER.search
 
@@ -72,20 +73,25 @@ class CreateFilterData {
   public get baseData() {
     return this._baseData
   }
-  // ссылка на класс Базы данных
+  // метод возврата фильтра сотрировки
   public get sortOfFILTER() {
     // console.log('100 = this._FILTER.sort из СоРТ', this._FILTER.sort)
     return this._FILTER.sort
   }
+  // метод возврата фильтра view
+  public get viewOfFILTER() {
+    // console.log('100 = this._FILTER.sort из СоРТ', this._FILTER.sort)
+    return this._FILTER.view
+  }
 
-    // метод Установки Сортировки товара фильтра
-    setSortOfFILTER(data: string = this.startServerFILTER.sort[0]) {
-      // console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА ФИЛЬТДАТА', data)
-      this._FILTER.sort[0] = data;
-      console.log('600 = ОБНОВИЛАСЬ ЛИ this._FILTER.sort в конструкторе', this._FILTER.sort)
-      // this.updateFiltredData()
-      // this.updateFILTER_Price_Stock()
-    }
+  // метод Установки Сортировки товара фильтра
+  setSortOfFILTER(data: string = this.startServerFILTER.sort[0]) {
+    // console.log('ОБНОВИЛАСЬ ЛИ СОРТИРОВКА ФИЛЬТДАТА', data)
+    this._FILTER.sort[0] = data;
+    console.log('600 = ОБНОВИЛАСЬ ЛИ this._FILTER.sort в конструкторе', this._FILTER.sort)
+    // this.updateFiltredData()
+    // this.updateFILTER_Price_Stock()
+  }
 
   // медод обновляющий отфильтрованный Объект c данными ПРОДУКТА по измененному FILTER
   updateFiltredData(): IitemDATA[] {
@@ -178,7 +184,7 @@ class CreateFilterData {
     }
 
     this._filtredData = resultfilterData
-// console.log('this._filtredData из модели',this._filtredData)
+    // console.log('this._filtredData из модели',this._filtredData)
 
     return this._filtredData
   }
@@ -266,6 +272,13 @@ class CreateFilterData {
     // this.updateFILTER_Price_Stock()
   }
 
+  // метод Установки view фильтра
+  setViewOfFILTER(data: string = this.startServerFILTER.view[0]) {
+    this._FILTER.view[0] = data;
+    // this.updateFiltredData()
+    // this.updateFILTER_Price_Stock()
+  }
+
   setFILTER(filter: IFilter) {
     this.FILTER.brand = [...filter.brand]
     this.FILTER.category = [...filter.category]
@@ -273,8 +286,9 @@ class CreateFilterData {
     this.FILTER.stock = filter.stock.length ? [...filter.stock] : [...this.baseData.stock]
     this.FILTER.search = filter.search.length ? [...filter.search] : ['']
     this.FILTER.sort = filter.sort.length ? [...filter.sort] : ['']
+    this.FILTER.view = filter.sort.length ? [...filter.view] : ['Big']
     // console.log('this.FILTER.sort ЭТО ИЗ МОДЕЛИ',this.FILTER.sort)
-    // console.log('this.FILTER ЭТО ИЗ Конструктора',this.FILTER)
+    console.log('this.FILTER ЭТО ИЗ Конструктора',this.FILTER)
     // this.updateFiltredData()
   }
 
@@ -411,6 +425,7 @@ class CreateFilterData {
       this._FILTER.stock = [...this.baseData.stock],
       this._FILTER.search = ['']
     this._FILTER.sort = ['']
+    this._FILTER.view = ['Big']
 
     // this._FILTER = JSON.parse(JSON.stringify(this._startServerFILTER))
     this.updateFiltredData()

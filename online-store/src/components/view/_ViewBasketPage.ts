@@ -200,8 +200,7 @@ class ViewBasketPage {
     if (this.objectItemsPages.items > this.serverData.length) {
       this.objectItemsPages.items = this.serverData.length;
       this.changeItemsForList();
-    }
-
+    } 
     
   }
   
@@ -242,7 +241,11 @@ class ViewBasketPage {
 
     // Перезапишем количество указанных карточек
     this.objectItemsPages.items = Number(target.value);
-    this.pushState() // ТУТ СДЕЛАЙ ПРОВЕРКУ ИНАЧЕ В ИСТОРИЮ ЛЕТЯТ ПОСТОЯННЫЕ ПУШИ ЕСЛИ ЧИСЛО ИТЕМОМ ВВОДИШЬ БОЛЬШЕ ПОЛОЖЕННОГО
+
+    if (this.objectItemsPages.items < this.serverData.length) {
+      this.pushState()
+    }
+
     this.changeItemsForList();
   }
 

@@ -390,9 +390,16 @@ class ViewMainPage {
       console.log('view',view)
       if (view[0] === 'Big') {
         this.customElement.addChildren(cardInfo, [cardImg, cardData]);
+        card.classList.add('cardlist__item-two');
+        this.viewBlock.classList.remove('visible__item-active');
+        this.viewList.classList.remove('visible__item-active');
+        this.viewBlock.classList.add('visible__item-active');
       } else {
         this.customElement.addChildren(cardInfo, [cardImg]);
-
+        card.classList.remove('cardlist__item-two');
+        this.viewBlock.classList.remove('visible__item-active');
+        this.viewList.classList.remove('visible__item-active');
+        this.viewList.classList.add('visible__item-active');
       }
 
       //Заполнение cardData

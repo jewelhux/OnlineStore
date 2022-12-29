@@ -202,8 +202,12 @@ class ViewBasketPage {
       this.changeItemsForList();
     }
 
-    // Пушим в историю адресной строки
-    console.log(this.objectItemsPages)
+    
+  }
+  
+  // Пушим в историю адресной строки
+  pushState() {
+    console.log('this.objectItemsPages',this.objectItemsPages)
     const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(this.objectItemsPages); 
     window.history.pushState({}, '', `/basket?${params}`)
   }
@@ -215,12 +219,14 @@ class ViewBasketPage {
     if (this.objectItemsPages.pages < this.maxPage && this.objectItemsPages.pages >= 1) {
       if (target.classList.contains('product__pages-btnNext')) {
         this.objectItemsPages.pages += 1;
+        this.pushState()
       }
     } 
     
     if (this.objectItemsPages.pages <= this.maxPage && this.objectItemsPages.pages > 1) {
       if (target.classList.contains('product__pages-btnPrev')) {
         this.objectItemsPages.pages -= 1;
+        this.pushState()
       } 
     }
     
@@ -236,6 +242,7 @@ class ViewBasketPage {
 
     // Перезапишем количество указанных карточек
     this.objectItemsPages.items = Number(target.value);
+    this.pushState() // ТУТ СДЕЛАЙ ПРОВЕРКУ ИНАЧЕ В ИСТОРИЮ ЛЕТЯТ ПОСТОЯННЫЕ ПУШИ ЕСЛИ ЧИСЛО ИТЕМОМ ВВОДИШЬ БОЛЬШЕ ПОЛОЖЕННОГО
     this.changeItemsForList();
   }
 

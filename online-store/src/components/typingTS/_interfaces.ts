@@ -22,6 +22,7 @@ interface IitemDATA {
     stock: number[];
     search: string[];
     sort: string[]
+    view: string[]
 }
 
 

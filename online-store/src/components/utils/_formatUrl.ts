@@ -54,7 +54,8 @@ class FormatURL {
       "price": [],
       "stock": [],
       "search": [],
-      "sort":[]
+      "sort":[],
+      "view":[],
     };
 
     let key: string
@@ -66,7 +67,7 @@ class FormatURL {
         result[key] = obj[key][0] === '' ? [] : obj[key]
 
       }
-      if (key === "search" || key === "sort") {
+      if (key === "search" || key === "sort" || key === "view") {
         result[key] = obj[key]
     }
     }

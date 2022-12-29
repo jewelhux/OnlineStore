@@ -139,7 +139,11 @@ class ViewMainPage {
 
     // cлушаетль на кнопке копирования адресса
     this.buttonCopy.addEventListener('click', (e) => {
+      
       this.copyPageUrl()
+      setTimeout(() => {
+        this.buttonCopy.textContent = 'Copy Link'
+      }, 1500);
     })
 
     // cлушаетль на кнопке сброса ФИЛЬТРОВ
@@ -151,13 +155,12 @@ class ViewMainPage {
   async copyPageUrl() {
     try {
       await navigator.clipboard.writeText(location.href);
-      console.log('URL страницы скопирован в буфер обмена');
+      this.buttonCopy.textContent = 'Copied'
+      // console.log('URL страницы скопирован в буфер обмена');
     } catch (err) {
       console.error('Не удалось скопировать: ', err);
     }
   }
-
-
 
   create(startServerData: IitemDATA[] = this.startServerData,
     startCategoryData: stringArrayObject = this.startCategoryData,
@@ -324,9 +327,10 @@ this.customElement.addChildren(this.viewSort, [option])
     return filterStock
   }
 
-
+  // No products found 😏
   // Создание ItemCard (девок)
   renderItemCard(dataServerItem: IitemDATA[] = this.startServerData) {
+    if (dataServerItem.length === 0) {this.cardList.textContent = 'No products found 😏'} else {this.cardList.textContent = ''}
     const itemContainer: HTMLElement[] = [];
 
     for (const item of dataServerItem) {

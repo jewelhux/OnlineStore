@@ -264,34 +264,35 @@ class ControllerMain {
   }
 
   // Рендер корзины
-  renderBacket(name: string) {
+  renderBacket(name: string = 'Backet') {
     document.title = `Store - ${name}`;
     // const search = new URLSearchParams(window.location.search);
     // console.log('search!!!!!!!!', this._formatURL.createIDFromURLSearchParams(search))
     // const id = this._formatURL.createIDFromURLSearchParams(search).id
        
     // // Логика из корзины временно тут
-    const basketObject1 = {
-      items: 5,
-      pages: 2,
-    }
-    console.log('50 =basketObject1', basketObject1)
-       const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject1)
-           window.history.pushState({}, '', `/basket?${params}`)
+    // const basketObject1 = {
+    //   items: 5,
+    //   pages: 2,
+    // }
+    // console.log('50 =basketObject1', basketObject1)
+      //  const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject1)
+          //  window.history.pushState({}, '', `/basket?${params}`)
 
     // // Логика из корзины временно тут
 
     const search = new URLSearchParams(window.location.search);
-    console.log('600 =window.location.search!!!!', window.location.search)
-    console.log('70 =search', search.toString())
+    // console.log('60 =window.location.search!!!!', window.location.search)
+    // console.log('70 =search', search.toString())
 
     const basketObject = search.toString() ? this._formatURL.createFromURLSearchParams(search) : {
       items: 3,
       pages: 1,
     } 
 
-    console.log('100 =basketObject!!!!!!', basketObject)
+    // console.log('100 =basketObject!!!!!!', basketObject)
     // const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject)
+    // console.log('150 =params!!!', params.toString())
     // window.history.pushState({}, '', `/basket?${params}`)
     // console.log('300 =search!!!!!!!!', search)
     // const returnbasketObject = this._formatURL.createFromURLSearchParams(search)
@@ -313,8 +314,6 @@ class ControllerMain {
     this.BascetLocalStorage = []
   }
   }
-
-
 
 
   // Метод получения товаров в корзину по Списку из ЛОКАЛ СТОРИДЖ
@@ -429,10 +428,31 @@ class ControllerMain {
 
     // Клик по корзине из Хедера и запуск страницы корзины
     this.BODY.addEventListener('clickOnBacket', (e) => {
-      this.MAIN.innerHTML = ''
-      // console.log('this.generateProductsForBascet()====',this.generateProductsForBascet())
-      this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet())) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
-      window.history.pushState({}, '', '/basket')
+
+
+      // const search = new URLSearchParams(window.location.search);
+      // console.log('60 =window.location.search!!!!', window.location.search)
+      // console.log('70 =search', search.toString())
+  
+      // const basketObject = search.toString() ? this._formatURL.createFromURLSearchParams(search) : {
+      const basketObject = {
+        items: 3,
+        pages: 1,
+      } 
+  
+
+      const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject)
+
+      window.history.pushState({}, '', `/basket?${params}`)
+      // console.log('300 =search!!!!!!!!', search)
+      // const returnbasketObject = this._formatURL.createFromURLSearchParams(search)
+      // console.log('400 = returnbasketObject!!!!!!!!', returnbasketObject)
+
+      this.renderBacket() 
+      // this.MAIN.innerHTML = ''
+      // // console.log('this.generateProductsForBascet()====',this.generateProductsForBascet())
+      // this.MAIN.append(this.ViewBASKETPAGE.create(this.generateProductsForBascet())) // НЕ ДОРАБОТАНО ПОЛУЧАТЬ ДАННЫЕ ИЗ ЛОКАЛ СТОРИДЖ
+      // window.history.pushState({}, '', '/basket')
     })
 
 
@@ -454,7 +474,6 @@ class ControllerMain {
       const id = target.id
       this.MAIN.innerHTML = ''
       this.MAIN.append(this.ViewItemCardPAGE.create(this.MODEL.startServerData[Number(id) - 1]))
-      // console.log(`ПУШНУЛ ИСТОРИ ОДНОГО ПРОДУКТА /product?id=${id}`)
       window.history.pushState({}, '', `/product?id=${id}`)
     })
 
@@ -462,29 +481,18 @@ class ControllerMain {
     this.MAIN.addEventListener('clickOnProductAddInBascetMain', (e) => {
       const target = e.target as HTMLElement;
       const id = +target.id.split('|')[1]
-      // console.log("target.id.split('|')[0]", target.id.split('|')[0])
       const key: boolean = target.id.split('|')[0] === 'button-buy' ? false : true
-      // console.log("key", key)
       this.updateBascetLocalStorage(id, key)
-      // this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
-      // const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
-      // this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
       this.updateBascetCountAndTotaPriseHeader()
 
     })
 
     // Клик по карточке для запуска страниц Validation из Мейна
     this.MAIN.addEventListener('clickOnProductAddInBascetBuy', (e) => {
-      // const target = e.target as HTMLElement;
-      // const id = target.id
       window.history.pushState({}, '', `/validation`)
       this.MAIN.innerHTML = ''
       this.MAIN.append(this.ViewValidation.create())
-      // console.log(`ПУШНУЛ ИСТОРИ ОДНОГО ПРОДУКТА /product?id=${id}`)
     })
-
-
-
   }
 
 updateBascetCountAndTotaPriseHeader(){
@@ -497,33 +505,14 @@ updateBascetCountAndTotaPriseHeader(){
 
   fnSliderPrice() {
 
-    // this.silderPrice = this.customElement.createElement('div', { id: 'sliderPrice' }); // No Ui Slider Price
-    // this.silderStock = this.customElement.createElement('div', { id: 'sliderStock' }); // No Ui Slider Stock
-    // const sliderPrice = document.getElementById('sliderPrice') as noUiSlider.target;
-
-    // console.log(' fnSliderPrice()',this.priceOfFILTER[0],this.priceOfFILTER[1])
-    // console.log(' fnSliderPrice()',this.MODEL.priceOfFILTER[0],this.MODEL.priceOfFILTER[1])
-
-  //   const format = {
-  //     to: function(value:string) {
-  //         return (this.ViewMainPAGE.silderPrice)[Math.round(+value)] as number
-  //     from: function (value:string) {
-  //         return valuesForSlider.indexOf(Number(value));
-  //     }
-  // };
-
-
     if (this.ViewMainPAGE.silderPrice) {
       noUiSlider.create(this.ViewMainPAGE.silderPrice, {
         start: [this.priceOfFILTER[0], this.priceOfFILTER[1]],
         tooltips: true,
         format: {
-          // 'to' the formatted value. Receives a number.
           to: function (value) {
               return Math.ceil(+value);
           },
-          // 'from' the formatted value.
-          // Receives a string, should return a number.
           from: function (value) {
             return Math.ceil(+value);
           }
@@ -537,9 +526,6 @@ updateBascetCountAndTotaPriseHeader(){
 
       });
 
-
-      // const inputPrice1 = document.querySelector('.item-price__from') as HTMLInputElement;
-      // const inputPrice2 = document.querySelector('.item-price__to') as HTMLInputElement;
       const inputs = [this.ViewMainPAGE.itemPriceNumberFrom, this.ViewMainPAGE.itemPriceNumberTo];
 
       (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.on('update',
@@ -549,12 +535,10 @@ updateBascetCountAndTotaPriseHeader(){
 
       (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.on('set', (values, handle) => {
         const valueArray = values.map(el => Math.round(+el))
-        // console.log('roundVal', valueArray)
         this.MODEL.setPriceOfFILTER(valueArray)
         this.rerenderMainPageComponents()
         this.pushStateFilter()
         this.MODEL.updateFILTER_Price_Stock()
-        // console.log('!!!!!!!!!',this.MODEL._FILTERpriceTEXT, this.MODEL._FILTERstockTEXT)
         this.ViewMainPAGE.itemStockNumberFrom.textContent = this.MODEL._FILTERstockTEXT[0].toString()
         this.ViewMainPAGE.itemStockNumberTo.textContent = this.MODEL._FILTERstockTEXT[1].toString()
       });
@@ -563,19 +547,16 @@ updateBascetCountAndTotaPriseHeader(){
   }
 
   fnSliderStock() {
-    // const sliderStock = document.getElementById('sliderStock') as noUiSlider.target;
 
     if (this.ViewMainPAGE.silderStock) {
       noUiSlider.create(this.ViewMainPAGE.silderStock, {
         start: [this.stockOfFILTER[0], this.stockOfFILTER[1]],
         tooltips: true,
         format: {
-          // 'to' the formatted value. Receives a number.
           to: function (value) {
               return Math.ceil(+value);
           },
-          // 'from' the formatted value.
-          // Receives a string, should return a number.
+
           from: function (value) {
             return Math.ceil(+value);
           }
@@ -588,38 +569,27 @@ updateBascetCountAndTotaPriseHeader(){
         }
       });
 
-
-      // this.ViewMainPAGE.itemStockNumberFrom  this.itemStockNumberFrom = this.customElement.createElement('div', { className: 'item-stock__from' }); // Stock Text Min
-      // this.itemStockNumberTo = this.customElement.createElement('div', { className: 'item-stock__to' }); // Stock Text Max
-
-      // const inputStock1 = document.querySelector('.item-stock__from') as HTMLInputElement;
-      // const inputStock2 = document.querySelector('.item-stock__to') as HTMLInputElement;
       const inputs = [this.ViewMainPAGE.itemStockNumberFrom, this.ViewMainPAGE.itemStockNumberTo];
 
       (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('update',
         function (values: (string | number)[], handle: number): void {
           inputs[handle].textContent = String(Math.round(Number(values[handle])));
 
-          // this.ViewMainPAGE.silderStock.noUiSlider.get(true)
         });
 
       (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('set', (values, handle) => {
         const valueArray = values.map(el => Math.round(+el))
-        // console.log('roundVal', valueArray)
+
         this.MODEL.setStockOfFILTER(valueArray)
         this.rerenderMainPageComponents()
         this.pushStateFilter()
         this.MODEL.updateFILTER_Price_Stock()
         this.ViewMainPAGE.itemPriceNumberFrom.textContent = this.MODEL._FILTERpriceTEXT[0].toString()
         this.ViewMainPAGE.itemPriceNumberTo.textContent = this.MODEL._FILTERpriceTEXT[1].toString()
-
       });
-
-
 
     }
   }
-
 }
 
 export default ControllerMain

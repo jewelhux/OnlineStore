@@ -18,6 +18,7 @@ class ViewBasketPage {
   productList: HTMLElement;
   summaryInfo: HTMLElement;
   productItemsInputView: HTMLElement;
+  BascetLocalStorage: IBascetLocalStorage[];
 
   summaryInfoSpanTotal:HTMLSpanElement;
   summaryInfoSpanTotalProducts:HTMLSpanElement;
@@ -32,6 +33,13 @@ class ViewBasketPage {
   constructor(serverData: IitemDATA[], objectItemPage: { [x: string]: number } = { items: 3, pages: 1 }) {
     this.customElement = new CustomElement();
     this._formatURL = new FormatURL();
+
+    const readlocalStorage = localStorage.getItem('BascetLocalStorage')
+    if (readlocalStorage) {
+      this.BascetLocalStorage = JSON.parse(readlocalStorage)
+    } else {
+      this.BascetLocalStorage = []
+    }
 
     this.pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
     this.summaryInfoDataButton = this.customElement.createElement('button', { className: 'card__btn-button _btn', textContent: 'Buy now' });
@@ -137,6 +145,10 @@ class ViewBasketPage {
     // const test: IitemDATA[] = dataServerItem.slice(0, 6)
 
     for (const item of dataServerItem) {
+      // Значения из localStorage
+      const count = this.BascetLocalStorage.find(element => element.id === item.id)?.count;
+      const total = this.BascetLocalStorage.find(element => element.id === item.id)?.total;
+
       // Обертка карточки
       const itemBasket = this.customElement.createElement('div', { className: 'product__itemBasket itemBasket', id: `${item.id}` });
 
@@ -161,12 +173,12 @@ class ViewBasketPage {
       // Создание itemSummaryBasket
       const basketDataStock = this.customElement.createElement('p', { className: 'basket-data__name', textContent: `Stock: ${item.stock}` });
       const itemDataCount = this.customElement.createElement('div', { className: 'basket-data__count' });
-      const itemDataTotal = this.customElement.createElement('p', { className: 'basket-data__name', textContent: `Total: $${item.price}` });
+      const itemDataTotal = this.customElement.createElement('p', { className: 'basket-data__name basket-data__total', textContent: `Total: $${total}` });
       this.customElement.addChildren(itemSummaryBasket, [basketDataStock, itemDataCount, itemDataTotal]);
 
       // Создание itemDataCount
       const basketDataBtnMinus = this.customElement.createElement('button', { className: 'basket-data__count-btnMinus basket-data__count-btn', textContent: '-' });
-      const itemDataCurrent = this.customElement.createElement('p', { className: 'basket-data__count-current', textContent: '1' });
+      const itemDataCurrent = this.customElement.createElement('p', { className: 'basket-data__count-current', textContent: `${count}` });
       const basketDataBtnPlus = this.customElement.createElement('button', { className: 'basket-data__count-btnPlus basket-data__count-btn', textContent: '+' });
 
       // Навешиваем обработчики на + и - карточек
@@ -274,19 +286,22 @@ class ViewBasketPage {
   countItemPlus(e: Event, itemData: IitemDATA) {
     const itemCard = (e.target as HTMLElement).closest('.product__itemBasket');
     const itemCardCount = itemCard?.querySelector('.basket-data__count-current');
-    //Распарсим localStorage
-    const readlocalStorage = localStorage.getItem('BascetLocalStorage') as string;
-    const parseLocalStorage = JSON.parse(readlocalStorage);
+    const itemCardTotal = itemCard?.querySelector('.basket-data__total');
 
     // Проверка чтобы не было больше чем наличие
-    if (itemCardCount && itemCardCount.textContent && itemData.stock > Number(itemCardCount.textContent)) {
+    if (itemData.stock > Number(itemCardCount?.textContent)) {
       //Обновим значение count в localStorage
-      const newLocalStorage = parseLocalStorage.map((item: IBascetLocalStorage) => {
-        if (Number(itemCard?.id) === item.id) item.count++
+      const newLocalStorage = this.BascetLocalStorage.map((item: IBascetLocalStorage) => {
+        if (Number(itemCard?.id) === item.id) {
+          item.count = item.count + 1;
+          item.total = item.total + itemData.price;
+
+          if (itemCardCount) itemCardCount.textContent = String(item.count);
+          if (itemCardTotal) itemCardTotal.textContent = String(item.total);
+        }
         return item
       })
       localStorage.setItem('BascetLocalStorage', JSON.stringify(newLocalStorage));
-      itemCardCount.textContent = String(Number(itemCardCount.textContent) + 1);
     }
   }
 

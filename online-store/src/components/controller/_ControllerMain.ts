@@ -171,6 +171,7 @@ class ControllerMain {
       id: id,
       price: this.MODEL.startServerData[id - 1].price,
       count: 1,
+      total: this.MODEL.startServerData[id - 1].price
     }
   }
 

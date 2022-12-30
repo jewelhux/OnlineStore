@@ -81,14 +81,7 @@ class ViewBasketPage {
   }
 
   create(data: IitemDATA[], basketItem: { [x: string]: number } = { items: 3, pages: 3 }) {
-    console.log('DATA КРЕАТЕ КОРЗИНЫ', data)
-    console.log('basketItem КОРЗИНЫ', basketItem)
-
     this.objectItemsPages = { ...basketItem };
-
-    console.log('this.numberItem КОРЗИНЫ', this.objectItemsPages.items)
-    console.log('this.numberPage КОРЗИНЫ', this.objectItemsPages.pages)
-
     this.pageMainBasket.innerHTML = '';
     this.productList.innerHTML = '';
     this.summaryInfo.innerHTML = '';
@@ -146,6 +139,7 @@ class ViewBasketPage {
 
     for (const item of dataServerItem) {
       // Значения из localStorage
+      this.updateBascetFROMLocalStorage()
       const count = this.BascetLocalStorage.find(element => element.id === item.id)?.count;
       const total = this.BascetLocalStorage.find(element => element.id === item.id)?.total;
 
@@ -297,7 +291,7 @@ class ViewBasketPage {
           item.total = item.total + itemData.price;
 
           if (itemCardCount) itemCardCount.textContent = String(item.count);
-          if (itemCardTotal) itemCardTotal.textContent = String(item.total);
+          if (itemCardTotal) itemCardTotal.textContent = `Total: $${String(item.total)}`;
         }
         return item
       })
@@ -317,6 +311,15 @@ class ViewBasketPage {
       const newServerData = this.serverData.filter(item => item.id !== itemData.id);
       this.serverData = [...newServerData]
       this.changeItemsForList();
+    }
+  }
+
+  updateBascetFROMLocalStorage() {
+    const readlocalStorage = localStorage.getItem('BascetLocalStorage')
+    if (readlocalStorage) {
+      this.BascetLocalStorage = JSON.parse(readlocalStorage)
+    } else {
+      this.BascetLocalStorage = []
     }
   }
 

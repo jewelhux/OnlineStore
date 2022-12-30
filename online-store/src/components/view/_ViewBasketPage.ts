@@ -274,18 +274,18 @@ class ViewBasketPage {
   countItemPlus(e: Event, itemData: IitemDATA) {
     const itemCard = (e.target as HTMLElement).closest('.product__itemBasket');
     const itemCardCount = itemCard?.querySelector('.basket-data__count-current');
-
     //Распарсим localStorage
     const readlocalStorage = localStorage.getItem('BascetLocalStorage') as string;
     const parseLocalStorage = JSON.parse(readlocalStorage);
-    console.log(parseLocalStorage)
 
     // Проверка чтобы не было больше чем наличие
     if (itemCardCount && itemCardCount.textContent && itemData.stock > Number(itemCardCount.textContent)) {
+      //Обновим значение count в localStorage
       const newLocalStorage = parseLocalStorage.map((item: IBascetLocalStorage) => {
-        
+        if (Number(itemCard?.id) === item.id) item.count++
+        return item
       })
-      console.log(newLocalStorage)
+      localStorage.setItem('BascetLocalStorage', JSON.stringify(newLocalStorage));
       itemCardCount.textContent = String(Number(itemCardCount.textContent) + 1);
     }
   }

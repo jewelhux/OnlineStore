@@ -495,14 +495,19 @@ class ControllerMain {
 
     // Клик по карточке для добавления  продукта в КОРЗИНУ из Мейна
     this.MAIN.addEventListener('clickOnProductAddInBascetMain', (e) => {
+      const target = e.target as HTMLElement;
+      console.log(target)
+      const id = +target.id.split('|')[1]
+      const key: boolean = target.id.split('|')[0] === 'button-buy' ? false : true
+      this.updateBascetLocalStorage(id, key)
       this.updateBascetCountAndTotaPriseHeader()
     })
 
     // Клик по карточке для добавления копии продукта из КОРЗИНЫ
     this.MAIN.addEventListener('clickOnProductPlus', (e) => {
       const target = e.target as HTMLElement;
-      
-      console.log(target)
+      this.updateBascetCountAndTotaPriseHeader()
+
     })
 
     // Клик по карточке для запуска страниц Validation из Мейна
@@ -515,11 +520,11 @@ class ControllerMain {
 
   updateBascetCountAndTotaPriseHeader() {
     this.updateBascetFROMLocalStorage()
-    this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
+    this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.reduce((count, el) => count + el.count, 0))
     const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
     this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
     this.ViewBASKETPAGE.summaryInfoSpanTotal.textContent = summTotal.toString()
-    this.ViewBASKETPAGE.summaryInfoSpanTotalProducts.textContent = this.BascetLocalStorage.length.toString()
+    this.ViewBASKETPAGE.summaryInfoSpanTotalProducts.textContent = this.BascetLocalStorage.reduce((count, el) => count + el.count, 0).toString()
   }
 
 

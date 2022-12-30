@@ -198,14 +198,15 @@ class ViewBasketPage {
 
     const summaryInfoDataProducts = this.customElement.createElement('p', { className: 'summaryInfo-data__products', textContent: 'Products: ' });
     this.customElement.addChildren(summaryInfoDataProducts, [this.summaryInfoSpanTotalProducts])
-    const summaryInfoDataTotal = this.customElement.createElement('p', { className: 'summaryInfo__total', textContent: 'Total: $ ' });
+    const summaryInfoDataTotal = this.customElement.createElement('p', { className: 'summaryInfo__total sale-redline', textContent: 'Total: $ ' });
+    const summaryInfoDataTotalNew = this.customElement.createElement('p', { className: 'summaryInfo__total sale-newText', textContent: 'Total: $ НОВАЯ ЦЕНА' });
  
     this.customElement.addChildren(summaryInfoDataTotal, [this.summaryInfoSpanTotal])
     const summaryInfoDataSearch = this.customElement.createElement('input', { className: 'summaryInfo__search', type: 'search', placeholder: 'Search promocode' });
     const summaryInfoDataProme = this.customElement.createElement('p', { className: 'summaryInfo__name', textContent: 'Test promo: Jik, Sydery' });
     // const summaryInfoDataButton = this.customElement.createElement('button', { className: 'card__btn-button _btn', textContent: 'Buy now' });
 
-    itemContainer.push(summaryInfoDataProducts, summaryInfoDataTotal, summaryInfoDataSearch, summaryInfoDataProme, this.summaryInfoDataButton)
+    itemContainer.push(summaryInfoDataProducts, summaryInfoDataTotal, summaryInfoDataTotalNew , summaryInfoDataSearch, summaryInfoDataProme, this.summaryInfoDataButton)
     return itemContainer
   }
 

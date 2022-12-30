@@ -22,6 +22,15 @@ describe('strToNumber', () => {
   it('is numbner phone valid', () => {
     expect(Validation.isValidInputPhone('+1234567890')).toBeTruthy()
   })
+  it('is numbner phone valid', () => {
+    expect(Validation.isValidInputPhone('+111111111')).toBeTruthy()
+  })
+  it('is numbner phone valid', () => {
+    expect(Validation.isValidInputPhone('+1234+6789')).not.toBeTruthy()
+  })
+  it('is numbner phone valid', () => {
+    expect(Validation.isValidInputPhone('1234567890')).not.toBeTruthy()
+  })
 
   // it('return Object Defined', () => {
   //   expect(Format.strToNumber(startObject)).toBeDefined()

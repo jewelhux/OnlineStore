@@ -3,6 +3,7 @@ import CustomElement from '../utils/_createCustomElement';
 // import { stringArrayObject } from '../typingTS/_type';
 import { IitemDATA } from '../typingTS/_interfaces';
 import FormatURL from '../utils/_formatUrl';
+import { IBascetLocalStorage } from '../typingTS/_interfaces';
 // import { createElement } from '../utils/utils';
 
 
@@ -29,7 +30,6 @@ class ViewBasketPage {
   _formatURL: FormatURL;
 
   constructor(serverData: IitemDATA[], objectItemPage: { [x: string]: number } = { items: 3, pages: 1 }) {
-    // this._controller = new ControllerMain();
     this.customElement = new CustomElement();
     this._formatURL = new FormatURL();
 
@@ -50,6 +50,8 @@ class ViewBasketPage {
     this.EVENT = {
       // inputOnItemsVisible: new Event('inputOnItemsVisible', { bubbles: true }),
       clickOnProductAddInBascetBuy: new Event('clickOnProductAddInBascetBuy', { bubbles: true }),
+      clickOnProductPlus: new Event('clickOnProductPlus', { bubbles: true }),
+      clickOnProductMinus: new Event('clickOnProductMinus', { bubbles: true })
     };
 
     this.serverData = [...serverData]; // Сюда будем перезаписывать данные
@@ -83,8 +85,6 @@ class ViewBasketPage {
     this.productList.innerHTML = '';
     this.summaryInfo.innerHTML = '';
     this.serverData = [...data]; // Запишем входящие данные, чтобы не потерять
-
-
 
     // Отрисовка контейнера (для попапа и секции)
     // const pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
@@ -169,8 +169,12 @@ class ViewBasketPage {
       const itemDataCurrent = this.customElement.createElement('p', { className: 'basket-data__count-current', textContent: '1' });
       const basketDataBtnPlus = this.customElement.createElement('button', { className: 'basket-data__count-btnPlus basket-data__count-btn', textContent: '+' });
 
-      basketDataBtnPlus.addEventListener('click', (e) => this.countItemPlus(e, item));
+      // Навешиваем обработчики на + и - карточек
       basketDataBtnMinus.addEventListener('click', (e) => this.countItemMinus(e, item));
+      basketDataBtnPlus.addEventListener('click', (e) => {
+        this.countItemPlus(e, item);
+        basketDataBtnPlus.dispatchEvent(this.EVENT.clickOnProductPlus);
+      })
 
       this.customElement.addChildren(itemDataCount, [basketDataBtnMinus, itemDataCurrent, basketDataBtnPlus]);
 
@@ -271,8 +275,17 @@ class ViewBasketPage {
     const itemCard = (e.target as HTMLElement).closest('.product__itemBasket');
     const itemCardCount = itemCard?.querySelector('.basket-data__count-current');
 
+    //Распарсим localStorage
+    const readlocalStorage = localStorage.getItem('BascetLocalStorage') as string;
+    const parseLocalStorage = JSON.parse(readlocalStorage);
+    console.log(parseLocalStorage)
+
     // Проверка чтобы не было больше чем наличие
     if (itemCardCount && itemCardCount.textContent && itemData.stock > Number(itemCardCount.textContent)) {
+      const newLocalStorage = parseLocalStorage.map((item: IBascetLocalStorage) => {
+        
+      })
+      console.log(newLocalStorage)
       itemCardCount.textContent = String(Number(itemCardCount.textContent) + 1);
     }
   }

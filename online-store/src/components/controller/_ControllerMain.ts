@@ -180,9 +180,11 @@ class ControllerMain {
     this.HEADER.append(this.ViewHEADER.create())
     this.FOOTER.append(this.ViewFOOTER.create())
 
-    this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
-    const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
-    this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
+    this.updateBascetCountAndTotaPriseHeader()
+
+    // this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
+    // const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
+    // this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
   }
 
   // Рендер Validation страницы из роутера
@@ -514,6 +516,8 @@ class ControllerMain {
     this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.length)
     const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
     this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
+    this.ViewBASKETPAGE.summaryInfoSpanTotal.textContent = summTotal.toString()
+    this.ViewBASKETPAGE.summaryInfoSpanTotalProducts.textContent = this.BascetLocalStorage.length.toString()
   }
 
 

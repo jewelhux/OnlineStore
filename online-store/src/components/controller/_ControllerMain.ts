@@ -506,9 +506,12 @@ class ControllerMain {
 
     // Клик по карточке для добавления копии продукта из КОРЗИНЫ
     this.MAIN.addEventListener('clickOnProductPlus', (e) => {
-      const target = e.target as HTMLElement;
       this.updateBascetCountAndTotaPriseHeader()
+    })
 
+    // Клик по карточке для уменьшения количества товаров или удаления
+    this.MAIN.addEventListener('clickOnProductMinus', (e) => {
+      this.updateBascetCountAndTotaPriseHeader();
     })
 
     // Клик по карточке для запуска страниц Validation из Мейна

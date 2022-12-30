@@ -387,7 +387,6 @@ class ViewMainPage {
       const cardImg = this.customElement.createElement('img', { className: 'card__info-img', src: `${item.images[0]}` });
 
       const cardData = this.customElement.createElement('div', { className: 'card__data i-data' });
-      console.log('view',view)
       if (view[0] === 'Big') {
         this.customElement.addChildren(cardInfo, [cardImg, cardData]);
         card.classList.add('cardlist__item-two');

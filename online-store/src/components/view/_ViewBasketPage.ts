@@ -176,9 +176,12 @@ class ViewBasketPage {
       const basketDataBtnPlus = this.customElement.createElement('button', { className: 'basket-data__count-btnPlus basket-data__count-btn', textContent: '+' });
 
       // Навешиваем обработчики на + и - карточек
-      basketDataBtnMinus.addEventListener('click', (e) => this.countItemMinus(e, item));
+      basketDataBtnMinus.addEventListener('click', (e) => {
+        this.countItemMinus(e, item, basketDataBtnMinus);
+        basketDataBtnMinus.dispatchEvent(this.EVENT.clickOnProductMinus);
+      })
       basketDataBtnPlus.addEventListener('click', (e) => {
-        this.countItemPlus(e, item);
+        this.countItemPlus(e, item, basketDataBtnPlus);
         basketDataBtnPlus.dispatchEvent(this.EVENT.clickOnProductPlus);
       })
 
@@ -233,7 +236,6 @@ class ViewBasketPage {
 
   // Пушим в историю адресной строки
   pushState() {
-    console.log('this.objectItemsPages', this.objectItemsPages)
     const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(this.objectItemsPages);
     window.history.pushState({}, '', `/basket?${params}`)
   }
@@ -277,7 +279,7 @@ class ViewBasketPage {
     this.changeItemsForList();
   }
 
-  countItemPlus(e: Event, itemData: IitemDATA) {
+  countItemPlus(e: Event, itemData: IitemDATA, button: HTMLElement) {
     const itemCard = (e.target as HTMLElement).closest('.product__itemBasket');
     const itemCardCount = itemCard?.querySelector('.basket-data__count-current');
     const itemCardTotal = itemCard?.querySelector('.basket-data__total');
@@ -297,21 +299,44 @@ class ViewBasketPage {
       })
       localStorage.setItem('BascetLocalStorage', JSON.stringify(newLocalStorage));
     }
+
+    button.removeEventListener('click', (e) => {
+      this.countItemPlus;
+      button.dispatchEvent(this.EVENT.clickOnProductPlus);
+    })
   }
 
-  countItemMinus(e: Event, itemData: IitemDATA) {
+  countItemMinus(e: Event, itemData: IitemDATA, button: HTMLElement) {
     const itemCard = (e.target as HTMLElement).closest('.product__itemBasket');
     const itemCardCount = itemCard?.querySelector('.basket-data__count-current');
+    const itemCardTotal = itemCard?.querySelector('.basket-data__total');
 
     //Проверка на то, чтобы не падало меньше 1
-    if (itemCardCount && itemCardCount.textContent && Number(itemCardCount.textContent) > 1) {
-      itemCardCount.textContent = String(Number(itemCardCount.textContent) - 1);
+    if (Number(itemCardCount?.textContent) > 1) {
+      const newLocalStorage = this.BascetLocalStorage.map((item: IBascetLocalStorage) => {
+        if (Number(itemCard?.id) === item.id) {
+          item.count = item.count - 1;
+          item.total = item.total - itemData.price;
+
+          if (itemCardCount) itemCardCount.textContent = String(item.count);
+          if (itemCardTotal) itemCardTotal.textContent = `Total: $${String(item.total)}`;
+        }
+        return item
+      })
+      localStorage.setItem('BascetLocalStorage', JSON.stringify(newLocalStorage));
       // Что делаем если указан 1 и кликаем минус
-    } else if (itemCardCount && itemCardCount.textContent && Number(itemCardCount.textContent) > 0) {
+    } else if (Number(itemCardCount?.textContent) === 1) {
+      const newLocalStorage = this.BascetLocalStorage.filter(item => item.id !== Number(itemCard?.id));
+      localStorage.setItem('BascetLocalStorage', JSON.stringify(newLocalStorage));
       const newServerData = this.serverData.filter(item => item.id !== itemData.id);
-      this.serverData = [...newServerData]
+      this.serverData = [...newServerData];
       this.changeItemsForList();
     }
+
+    button.removeEventListener('click', (e) => {
+      this.countItemMinus;
+      button.dispatchEvent(this.EVENT.clickOnProductMinus);
+    })
   }
 
   updateBascetFROMLocalStorage() {
@@ -326,5 +351,3 @@ class ViewBasketPage {
 }
 
 export default ViewBasketPage
-
-// 1. Есть небольшой баг, не пушится последняя страница...

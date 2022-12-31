@@ -3,21 +3,13 @@ import { describe } from '@jest/globals';
 
 import ViewValidation from './_ViewValidation'
 
-describe('strToNumber', () => {
+describe('ViewValidation input phone', () => {
 
   const Validation = new ViewValidation()
   // let startObject: { [x: string]: string[] };
-  beforeEach(() => {
-    // startObject = {
-    //   "category": ['smartthone'],
-    //   "brand": ['Apple'],
-    //   "price": ['10', '12'],
-    //   "stock": ['2', '56'],
-    //   "search": ['Apple'],
-    //   "sort": ['sortABC'],
-    //   "view": ['Big'],
-    // };
-  })
+  // beforeEach(() => {
+
+  // })
 
   it('is numbner phone valid', () => {
     expect(Validation.isValidInputPhone('+1234567890')).toBeTruthy()
@@ -32,10 +24,56 @@ describe('strToNumber', () => {
     expect(Validation.isValidInputPhone('1234567890')).not.toBeTruthy()
   })
 
-  // it('return Object Defined', () => {
-  //   expect(Format.strToNumber(startObject)).toBeDefined()
-  // })
+
 })
+
+describe('ViewValidation input adress', () => {
+
+  const Validation = new ViewValidation()
+  // let startObject: { [x: string]: string[] };
+  // beforeEach(() => {
+
+  // })
+
+  it('is adress valid', () => {
+    Validation.InputAdress.value = 'strit pervomaidka seven'
+    expect(Validation.isValidInputAdress()).toBeTruthy()
+  })
+  it('is adress phone valid', () => {
+    Validation.InputAdress.value = 'Kazan cove15/58 corpus2'
+    
+    expect(Validation.isValidInputAdress()).toBeTruthy()
+  })
+  it('is adress phone valid', () => {
+    Validation.InputAdress.value = 'qwe asd zxc'
+    expect(Validation.isValidInputAdress()).not.toBeTruthy()
+  })
+  it('is adress phone valid', () => {
+    Validation.InputAdress.value = '12 12'
+    expect(Validation.isValidInputAdress()).not.toBeTruthy()
+  })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // describe('createFromURLSearchParams', () => {

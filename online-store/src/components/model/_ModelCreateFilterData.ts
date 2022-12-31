@@ -49,12 +49,12 @@ class CreateFilterData {
       "sort": [''],
       "view": ['Big'],
     };
-    this._FILTER = { ...this._startServerFILTER }
+    this._FILTER = JSON.parse(JSON.stringify(this._startServerFILTER)) 
     this._FILTERpriceTEXT = [...this.baseData.price]
     this._FILTERstockTEXT = [...this.baseData.stock],
 
 
-      this._startPriceOfFILTER = this._startServerFILTER.price
+    this._startPriceOfFILTER = this._startServerFILTER.price
     this._startStockOfFILTER = this._startServerFILTER.stock
     this._startSearchOfFILTER = this._startServerFILTER.search
 
@@ -274,7 +274,14 @@ class CreateFilterData {
 
   // метод Установки view фильтра
   setViewOfFILTER(data: string = this.startServerFILTER.view[0]) {
-    this._FILTER.view[0] = data;
+    console.log('this._FILTERview[0]Start=',this._FILTER.view[0])
+    if (data === 'Small') {this._FILTER.view[0] = 'Small'} else {
+      this._FILTER.view[0] = this.startServerFILTER.view[0].toString();
+    }
+    console.log('this._FILTERview[0]End=',this._FILTER.view[0])
+    console.log('this._FILTER=',this._FILTER)
+    console.log('this.startServerFILTER=',this.startServerFILTER)
+    // return
     // this.updateFiltredData()
     // this.updateFILTER_Price_Stock()
   }
@@ -288,7 +295,7 @@ class CreateFilterData {
     this.FILTER.sort = filter.sort.length ? [...filter.sort] : ['']
     this.FILTER.view = filter.sort.length ? [...filter.view] : ['Big']
     // console.log('this.FILTER.sort ЭТО ИЗ МОДЕЛИ',this.FILTER.sort)
-    console.log('this.FILTER ЭТО ИЗ Конструктора',this.FILTER)
+    console.log('this.FILTER ЭТО ИЗ Конструктора', this.FILTER)
     // this.updateFiltredData()
   }
 
@@ -422,11 +429,10 @@ class CreateFilterData {
     this._FILTER.category = []
     this._FILTER.brand = []
     this._FILTER.price = [...this.baseData.price],
-      this._FILTER.stock = [...this.baseData.stock],
-      this._FILTER.search = ['']
+    this._FILTER.stock = [...this.baseData.stock],
+    this._FILTER.search = ['']
     this._FILTER.sort = ['']
     this._FILTER.view = ['Big']
-
     // this._FILTER = JSON.parse(JSON.stringify(this._startServerFILTER))
     this.updateFiltredData()
   }

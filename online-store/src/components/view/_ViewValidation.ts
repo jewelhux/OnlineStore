@@ -1,7 +1,8 @@
 import CustomElement from '../utils/_createCustomElement';
 // import { createElement } from '../utils/utils';.
-import defaultPic from './../../assets/img/png/defaultPic.jpg';
 import visa from './../../assets/img/png/visa.png';
+// const visa = require('./../../assets/img/png/visa.png') as string;
+import defaultPic from './../../assets/img/png/defaultPic.jpg';
 import mastercard from './../../assets/img/png/mastercard.png';
 import maestro from './../../assets/img/png/maestro.png';
 
@@ -335,10 +336,10 @@ class ViewValidation {
     return false
   }
 
-  isValidInputPhone() {
-    if ((this.InputPhone.value[0] === '+') &&
-      (this.InputPhone.value.length > 9) &&
-      (this.InputPhone.value.replace(/['+']/g, '').length === (this.InputPhone.value.length - 1))) {
+  isValidInputPhone(inputPhone = this.InputPhone.value) {
+    if ((inputPhone[0] === '+') &&
+      (inputPhone.length > 9) &&
+      (inputPhone.replace(/['+']/g, '').length === (inputPhone.length - 1))) {
       this.spanDataInputPhone.textContent = '';
       return true
     }

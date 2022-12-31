@@ -47,7 +47,7 @@ class FormatURL {
   // const result1: IFilter ={}
 
 
-  private strToNumber(obj: { [x: string]: string[] }) {
+  strToNumber(obj: { [x: string]: string[] }) {
     const result: IFilter = {
       "category": [],
       "brand": [],

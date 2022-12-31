@@ -32,6 +32,7 @@ interface IBascetLocalStorage {
   price: number
   count: number
   total: number
+  stock: number
 }
   // interface IFilter { [x: string]: string[] }
 

@@ -171,7 +171,8 @@ class ControllerMain {
       id: id,
       price: this.MODEL.startServerData[id - 1].price,
       count: 1,
-      total: this.MODEL.startServerData[id - 1].price
+      total: this.MODEL.startServerData[id - 1].price,
+      stock: this.MODEL.startServerData[id - 1].stock,
     }
   }
 
@@ -506,11 +507,43 @@ class ControllerMain {
 
     // Клик по карточке для добавления копии продукта из КОРЗИНЫ
     this.MAIN.addEventListener('clickOnProductPlus', (e) => {
-      this.updateBascetCountAndTotaPriseHeader()
+      const target = e.target as HTMLElement;
+      const card = target.closest('.itemBasket');
+      const cardId = Number(card?.id);
+
+      // Обновим LS и значение когда плюсуем
+      const oneLocalStorage = this.BascetLocalStorage.map((item) => {
+        if (cardId === item.id) {
+          if (item.stock > item.count) {
+            item.count = item.count + 1;
+          }
+        }
+        return item
+      });
+
+      localStorage.setItem('BascetLocalStorage', JSON.stringify(oneLocalStorage));
+      this.updateBascetCountAndTotaPriseHeader();
     })
 
     // Клик по карточке для уменьшения количества товаров или удаления
     this.MAIN.addEventListener('clickOnProductMinus', (e) => {
+      const target = e.target as HTMLElement;
+      const card = target.closest('.itemBasket');
+      const cardId = Number(card?.id);
+
+      // Обновим LS и значение когда минусуем
+      const oneLocalStorage = this.BascetLocalStorage.map((item) => {
+        if (item.id === cardId) {
+          if (item.count >= 1) {
+            item.count = item.count - 1;
+          }
+        }
+        return item
+      });
+
+      // Обновим LS путем исключения удаленных
+      const twoLocalStorage = oneLocalStorage.filter((item) => item.count !== 0);
+      localStorage.setItem('BascetLocalStorage', JSON.stringify(twoLocalStorage));
       this.updateBascetCountAndTotaPriseHeader();
     })
 

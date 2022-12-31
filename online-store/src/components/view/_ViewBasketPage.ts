@@ -177,12 +177,12 @@ class ViewBasketPage {
 
       // Навешиваем обработчики на + и - карточек
       basketDataBtnMinus.addEventListener('click', (e) => {
-        this.countItemMinus(e, item, basketDataBtnMinus);
         basketDataBtnMinus.dispatchEvent(this.EVENT.clickOnProductMinus);
+        this.countItemMinus(e, item);
       })
       basketDataBtnPlus.addEventListener('click', (e) => {
-        this.countItemPlus(e, item, basketDataBtnPlus);
         basketDataBtnPlus.dispatchEvent(this.EVENT.clickOnProductPlus);
+        this.countItemPlus(e, item);
       })
 
       this.customElement.addChildren(itemDataCount, [basketDataBtnMinus, itemDataCurrent, basketDataBtnPlus]);
@@ -280,64 +280,49 @@ class ViewBasketPage {
     this.changeItemsForList();
   }
 
-  countItemPlus(e: Event, itemData: IitemDATA, button: HTMLElement) {
+  countItemPlus(e: Event, itemData: IitemDATA) {
     const itemCard = (e.target as HTMLElement).closest('.product__itemBasket');
     const itemCardCount = itemCard?.querySelector('.basket-data__count-current');
     const itemCardTotal = itemCard?.querySelector('.basket-data__total');
+    this.updateBascetFROMLocalStorage();
 
-    // Проверка чтобы не было больше чем наличие
-    if (itemData.stock > Number(itemCardCount?.textContent)) {
-      //Обновим значение count в localStorage
-      const newLocalStorage = this.BascetLocalStorage.map((item: IBascetLocalStorage) => {
-        if (Number(itemCard?.id) === item.id) {
-          item.count = item.count + 1;
-          item.total = item.total + itemData.price;
-
-          if (itemCardCount) itemCardCount.textContent = String(item.count);
-          if (itemCardTotal) itemCardTotal.textContent = `Total: $${String(item.total)}`;
-        }
-        return item
-      })
-      localStorage.setItem('BascetLocalStorage', JSON.stringify(newLocalStorage));
-    }
-
-    button.removeEventListener('click', (e) => {
-      this.countItemPlus;
-      button.dispatchEvent(this.EVENT.clickOnProductPlus);
-    })
+    //Прибавляем значение у нужного элемента
+    this.BascetLocalStorage.forEach((item) => {
+      if (Number(itemCard?.id) === item.id) {
+        if (itemCardCount) itemCardCount.textContent = String(item.count)
+        if (itemCardTotal) itemCardTotal.textContent = `Total: $${String(item.total)}`;
+      }
+    });
   }
 
-  countItemMinus(e: Event, itemData: IitemDATA, button: HTMLElement) {
+  countItemMinus(e: Event, itemData: IitemDATA) {
     const itemCard = (e.target as HTMLElement).closest('.product__itemBasket');
     const itemCardCount = itemCard?.querySelector('.basket-data__count-current');
     const itemCardTotal = itemCard?.querySelector('.basket-data__total');
+    this.updateBascetFROMLocalStorage();
 
-    //Проверка на то, чтобы не падало меньше 1
-    if (Number(itemCardCount?.textContent) > 1) {
-      const newLocalStorage = this.BascetLocalStorage.map((item: IBascetLocalStorage) => {
-        if (Number(itemCard?.id) === item.id) {
-          item.count = item.count - 1;
-          item.total = item.total - itemData.price;
-
-          if (itemCardCount) itemCardCount.textContent = String(item.count);
+    //Убавляем значение у нужного элемента
+    this.BascetLocalStorage.forEach((item) => {
+      if (Number(itemCard?.id) === item.id) {
+        if (item.count >= 1) {
+          if (itemCardCount) {
+            itemCardCount.textContent = String(item.count)
+          }
           if (itemCardTotal) itemCardTotal.textContent = `Total: $${String(item.total)}`;
         }
-        return item
-      })
-      localStorage.setItem('BascetLocalStorage', JSON.stringify(newLocalStorage));
-      // Что делаем если указан 1 и кликаем минус
-    } else if (Number(itemCardCount?.textContent) === 1) {
-      const newLocalStorage = this.BascetLocalStorage.filter(item => item.id !== Number(itemCard?.id));
-      localStorage.setItem('BascetLocalStorage', JSON.stringify(newLocalStorage));
-      const newServerData = this.serverData.filter(item => item.id !== itemData.id);
-      this.serverData = [...newServerData];
-      this.changeItemsForList();
-    }
+      }
+    });
 
-    button.removeEventListener('click', (e) => {
-      this.countItemMinus;
-      button.dispatchEvent(this.EVENT.clickOnProductMinus);
+    // Проверим нет ли пустых caount
+    const newData: IitemDATA[] = [];
+    this.serverData.forEach((serverItem) => {
+      this.BascetLocalStorage.forEach((item) => {
+        if (Number(serverItem.id) === item.id) newData.push(serverItem);
+      });
     })
+
+    this.serverData = [...newData];
+    this.changeItemsForList();
   }
 
   updateBascetFROMLocalStorage() {

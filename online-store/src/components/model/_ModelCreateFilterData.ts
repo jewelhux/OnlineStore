@@ -54,7 +54,7 @@ class CreateFilterData {
     this._FILTERstockTEXT = [...this.baseData.stock],
 
 
-      this._startPriceOfFILTER = this._startServerFILTER.price
+    this._startPriceOfFILTER = this._startServerFILTER.price
     this._startStockOfFILTER = this._startServerFILTER.stock
     this._startSearchOfFILTER = this._startServerFILTER.search
 
@@ -288,7 +288,7 @@ class CreateFilterData {
     this.FILTER.sort = filter.sort.length ? [...filter.sort] : ['']
     this.FILTER.view = filter.sort.length ? [...filter.view] : ['Big']
     // console.log('this.FILTER.sort ЭТО ИЗ МОДЕЛИ',this.FILTER.sort)
-    console.log('this.FILTER ЭТО ИЗ Конструктора',this.FILTER)
+    console.log('this.FILTER ЭТО ИЗ Конструктора', this.FILTER)
     // this.updateFiltredData()
   }
 

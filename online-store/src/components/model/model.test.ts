@@ -52,6 +52,7 @@ describe('is setFILTERBrand update Model.Filter', () => {
 
 })
 
+
 describe('is setFILTERCategory update Model.Filter', () => {
   const Model = new CreateFilterData()
   it('is setFILTERCategory update Model.Filter1', () => {
@@ -69,6 +70,31 @@ describe('is setFILTERCategory update Model.Filter', () => {
   it('is setFILTERCategory update Model.Filter4', () => {
     Model.setFILTERCategory('laptops')
     expect(Model.FILTER.category).toEqual(['smartphones', 'fragrances'])
+  })
+
+})
+
+
+describe('is filtredData arrayContaining of startServerData', () => {
+  const Model = new CreateFilterData()
+  it('is filtredData arrayContaining of startServerData1', () => {
+    Model.setFILTERCategory('smartphones')
+    Model.setFILTERBrand('Apple')
+    Model.updateFiltredData()
+    expect(Model.startServerData).toEqual(expect.arrayContaining(Model.filtredData))
+  })
+
+  it('is filtredData arrayContaining of startServerData2', () => {
+    Model.setFILTERCategory('skincare')
+    Model.setFILTERBrand('Apple')
+    Model.updateFiltredData()
+    expect(Model.startServerData).toEqual(expect.arrayContaining(Model.filtredData))
+  })
+
+  it('is filtredData arrayContaining of startServerData2', () => {
+    Model.clearFILTER()
+    Model.updateFiltredData()
+    expect(Model.startServerData).toEqual(expect.arrayContaining(Model.filtredData))
   })
 
 })

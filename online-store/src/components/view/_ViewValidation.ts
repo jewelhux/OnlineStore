@@ -403,10 +403,6 @@ class ViewValidation {
     return false
   }
 
-
-
-
-
 }
 
 export default ViewValidation

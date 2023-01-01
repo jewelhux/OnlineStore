@@ -1,5 +1,5 @@
 import ControllerMain from "../controller/_ControllerMain";
-import { stringArrayObject } from '../typingTS/_type'
+import { numberArrayObject } from '../typingTS/_type'
 
 import { createElement } from '../utils/utils';
 

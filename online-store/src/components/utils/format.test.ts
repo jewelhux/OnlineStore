@@ -49,7 +49,7 @@ describe('createFromURLSearchParams', () => {
   })
 
   it('revers URLSearchParams To NumberObject', () => {
-    expect(Format.createFromURLSearchParams(params)).toEqual(
+    expect(Format.createFromURLSearchParams<URLSearchParams>(params)).toEqual(
       {
         "items": 3,
         "pages": 1,

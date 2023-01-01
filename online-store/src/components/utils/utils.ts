@@ -1,4 +1,4 @@
-import { stringArrayObject } from '../typingTS/_type';
+import { numberArrayObject } from '../typingTS/_type';
 
 // Функция получения HTML элемента из строки
 const createElement = (template: string): HTMLElement => {

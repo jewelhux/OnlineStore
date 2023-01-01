@@ -142,12 +142,15 @@ class ViewBasketPage {
       this.updateBascetFROMLocalStorage()
       const count = this.BascetLocalStorage.find(element => element.id === item.id)?.count;
       const total = this.BascetLocalStorage.find(element => element.id === item.id)?.total;
+      const numberItem = this.objectItemsPages.items * (this.objectItemsPages.pages - 1) + (dataServerItem.indexOf(item) + 1);
 
       // Обертка карточки
       const itemBasket = this.customElement.createElement('div', { className: 'product__itemBasket itemBasket', id: `${item.id}` });
 
+      // items * pages-1 + index+1
+
       // Создание itemBasket
-      const itemNumberBasket = this.customElement.createElement('div', { className: 'itemBasket__numberBasket', textContent: '1' });
+      const itemNumberBasket = this.customElement.createElement('div', { className: 'itemBasket__numberBasket', textContent: `${numberItem}` });
       const itemImageBasket = this.customElement.createElement('div', { className: 'infoBasket__image' });
       const itemDataBasket = this.customElement.createElement('div', { className: 'infoBasket__title basket-data' });
       const itemSummaryBasket = this.customElement.createElement('div', { className: 'itemBasket__summaryBasket summaryBasket' });

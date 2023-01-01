@@ -13,6 +13,7 @@ import ViewFooter from '../view/_ViewFooter';
 import ViewItemCardPage from '../view/_ViewItemCardPage';
 import ViewBasketPage from '../view/_ViewBasketPage';
 import ViewNotFound from '../view/_ViewNotFoundPage';
+import ViewNotBasket from '../view/_ViewNotBasketPage';
 import ViewValidation from '../view/_ViewValidation';
 
 // Служебные программки
@@ -43,6 +44,7 @@ class ControllerMain {
   ViewItemCardPAGE: ViewItemCardPage;
   ViewBASKETPAGE: ViewBasketPage;
   ViewNotFound: ViewNotFound;
+  ViewNotBasket: ViewNotBasket;
   ViewValidation: ViewValidation;
 
   _formatURL: FormatURL;
@@ -93,6 +95,7 @@ class ControllerMain {
     this.ViewHEADER = new ViewHeader();
     this.ViewFOOTER = new ViewFooter();
     this.ViewNotFound = new ViewNotFound();
+    this.ViewNotBasket = new ViewNotBasket();
     this.ViewValidation = new ViewValidation();
 
 
@@ -128,6 +131,10 @@ class ControllerMain {
       '/page404': {
         name: 'Page not found',
         routesPage: this.pageNotFound.bind(this)
+      },
+      '/nonbasket': {
+        name: 'Page not basket',
+        routesPage: this.pageNotBasket.bind(this)
       },
       '/product': {
         name: 'Product details',
@@ -345,6 +352,14 @@ class ControllerMain {
     this.MAIN.innerHTML = ''
     this.MAIN.append(this.ViewNotFound.create())
     window.history.pushState({}, '', `/page404`)
+    this.updateBascetCountAndTotaPriseHeader()
+  }
+
+  pageNotBasket(name: string) {
+    document.title = `Store - ${name}`;
+    this.MAIN.innerHTML = ''
+    this.MAIN.append(this.ViewNotBasket.create())
+    window.history.pushState({}, '', `/nonbasket`)
     this.updateBascetCountAndTotaPriseHeader()
   }
 

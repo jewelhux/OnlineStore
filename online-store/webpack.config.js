@@ -90,11 +90,11 @@ const config = {
         },
       },
       {
-        test: /\.(bmp|svg|png|jpg|gif)$/i,
+        test: /\.(bmp|svg|png|jpg|webp|gif)$/i,
         // loader: 'file-loader',
         type: "asset/resource",
         generator: {
-          filename: 'img/[name][ext]'
+          filename: 'img/[name][contenthash][ext]'
         },
       },
       {

@@ -85,7 +85,7 @@ class ViewMainPage {
     this.viewSort = this.customElement.createElement('select', { className: 'view__sort', name: 'sort', placeholder: 'Sorting', id: "sorting" }) as HTMLSelectElement; // Сортировка
     this.findCount = this.customElement.createElement('span', { className: 'view__find-count-span', textContent: `${this.startServerData.length}` }); // Число найденных совпадений
     this.viewSearch = this.customElement.createElement('input', { className: 'view__search', type: 'search', placeholder: 'Search product' }); // Поиск
-    this.viewBlock = this.customElement.createElement('div', { className: 'visible__item viewBlock' , textContent: 'Big'}); // Вид для блочной модели
+    this.viewBlock = this.customElement.createElement('div', { className: 'visible__item viewBlock', textContent: 'Big' }); // Вид для блочной модели
     this.viewList = this.customElement.createElement('div', { className: 'visible__item viewList', textContent: 'Small' }); // Вид для строчной модели
     //------Right Bottom------//
     this.cardList = this.customElement.createElement('div', { className: 'right__list cardlist' }); // Контейнер с карточками
@@ -210,11 +210,11 @@ class ViewMainPage {
 
     this.viewBlock.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
-        target.dispatchEvent(this.EVENT.clickOnbuttonViewBlockMain)
+      target.dispatchEvent(this.EVENT.clickOnbuttonViewBlockMain)
     })
     this.viewList.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
-        target.dispatchEvent(this.EVENT.clickOnbuttonViewBlockMain)
+      target.dispatchEvent(this.EVENT.clickOnbuttonViewBlockMain)
     })
 
 
@@ -446,7 +446,7 @@ class ViewMainPage {
   itemFilterCheckbox(name: string, data: number[]): HTMLElement {
     const temp = `<div class = 'filterCheckbox'>
       <input type="checkbox" id='${name}' ${!data[2] ? '' : 'checked'}>
-      <label for='${name}'>${name}</label>
+      <label style="opacity: ${data[0] + 0.5};" for='${name}'>${name}</label>
       <div>(${data[0]}/${data[1]})</div>
     </div>`
 

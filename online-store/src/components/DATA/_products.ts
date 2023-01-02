@@ -1,4 +1,76 @@
 import { IitemDATA } from "../typingTS/_interfaces";
+import iPhone1 from '../../assets/img/product/1/1.jpg'
+import iPhone2 from '../../assets/img/product/1/2.jpg'
+import iPhone3 from '../../assets/img/product/1/3.jpg'
+import iPhoneX1 from '../../assets/img/product/2/1.jpg'
+import iPhoneX2 from '../../assets/img/product/2/2.jpg'
+import iPhoneX3 from '../../assets/img/product/2/3.jpg'
+import iPhoneX4 from '../../assets/img/product/2/4.jpg'
+import SamsungUniverse91 from '../../assets/img/product/3/1.jpg'
+import SamsungUniverse92 from '../../assets/img/product/3/2.jpg'
+import OPPOF191 from '../../assets/img/product/4/1.jpg'
+import OPPOF192 from '../../assets/img/product/4/2.jpg'
+import OPPOF193 from '../../assets/img/product/4/3.jpg'
+import OPPOF194 from '../../assets/img/product/4/4.jpg'
+import HuaweiP301 from '../../assets/img/product/5/1.jpg'
+import HuaweiP302 from '../../assets/img/product/5/2.jpg'
+import HuaweiP303 from '../../assets/img/product/5/3.jpg'
+import MacBookPro1 from '../../assets/img/product/6/1.png'
+import MacBookPro2 from '../../assets/img/product/6/2.jpg'
+import MacBookPro3 from '../../assets/img/product/6/3.png'
+import MacBookPro4 from '../../assets/img/product/6/4.jpg'
+import SamsungGalaxyBook1 from '../../assets/img/product/7/1.jpg'
+import SamsungGalaxyBook2 from '../../assets/img/product/7/2.jpg'
+import SamsungGalaxyBook4 from '../../assets/img/product/7/4.jpg'
+import MicrosoftSurfaceLaptop41 from '../../assets/img/product/8/1.jpg'
+import MicrosoftSurfaceLaptop42 from '../../assets/img/product/8/2.jpg'
+import MicrosoftSurfaceLaptop43 from '../../assets/img/product/8/3.jpg'
+import MicrosoftSurfaceLaptop44 from '../../assets/img/product/8/4.jpg'
+import InfinixINBOOK2 from '../../assets/img/product/9/2.jpg'
+import InfinixINBOOK3 from '../../assets/img/product/9/3.png'
+import InfinixINBOOK5 from '../../assets/img/product/9/5.jpg'
+import HPPavilion15DK1056WM1 from '../../assets/img/product/10/1.jpg'
+import HPPavilion15DK1056WM3 from '../../assets/img/product/10/3.jpg'
+import HPPavilion15DK1056WM4 from '../../assets/img/product/10/4.jpg'
+import perfumeOil1 from '../../assets/img/product/11/1.jpg'
+import perfumeOil2 from '../../assets/img/product/11/2.jpg'
+import perfumeOil3 from '../../assets/img/product/11/3.jpg'
+import BrownPerfume1 from '../../assets/img/product/12/1.jpg'
+import BrownPerfume2 from '../../assets/img/product/12/2.jpg'
+import BrownPerfume3 from '../../assets/img/product/12/3.png'
+import BrownPerfume4 from '../../assets/img/product/12/4.jpg'
+import FogScentXpressioPerfume1 from '../../assets/img/product/13/1.jpg'
+import FogScentXpressioPerfume2 from '../../assets/img/product/13/2.jpg'
+import FogScentXpressioPerfume3 from '../../assets/img/product/13/3.webp'
+import NonAlcoholicConcentratedPerfumeOil1 from '../../assets/img/product/14/1.jpg'
+import NonAlcoholicConcentratedPerfumeOil2 from '../../assets/img/product/14/2.jpg'
+import NonAlcoholicConcentratedPerfumeOil3 from '../../assets/img/product/14/3.jpg'
+import NonAlcoholicConcentratedPerfumeOil4 from '../../assets/img/product/14/4.jpg'
+import EauDePerfumeSpray1 from '../../assets/img/product/15/1.jpg'
+import EauDePerfumeSpray2 from '../../assets/img/product/15/2.jpg'
+import EauDePerfumeSpray3 from '../../assets/img/product/15/3.jpg'
+import EauDePerfumeSpray4 from '../../assets/img/product/15/4.jpg'
+import HyaluronicAcidSerum1 from '../../assets/img/product/16/1.png'
+import HyaluronicAcidSerum2 from '../../assets/img/product/16/2.webp'
+import HyaluronicAcidSerum3 from '../../assets/img/product/16/3.jpg'
+import HyaluronicAcidSerum4 from '../../assets/img/product/16/4.jpg'
+import TreeOil30ml41 from '../../assets/img/product/17/1.jpg'
+import TreeOil30ml42 from '../../assets/img/product/17/2.jpg'
+import TreeOil30ml43 from '../../assets/img/product/17/3.jpg'
+import TreeOil30ml44 from '../../assets/img/product/17/4.jpg'
+import OilFreeMoisturizer100ml1 from '../../assets/img/product/18/1.jpg'
+import OilFreeMoisturizer100ml2 from '../../assets/img/product/18/2.jpg'
+import OilFreeMoisturizer100ml3 from '../../assets/img/product/18/3.jpg'
+import OilFreeMoisturizer100ml4 from '../../assets/img/product/18/4.jpg'
+import SkinBeautySerum1 from '../../assets/img/product/19/1.jpg'
+import SkinBeautySerum2 from '../../assets/img/product/19/2.jpg'
+import SkinBeautySerum3 from '../../assets/img/product/19/3.png'
+import SkinBeautySerum4 from '../../assets/img/product/19/4.jpg'
+import FreckleTreatment1 from '../../assets/img/product/20/1.jpg'
+import FreckleTreatment2 from '../../assets/img/product/20/2.jpg'
+import FreckleTreatment3 from '../../assets/img/product/20/3.jpg'
+
+
 
 export const products: Array<IitemDATA> = [
     {
@@ -13,11 +85,9 @@ export const products: Array<IitemDATA> = [
       "category": "smartphones",
       "thumbnail": "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/1/1.jpg",
-        "https://i.dummyjson.com/data/products/1/2.jpg",
-        "https://i.dummyjson.com/data/products/1/3.jpg",
-        "https://i.dummyjson.com/data/products/1/4.jpg",
-        "https://i.dummyjson.com/data/products/1/thumbnail.jpg"
+        iPhone1,
+        iPhone2,
+        iPhone3,
       ]
     },
     {
@@ -32,10 +102,10 @@ export const products: Array<IitemDATA> = [
       "category": "smartphones",
       "thumbnail": "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/2/1.jpg",
-        "https://i.dummyjson.com/data/products/2/2.jpg",
-        "https://i.dummyjson.com/data/products/2/3.jpg",
-        "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
+        iPhoneX1,
+        iPhoneX2,
+        iPhoneX3,
+        iPhoneX4,
       ]
     },
     {
@@ -50,7 +120,8 @@ export const products: Array<IitemDATA> = [
       "category": "smartphones",
       "thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/3/1.jpg"
+        SamsungUniverse91,
+        SamsungUniverse92,
       ]
     },
     {
@@ -65,11 +136,10 @@ export const products: Array<IitemDATA> = [
       "category": "smartphones",
       "thumbnail": "https://i.dummyjson.com/data/products/4/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/4/1.jpg",
-        "https://i.dummyjson.com/data/products/4/2.jpg",
-        "https://i.dummyjson.com/data/products/4/3.jpg",
-        "https://i.dummyjson.com/data/products/4/4.jpg",
-        "https://i.dummyjson.com/data/products/4/thumbnail.jpg"
+        OPPOF191,
+        OPPOF192,
+        OPPOF193,
+        OPPOF194,
       ]
     },
     {
@@ -84,9 +154,9 @@ export const products: Array<IitemDATA> = [
       "category": "smartphones",
       "thumbnail": "https://i.dummyjson.com/data/products/5/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/5/1.jpg",
-        "https://i.dummyjson.com/data/products/5/2.jpg",
-        "https://i.dummyjson.com/data/products/5/3.jpg"
+        HuaweiP301,
+        HuaweiP302,
+        HuaweiP303,
       ]
     },
     {
@@ -101,10 +171,10 @@ export const products: Array<IitemDATA> = [
       "category": "laptops",
       "thumbnail": "https://i.dummyjson.com/data/products/6/thumbnail.png",
       "images": [
-        "https://i.dummyjson.com/data/products/6/1.png",
-        "https://i.dummyjson.com/data/products/6/2.jpg",
-        "https://i.dummyjson.com/data/products/6/3.png",
-        "https://i.dummyjson.com/data/products/6/4.jpg"
+        MacBookPro1,
+        MacBookPro2,
+        MacBookPro3,
+        MacBookPro4,
       ]
     },
     {
@@ -119,10 +189,9 @@ export const products: Array<IitemDATA> = [
       "category": "laptops",
       "thumbnail": "https://i.dummyjson.com/data/products/7/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/7/1.jpg",
-        "https://i.dummyjson.com/data/products/7/2.jpg",
-        "https://i.dummyjson.com/data/products/7/3.jpg",
-        "https://i.dummyjson.com/data/products/7/thumbnail.jpg"
+        SamsungGalaxyBook1,
+        SamsungGalaxyBook2,
+        SamsungGalaxyBook4,
       ]
     },
     {
@@ -137,11 +206,10 @@ export const products: Array<IitemDATA> = [
       "category": "laptops",
       "thumbnail": "https://i.dummyjson.com/data/products/8/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/8/1.jpg",
-        "https://i.dummyjson.com/data/products/8/2.jpg",
-        "https://i.dummyjson.com/data/products/8/3.jpg",
-        "https://i.dummyjson.com/data/products/8/4.jpg",
-        "https://i.dummyjson.com/data/products/8/thumbnail.jpg"
+        MicrosoftSurfaceLaptop41,
+        MicrosoftSurfaceLaptop42,
+        MicrosoftSurfaceLaptop43,
+        MicrosoftSurfaceLaptop44,
       ]
     },
     {
@@ -156,11 +224,9 @@ export const products: Array<IitemDATA> = [
       "category": "laptops",
       "thumbnail": "https://i.dummyjson.com/data/products/9/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/9/1.jpg",
-        "https://i.dummyjson.com/data/products/9/2.png",
-        "https://i.dummyjson.com/data/products/9/3.png",
-        "https://i.dummyjson.com/data/products/9/4.jpg",
-        "https://i.dummyjson.com/data/products/9/thumbnail.jpg"
+        InfinixINBOOK2,
+        InfinixINBOOK3,
+        InfinixINBOOK5,
       ]
     },
     {
@@ -175,10 +241,9 @@ export const products: Array<IitemDATA> = [
       "category": "laptops",
       "thumbnail": "https://i.dummyjson.com/data/products/10/thumbnail.jpeg",
       "images": [
-        "https://i.dummyjson.com/data/products/10/1.jpg",
-        "https://i.dummyjson.com/data/products/10/2.jpg",
-        "https://i.dummyjson.com/data/products/10/3.jpg",
-        "https://i.dummyjson.com/data/products/10/thumbnail.jpeg"
+        HPPavilion15DK1056WM1,
+        HPPavilion15DK1056WM3,
+        HPPavilion15DK1056WM4,
       ]
     },
     {
@@ -193,10 +258,9 @@ export const products: Array<IitemDATA> = [
       "category": "fragrances",
       "thumbnail": "https://i.dummyjson.com/data/products/11/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/11/1.jpg",
-        "https://i.dummyjson.com/data/products/11/2.jpg",
-        "https://i.dummyjson.com/data/products/11/3.jpg",
-        "https://i.dummyjson.com/data/products/11/thumbnail.jpg"
+        perfumeOil1,
+        perfumeOil2,
+        perfumeOil3,
       ]
     },
     {
@@ -211,11 +275,10 @@ export const products: Array<IitemDATA> = [
       "category": "fragrances",
       "thumbnail": "https://i.dummyjson.com/data/products/12/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/12/1.jpg",
-        "https://i.dummyjson.com/data/products/12/2.jpg",
-        "https://i.dummyjson.com/data/products/12/3.png",
-        "https://i.dummyjson.com/data/products/12/4.jpg",
-        "https://i.dummyjson.com/data/products/12/thumbnail.jpg"
+        BrownPerfume1,
+        BrownPerfume2,
+        BrownPerfume3,
+        BrownPerfume4,
       ]
     },
     {
@@ -230,11 +293,9 @@ export const products: Array<IitemDATA> = [
       "category": "fragrances",
       "thumbnail": "https://i.dummyjson.com/data/products/13/thumbnail.webp",
       "images": [
-        "https://i.dummyjson.com/data/products/13/1.jpg",
-        "https://i.dummyjson.com/data/products/13/2.png",
-        "https://i.dummyjson.com/data/products/13/3.jpg",
-        "https://i.dummyjson.com/data/products/13/4.jpg",
-        "https://i.dummyjson.com/data/products/13/thumbnail.webp"
+        FogScentXpressioPerfume1,
+        FogScentXpressioPerfume2,
+        FogScentXpressioPerfume3,
       ]
     },
     {
@@ -249,10 +310,10 @@ export const products: Array<IitemDATA> = [
       "category": "fragrances",
       "thumbnail": "https://i.dummyjson.com/data/products/14/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/14/1.jpg",
-        "https://i.dummyjson.com/data/products/14/2.jpg",
-        "https://i.dummyjson.com/data/products/14/3.jpg",
-        "https://i.dummyjson.com/data/products/14/thumbnail.jpg"
+        NonAlcoholicConcentratedPerfumeOil1,
+        NonAlcoholicConcentratedPerfumeOil2,
+        NonAlcoholicConcentratedPerfumeOil3,
+        NonAlcoholicConcentratedPerfumeOil4,
       ]
     },
     {
@@ -267,11 +328,10 @@ export const products: Array<IitemDATA> = [
       "category": "fragrances",
       "thumbnail": "https://i.dummyjson.com/data/products/15/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/15/1.jpg",
-        "https://i.dummyjson.com/data/products/15/2.jpg",
-        "https://i.dummyjson.com/data/products/15/3.jpg",
-        "https://i.dummyjson.com/data/products/15/4.jpg",
-        "https://i.dummyjson.com/data/products/15/thumbnail.jpg"
+        EauDePerfumeSpray1,
+        EauDePerfumeSpray2,
+        EauDePerfumeSpray3,
+        EauDePerfumeSpray4,
       ]
     },
     {
@@ -286,11 +346,10 @@ export const products: Array<IitemDATA> = [
       "category": "skincare",
       "thumbnail": "https://i.dummyjson.com/data/products/16/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/16/1.png",
-        "https://i.dummyjson.com/data/products/16/2.webp",
-        "https://i.dummyjson.com/data/products/16/3.jpg",
-        "https://i.dummyjson.com/data/products/16/4.jpg",
-        "https://i.dummyjson.com/data/products/16/thumbnail.jpg"
+        HyaluronicAcidSerum1,
+        HyaluronicAcidSerum2,
+        HyaluronicAcidSerum3,
+        HyaluronicAcidSerum4,
       ]
     },
     {
@@ -305,10 +364,10 @@ export const products: Array<IitemDATA> = [
       "category": "skincare",
       "thumbnail": "https://i.dummyjson.com/data/products/17/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/17/1.jpg",
-        "https://i.dummyjson.com/data/products/17/2.jpg",
-        "https://i.dummyjson.com/data/products/17/3.jpg",
-        "https://i.dummyjson.com/data/products/17/thumbnail.jpg"
+        TreeOil30ml41,
+        TreeOil30ml42,
+        TreeOil30ml43,
+        TreeOil30ml44,
       ]
     },
     {
@@ -323,11 +382,10 @@ export const products: Array<IitemDATA> = [
       "category": "skincare",
       "thumbnail": "https://i.dummyjson.com/data/products/18/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/18/1.jpg",
-        "https://i.dummyjson.com/data/products/18/2.jpg",
-        "https://i.dummyjson.com/data/products/18/3.jpg",
-        "https://i.dummyjson.com/data/products/18/4.jpg",
-        "https://i.dummyjson.com/data/products/18/thumbnail.jpg"
+        OilFreeMoisturizer100ml1,
+        OilFreeMoisturizer100ml2,
+        OilFreeMoisturizer100ml3,
+        OilFreeMoisturizer100ml4,
       ]
     },
     {
@@ -342,10 +400,10 @@ export const products: Array<IitemDATA> = [
       "category": "skincare",
       "thumbnail": "https://i.dummyjson.com/data/products/19/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/19/1.jpg",
-        "https://i.dummyjson.com/data/products/19/2.jpg",
-        "https://i.dummyjson.com/data/products/19/3.png",
-        "https://i.dummyjson.com/data/products/19/thumbnail.jpg"
+        SkinBeautySerum1,
+        SkinBeautySerum2,
+        SkinBeautySerum3,
+        SkinBeautySerum4,
       ]
     },
     {
@@ -360,11 +418,9 @@ export const products: Array<IitemDATA> = [
       "category": "skincare",
       "thumbnail": "https://i.dummyjson.com/data/products/20/thumbnail.jpg",
       "images": [
-        "https://i.dummyjson.com/data/products/20/1.jpg",
-        "https://i.dummyjson.com/data/products/20/2.jpg",
-        "https://i.dummyjson.com/data/products/20/3.jpg",
-        "https://i.dummyjson.com/data/products/20/4.jpg",
-        "https://i.dummyjson.com/data/products/20/thumbnail.jpg"
+        FreckleTreatment1,
+        FreckleTreatment2,
+        FreckleTreatment3,
       ]
     },
     // {

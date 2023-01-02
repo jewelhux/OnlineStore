@@ -92,6 +92,9 @@ class ViewBasketPage {
     this.serverData = [...data]; // Запишем входящие данные, чтобы не потерять
 
     // Отрисовка контейнера (для попапа и секции)
+    if (this.serverData.length === 0) {
+      return 'Нет элементов в корзине'
+    }
     // const pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
     const popupWrapper = this.customElement.createElement('div', { className: 'popup-wrapper' });
     const mainBasket = this.customElement.createElement('section', { className: 'main-basket _container' });
@@ -138,7 +141,12 @@ class ViewBasketPage {
   // Создание ItemCard корзины
   renderProductCard(dataServerItem: IitemDATA[]) {
     const itemContainer: HTMLElement[] = [];
-    // const test: IitemDATA[] = dataServerItem.slice(0, 6)
+
+    // Проверим корзину на пустоту
+    if (dataServerItem.length === 0) {
+      const main = document.querySelector('main') as HTMLElement;
+      return main.innerHTML = 'Нет элементов в корзине';
+    }
 
     for (const item of dataServerItem) {
       // Значения из localStorage

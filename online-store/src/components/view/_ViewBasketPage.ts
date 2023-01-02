@@ -18,9 +18,14 @@ class ViewBasketPage {
   pagesCurrent: HTMLElement;
   productList: HTMLElement;
   promolistActive: HTMLElement;
+  promoSearchInput: HTMLElement;
   summaryInfo: HTMLElement;
   productItemsInputView: HTMLElement;
+  promolistActiveFather: HTMLElement;
   BascetLocalStorage: IBascetLocalStorage[];
+  activePromoListArray: string[];
+  currentPromo: string;
+  promocodeInfo: IPromoList;
 
   summaryInfoSpanTotal:HTMLSpanElement;
   summaryInfoSpanTotalProducts:HTMLSpanElement;
@@ -43,6 +48,17 @@ class ViewBasketPage {
       this.BascetLocalStorage = []
     }
 
+    // Значение для количества промокодов
+    const readlocalStoragePromoCount = localStorage.getItem('listPromo')
+    if (readlocalStoragePromoCount) {
+      this.promocodeInfo = JSON.parse(readlocalStoragePromoCount);
+    } else {
+      this.promocodeInfo = {
+        count: 0,
+        list: []
+      };
+    }
+
     this.pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
     this.summaryInfoDataButton = this.customElement.createElement('button', { className: 'card__btn-button _btn', textContent: 'Buy now' });
 
@@ -50,10 +66,12 @@ class ViewBasketPage {
     this.productItemsInputView = this.customElement.createElement('input', { className: 'product__items-inputView', type: 'text', value: '4' }); // Количество отображаемых на странице карточек товара
     this.pagesButtonPrev = this.customElement.createElement('button', { className: 'product__pages-btnPrev product__pages-btn', textContent: '-' }); // Кнопка странички ПРЕДЫДУЩАЯ
     this.pagesButtonNext = this.customElement.createElement('button', { className: 'product__pages-btnNext product__pages-btn', textContent: '+' }); // Кнопка странички СЛЕДУЮЩАЯ
+    this.promoSearchInput = this.customElement.createElement('input', { className: 'summaryInfo__search', type: 'search', placeholder: 'Search promocode' });
     this.promoButtonAdd = this.customElement.createElement('button', { className: '_btn promo__div-btn', textContent: 'Add'}); // Кноппка применения промокода
-    this.promolistActive = this.customElement.createElement('div', { className: 'promolist promolist__hide'});
+    this.promolistActive = this.customElement.createElement('div', { className: 'promolist'});
     this.pagesCurrent = this.customElement.createElement('p', { className: 'product__pages-current', textContent: '2' }); // Лист карточек
     this.summaryInfo = this.customElement.createElement('div', { className: 'summary__info summaryInfo' }); // Итоговая информация
+    this.promolistActiveFather = this.customElement.createElement('div', { className: 'promolist-father promolist__hide'});
 
     this.summaryInfoSpanTotal = this.customElement.createElement('span', { className: 'summaryInfo__total_span', textContent: '0' }) as HTMLSpanElement;
     this.summaryInfoSpanTotalProducts = this.customElement.createElement('span', { className: 'summaryInfo__total-products_span', textContent: '0' }) as HTMLSpanElement;
@@ -63,11 +81,15 @@ class ViewBasketPage {
       // inputOnItemsVisible: new Event('inputOnItemsVisible', { bubbles: true }),
       clickOnProductAddInBascetBuy: new Event('clickOnProductAddInBascetBuy', { bubbles: true }),
       clickOnProductPlus: new Event('clickOnProductPlus', { bubbles: true }),
-      clickOnProductMinus: new Event('clickOnProductMinus', { bubbles: true })
+      clickOnProductMinus: new Event('clickOnProductMinus', { bubbles: true }),
+      clickOnPromoAdd: new Event('clickOnPromoAdd', { bubbles: true }),
+      clickOnPromoRemove: new Event('clickOnPromoRemove', { bubbles: true }),
     };
 
     this.serverData = [...serverData]; // Сюда будем перезаписывать данные
     this.objectItemsPages = { ...objectItemPage }; // Создадим копию нашего входящего объекта с инпутом и страничкой
+    this.activePromoListArray = []; // Сюда будем закидывать введенные промокоды
+    this.currentPromo = ''; //Текущий промокод который ввел пользователь
 
     this.maxPage = this.serverData.length / this.objectItemsPages.items;
 
@@ -78,10 +100,16 @@ class ViewBasketPage {
     this.productItemsInputView.addEventListener('input', (event) => this.changeNumberItems(event));
     this.pagesButtonPrev.addEventListener('click', (event) => this.changeNumberPage(event));
     this.pagesButtonNext.addEventListener('click', (event) => this.changeNumberPage(event));
+    this.promoSearchInput.addEventListener('input', (event) => this.searchPromo(event));
+
+    this.promoButtonAdd.addEventListener('click', (e) => {
+      this.promoButtonAdd.dispatchEvent(this.EVENT.clickOnPromoAdd);
+      this.changePromoForList();
+    })
 
     this.summaryInfoDataButton.addEventListener('click', (e) => {
       this.summaryInfoDataButton.dispatchEvent(this.EVENT.clickOnProductAddInBascetBuy)
-    })
+    });
   }
 
   create(data: IitemDATA[], basketItem: { [x: string]: number } = { items: 3, pages: 3 }) {
@@ -92,6 +120,9 @@ class ViewBasketPage {
     this.serverData = [...data]; // Запишем входящие данные, чтобы не потерять
 
     // Отрисовка контейнера (для попапа и секции)
+    if (this.serverData.length === 0) {
+      return 'Нет элементов в корзине'
+    }
     // const pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
     const popupWrapper = this.customElement.createElement('div', { className: 'popup-wrapper' });
     const mainBasket = this.customElement.createElement('section', { className: 'main-basket _container' });
@@ -138,7 +169,12 @@ class ViewBasketPage {
   // Создание ItemCard корзины
   renderProductCard(dataServerItem: IitemDATA[]) {
     const itemContainer: HTMLElement[] = [];
-    // const test: IitemDATA[] = dataServerItem.slice(0, 6)
+
+    // Проверим корзину на пустоту
+    if (dataServerItem.length === 0) {
+      const main = document.querySelector('main') as HTMLElement;
+      return main.innerHTML = 'Нет элементов в корзине';
+    }
 
     for (const item of dataServerItem) {
       // Значения из localStorage
@@ -200,14 +236,28 @@ class ViewBasketPage {
   }
 
   renderPromoList() {
+    this.updatePromoFROMLocalStorage();
     const itemContainer: HTMLElement[] = [];
+    this.promolistActive.innerHTML = '';
 
-    for (let i = 0; i < 5;i++) {
+    // Проверка на пустой массив промокодов
+    if (!this.promocodeInfo.list.length) {
+      this.promolistActiveFather.classList.add('promolist__hide');
+    } else {
+      this.promolistActiveFather.classList.remove('promolist__hide');
+    }
+
+    for (let i = 0; i < this.promocodeInfo.list.length; i++) {
       const promoItem = this.customElement.createElement('div', { className: 'promoItem'});
 
-      const promoItemText = this.customElement.createElement('p', { className: 'promoItem__text', textContent: 'promoName'});
-      const promoItemSale = this.customElement.createElement('p', { className: 'promoItem__sale', textContent: 'promoSale'});
+      const promoItemText = this.customElement.createElement('p', { className: 'promoItem__text', textContent: `${this.promocodeInfo.list[i]}`});
+      const promoItemSale = this.customElement.createElement('p', { className: 'promoItem__sale', textContent: 'Sale: 10%'});
       const promoItemButton = this.customElement.createElement('button', { className: 'promoItem__button _btn', textContent: 'drop'});
+
+      promoItemButton.addEventListener('click', (event) => {
+        promoItemButton.dispatchEvent(this.EVENT.clickOnPromoRemove);
+        this.deletePromo(event);
+      })
 
       this.customElement.addChildren(promoItem, [promoItemText, promoItemSale, promoItemButton]);
       itemContainer.push(promoItem)
@@ -225,7 +275,6 @@ class ViewBasketPage {
     const summaryInfoDataTotalNew = this.customElement.createElement('p', { className: 'summaryInfo__total ', textContent: 'Total: $ НОВАЯ ЦЕНА' });
  
     this.customElement.addChildren(summaryInfoDataTotal, [this.summaryInfoSpanTotal])
-    const summaryInfoDataSearch = this.customElement.createElement('input', { className: 'summaryInfo__search', type: 'search', placeholder: 'Search promocode' });
     const summaryInfoDataProme = this.customElement.createElement('p', { className: 'summaryInfo__name', textContent: 'Test promo: jik, sydery' });
 
     //Div Promo Add
@@ -234,18 +283,21 @@ class ViewBasketPage {
     this.customElement.addChildren(summaryInfoDataPromoAddDiv, [promoAddText, this.promoButtonAdd]);
 
     //Active Promo List Father
-    const promolistActiveFather = this.customElement.createElement('div', { className: 'promolist-father'});
     const promolistActiveText = this.customElement.createElement('p', { className: 'promolist_text', textContent: 'Applied codes'});
-    this.customElement.addChildren(promolistActiveFather, [promolistActiveText, this.promolistActive]);
+    this.customElement.addChildren(this.promolistActiveFather, [promolistActiveText, this.promolistActive]);
     //Active Promo List Item
     this.customElement.addChildren(this.promolistActive, [...this.renderPromoList()]); // Рендер массив примененных промокодов
 
 
-    itemContainer.push(summaryInfoDataProducts, summaryInfoDataTotal, summaryInfoDataTotalNew , promolistActiveFather, summaryInfoDataSearch, summaryInfoDataProme, summaryInfoDataPromoAddDiv, this.summaryInfoDataButton)
+    itemContainer.push(summaryInfoDataProducts, summaryInfoDataTotal, summaryInfoDataTotalNew , this.promolistActiveFather, this.promoSearchInput, summaryInfoDataProme, summaryInfoDataPromoAddDiv, this.summaryInfoDataButton)
     return itemContainer
   }
 
-
+  changePromoForList() {
+    // this.activePromoListArray.push(this.currentPromo); //После клика по кнопке добавления мы пушим в массив промиков текущий промокод
+    this.hidePromo(); // Скроем окошко промика
+    this.customElement.addChildren(this.promolistActive, [...this.renderPromoList()]); // Рендер массив примененных промокодов
+  }
 
   changeItemsForList() {
     this.productList.innerHTML = '';
@@ -297,6 +349,47 @@ class ViewBasketPage {
     }
 
     this.changeItemsForList();
+  }
+
+  searchPromo(event: Event) {
+    const promocode = ['jik', 'sydery'];
+    const targetValue = (event.target as HTMLInputElement).value;
+    // Завершим, если промокод не равен указанным
+    if (!promocode.includes(targetValue)) return
+    if(this.promocodeInfo.list.includes(targetValue)) return
+    //Покажем окно для введенного промика
+    this.showPromo(targetValue);
+  }
+
+  showPromo(promo: string) {
+    //Если его нет, то продолжим
+    const fatherContainerPromo = document.querySelector('.promoadd') as HTMLElement;
+    const promoText = fatherContainerPromo?.querySelector('.promodadd-txt') as HTMLElement;
+
+    promoText.textContent = `Promo ${promo} - 10%`; // Заменим текст
+    this.currentPromo = promo; // Занесем данный промокод как текущий активный
+    fatherContainerPromo.classList.remove('promoadd-hide'); // Удалим скрытие блока
+  }
+
+  hidePromo() {
+    const fatherContainerPromo = document.querySelector('.promoadd') as HTMLElement;
+    const input = document.querySelector('.summaryInfo__search') as HTMLElement;
+    (input as HTMLInputElement).value = ''; // Сотрем инпут
+    this.currentPromo = ''; // Занесем данный промокод как текущий активный
+    fatherContainerPromo.classList.add('promoadd-hide'); // Удалим скрытие блока
+  }
+
+  deletePromo(event: Event) {
+    const target = event.target as HTMLElement;
+    const containerPromo = target.closest('.promoItem');
+    const promoName = containerPromo?.querySelector('.promoItem__text')?.textContent;
+    
+    // Обвновим массив активных промиков
+    const newActivePromoList = this.activePromoListArray.filter(item => item !== promoName);
+    this.activePromoListArray = [...newActivePromoList];
+
+    //Запустим отрисовку нового
+    this.customElement.addChildren(this.promolistActive, [...this.renderPromoList()]);
   }
 
   changeNumberItems(event: Event) {
@@ -368,6 +461,18 @@ class ViewBasketPage {
       this.BascetLocalStorage = JSON.parse(readlocalStorage)
     } else {
       this.BascetLocalStorage = []
+    }
+  }
+
+  updatePromoFROMLocalStorage() {
+    const readlocalStoragePromoCount = localStorage.getItem('listPromo')
+    if (readlocalStoragePromoCount) {
+      this.promocodeInfo = JSON.parse(readlocalStoragePromoCount);
+    } else {
+      this.promocodeInfo = {
+        count: 0,
+        list: []
+      };
     }
   }
 

@@ -36,8 +36,8 @@ interface IBascetLocalStorage {
 }
 
 interface IPromoList {
-  name: string
-  percent: string
+  count: number
+  list: string[]
 }
 
   // interface IFilter { [x: string]: string[] }

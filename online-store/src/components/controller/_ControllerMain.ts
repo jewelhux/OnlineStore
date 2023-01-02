@@ -1,6 +1,6 @@
 // Типы интерфейсы
 import { numberArrayObject } from '../typingTS/_type'
-import { IitemDATA, IFilter, IBascetLocalStorage } from '../typingTS/_interfaces'
+import { IitemDATA, IFilter, IBascetLocalStorage, IPromoList } from '../typingTS/_interfaces'
 
 // Модель
 import CreateFilterData from '../model/_ModelCreateFilterData'
@@ -69,6 +69,7 @@ class ControllerMain {
   readonly searchOfFILTER: string[];
   sortOfFILTER: string[];
   viewOfFILTER: string[];
+  promocodeInfo: IPromoList;
 
   constructor() {
 
@@ -77,6 +78,17 @@ class ControllerMain {
       this.BascetLocalStorage = JSON.parse(readlocalStorage)
     } else {
       this.BascetLocalStorage = []
+    }
+
+    // Значение для количества промокодов
+    const readlocalStoragePromoCount = localStorage.getItem('listPromo')
+    if (readlocalStoragePromoCount) {
+      this.promocodeInfo = JSON.parse(readlocalStoragePromoCount);
+    } else {
+      this.promocodeInfo = {
+        count: 0,
+        list: []
+      };
     }
 
     // console.log('this.BascetLocalStorage', this.BascetLocalStorage)
@@ -123,7 +135,7 @@ class ControllerMain {
       this.viewOfFILTER
     );
     this.ViewItemCardPAGE = new ViewItemCardPage(this.startServerData[0]);
-    this.ViewBASKETPAGE = new ViewBasketPage(this.startServerData)
+    this.ViewBASKETPAGE = new ViewBasketPage(this.startServerData);
 
     this.ListenersController()
 
@@ -168,9 +180,10 @@ class ControllerMain {
     } else if (index !== -1 && key) {
       this.BascetLocalStorage.splice(index, 1);
     }
-    localStorage.setItem('BascetLocalStorage', JSON.stringify(this.BascetLocalStorage))
+    localStorage.setItem('BascetLocalStorage', JSON.stringify(this.BascetLocalStorage));
+    localStorage.setItem('listPromo', JSON.stringify(this.promocodeInfo));
     return this.BascetLocalStorage
-  }
+  } ///////
 
   // МЕТОД возврата ОБЪЕКТА ПО ID для КОРЗИНЫ
   convertIDtoBascetObject(id: number): IBascetLocalStorage {
@@ -335,6 +348,17 @@ class ControllerMain {
     }
   }
 
+  updatePromoFROMLocalStorage() {
+    const readlocalStoragePromoCount = localStorage.getItem('listPromo')
+    if (readlocalStoragePromoCount) {
+      this.promocodeInfo = JSON.parse(readlocalStoragePromoCount);
+    } else {
+      this.promocodeInfo = {
+        count: 0,
+        list: []
+      };
+    }
+  }
 
   // Метод получения товаров в корзину по Списку из ЛОКАЛ СТОРИДЖ
   generateProductsForBascet(localData: IBascetLocalStorage[] = this.BascetLocalStorage): IitemDATA[] {
@@ -568,11 +592,46 @@ class ControllerMain {
       window.history.pushState({}, '', `/validation`)
       this.MAIN.innerHTML = ''
       this.MAIN.append(this.ViewValidation.create())
-    })
+    });
+
+    // Клик по кнопочке удаления промоика
+    this.BODY.addEventListener('clickOnPromoAdd', (e) => this.updatePromoAdd(e));
+    this.BODY.addEventListener('clickOnPromoRemove', (e) => this.updatePromoRemove(e));
+  }
+
+  updatePromoAdd(event: Event) {
+    // this.updatePromoFROMLocalStorage()
+    const target = event.target as HTMLElement;
+    const summaryInfo = target.closest('.summaryInfo');
+    const currentCodeElement = summaryInfo?.querySelector('.summaryInfo__search');
+    const currentCode = (currentCodeElement as HTMLInputElement).value;
+
+    //Если введенный промик уже есть, то игнорим
+    if(this.promocodeInfo.list.includes(currentCode)) return
+    // Обновим данные по промокоду
+    this.promocodeInfo.list.push(currentCode);
+    this.promocodeInfo.count++
+    localStorage.setItem('listPromo', JSON.stringify(this.promocodeInfo));
+
+    console.log(currentCode);
+  }
+
+  updatePromoRemove(event: Event) {
+    // this.updatePromoFROMLocalStorage()
+    const target = event.target as HTMLElement;
+    const targetItem = target.closest('.promoItem');
+    const targetCode = targetItem?.querySelector('.promoItem__text');
+    
+    //Изменил LS для отрисовки нового списка
+    this.promocodeInfo.count--
+    const newPromoList = this.promocodeInfo.list.filter(item => item !== targetCode?.textContent);
+    this.promocodeInfo.list = [...newPromoList]
+
+    localStorage.setItem('listPromo', JSON.stringify(this.promocodeInfo));
   }
 
   updateBascetCountAndTotaPriseHeader() {
-    this.updateBascetFROMLocalStorage()
+    this.updateBascetFROMLocalStorage();
     this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.reduce((count, el) => count + el.count, 0))
     const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
     this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод

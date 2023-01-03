@@ -481,6 +481,8 @@ class ViewMainPage {
     this.updateBascetFROMLocalStorage();
 
     const target = event.target as HTMLElement;
+    if (target.classList.contains('cardlist')) return
+
     const taretId = +target.id.split('|')[1];
 
     if (!this.BascetLocalStorage.length) {

@@ -7,7 +7,6 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended'
   ],
-  // parser: '@typescript-eslint/parser',
   "ignorePatterns": ["**/*.js"],
   "rules": {
     "@typescript-eslint/no-inferrable-types": "off",

@@ -70,15 +70,7 @@ class CreateBaseDate {
     resultArray.sort((a, b) => a - b).splice(1, (resultArray.length - 2))
     return resultArray
   }
-
-
-
-
 }
 
-
-// const www = new CreateBaseDate()
-// console.log(www.stock)
-// console.log(www.price)
 
 export default CreateBaseDate

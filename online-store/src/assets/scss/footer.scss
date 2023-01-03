@@ -34,7 +34,7 @@
   display: block;
   height: 40px;
   background-size: contain;
-  background-repeat: no-repeat;  
+  background-repeat: no-repeat;
   transition: 0.3s;
   &:hover {
     cursor: pointer;
@@ -43,14 +43,14 @@
 
 .footer__github {
   width: 40px;
-  background-image: url('./assets/img/svg/github.svg');
+  background-image: url("./assets/img/svg/github.svg");
   background-repeat: no-repeat;
   filter: invert(100%);
 }
 
 .footer__rsschool {
   width: 100px;
-  background-image: url('./assets/img/svg/rs_school.svg');
+  background-image: url("./assets/img/svg/rs_school.svg");
   background-repeat: no-repeat;
 }
 
@@ -63,7 +63,7 @@
   .footer__github {
     width: 30px;
   }
-  
+
   .footer__rsschool {
     width: 60px;
   }

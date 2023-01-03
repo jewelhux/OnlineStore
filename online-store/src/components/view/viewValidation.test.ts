@@ -1,15 +1,9 @@
 import { describe } from '@jest/globals';
-// import { IFilter } from '../typingTS/_interfaces';
-
 import ViewValidation from './_ViewValidation'
 
 describe('ViewValidation input phone', () => {
 
   const Validation = new ViewValidation()
-  // let startObject: { [x: string]: string[] };
-  // beforeEach(() => {
-
-  // })
 
   it('is numbner phone valid', () => {
     expect(Validation.isValidInputPhone('+1234567890')).toBeTruthy()

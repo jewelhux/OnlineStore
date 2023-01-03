@@ -1,21 +1,16 @@
 import CustomElement from '../utils/_createCustomElement';
-import ControllerMain from '../controller/_ControllerMain';
-// import { stringArrayObject } from '../typingTS/_type';
 import { IitemDATA } from '../typingTS/_interfaces';
 import { createElement } from '../utils/utils';
-import { IBascetLocalStorage, IPromoList } from '../typingTS/_interfaces';
-// import { MAIN } from '../utils/const';
+import { IBascetLocalStorage} from '../typingTS/_interfaces';
 
 class ViewItemCardPage {
   customElement: CustomElement;
-  // _controller: ControllerMain;
 
   pageMainItemCard: HTMLElement;
   itemCardImagePhotoImg: HTMLElement;
   cardBtnButtonAdd: HTMLElement;
   cardBtnButtonBuy: HTMLElement;
 
-  // startServerData: IitemDATA[];
   startServerProduct: IitemDATA;
   BascetLocalStorage: IBascetLocalStorage[];
   EVENT: { [x: string]: Event }
@@ -53,7 +48,6 @@ class ViewItemCardPage {
     });
 
     this.cardBtnButtonBuy.addEventListener('click', (e) => {
-      console.log('this.cardBtnButtonBuy')
       this.cardBtnButtonBuy.dispatchEvent(this.EVENT.clickOnProductAddInBascetMain)
       this.cardBtnButtonBuy.dispatchEvent(this.EVENT.clickOnProductAddInBascetBuy)
     })
@@ -64,7 +58,6 @@ class ViewItemCardPage {
     this.pageMainItemCard.innerHTML = ''
     this.updateBascetFROMLocalStorage();
     this.customElement.addChildren(this.pageMainItemCard, [this.renderCardBlock(product)]);
-    // this.customElement.addChildren(MAIN, [this.pageMainItemCard]);
     return this.pageMainItemCard
   }
 
@@ -117,8 +110,6 @@ class ViewItemCardPage {
     // Заполнение itemCardMainPhoto
     const itemCardImagePhoto = this.customElement.createElement('div', { className: 'itemCard__imagePhoto' });
     this.itemCardImagePhotoImg.setAttribute('src', product.images[0])
-    // const itemCardImagePhotoImg = this.customElement.createElement('img', { className: 'itemCard__imagePhoto-img', src: product.images[0] });
-
     this.customElement.addChildren(itemCardImagePhoto, [this.itemCardImagePhotoImg]);
     this.customElement.addChildren(itemCardMainPhoto, [itemCardImagePhoto]);
 
@@ -223,7 +214,6 @@ class ViewItemCardPage {
 
   checkProductForButton(button: HTMLElement) {
     this.updateBascetFROMLocalStorage();
-    console.log(this.BascetLocalStorage)
     if (this.BascetLocalStorage.length === 0) {
       button.classList.remove('red-bg');
       button.textContent = 'Add to cart';

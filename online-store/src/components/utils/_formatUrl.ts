@@ -8,9 +8,7 @@ class FormatURL {
     const result: stringObject = {}
     let prop: keyof typeof obj
     for (prop in obj) {
-      // if (obj[prop].length !== 0) {
       result[prop] = obj[prop].join("|")
-      // }
     }
     return new URLSearchParams(result)
   }
@@ -19,9 +17,7 @@ class FormatURL {
     const result: stringObject = {}
     let prop: keyof typeof obj
     for (prop in obj) {
-      // if (obj[prop].length !== 0) {
       result[prop] = obj[prop].toString()
-      // }
     }
     return new URLSearchParams(result)
   }
@@ -45,11 +41,6 @@ if (params instanceof URLSearchParams) {
     }
     return this.strToNumber(result)
   }
-
-
-  // createIDFromURLSearchParams
-  // const result1: IFilter ={}
-
 
   strToNumber(obj: { [x: string]: string[] }) {
     const result: IFilter = {

@@ -1,5 +1,4 @@
 import { describe } from '@jest/globals';
-// import { IFilter } from '../typingTS/_interfaces';
 import FormatURL from './_formatUrl';
 
 describe('strToNumber', () => {

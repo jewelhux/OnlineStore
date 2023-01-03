@@ -538,8 +538,7 @@ class ControllerMain {
     // Клик по карточке для добавления  продукта в КОРЗИНУ из Мейна
     this.MAIN.addEventListener('clickOnProductAddInBascetMain', (e) => {
       const target = e.target as HTMLElement;
-      console.log(target)
-      const id = +target.id.split('|')[1]
+      const id = +target.id.split('|')[1];
       const key: boolean = target.id.split('|')[0] === 'button-buy' ? false : true
       this.updateBascetLocalStorage(id, key)
       this.updateBascetCountAndTotaPriseHeader()

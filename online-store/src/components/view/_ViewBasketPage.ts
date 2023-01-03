@@ -298,7 +298,7 @@ class ViewBasketPage {
  
     this.customElement.addChildren(this.summaryInfoDataTotal, [this.summaryInfoSpanTotal]);
     this.customElement.addChildren(this.summaryInfoDataTotalNew, [this.summaryInfoSpanTotalNew]);
-    const summaryInfoDataProme = this.customElement.createElement('p', { className: 'summaryInfo__name', textContent: 'Test promo: jik, sydery' });
+    const summaryInfoDataProme = this.customElement.createElement('p', { className: 'summaryInfo__name', textContent: 'Test promo: jik, syderi' });
 
     // Чекнем на скидку и добавим нудные классы 
     this.checkNewPrice(this.summaryInfoDataTotal, this.summaryInfoDataTotalNew);
@@ -378,13 +378,18 @@ class ViewBasketPage {
   }
 
   searchPromo(event: Event) {
-    const promocode = ['jik', 'sydery'];
+    const promocode = ['jik', 'syderi'];
     const targetValue = (event.target as HTMLInputElement).value;
     // Завершим, если промокод не равен указанным
-    if (!promocode.includes(targetValue)) return
-    if(this.promocodeInfo.list.includes(targetValue)) return
+    // if (!promocode.includes(targetValue)) return
+    if (this.promocodeInfo.list.includes(targetValue)) return
     //Покажем окно для введенного промика
-    this.showPromo(targetValue);
+    if (promocode.includes(targetValue)) {
+      this.showPromo(targetValue)
+    } else {
+      const fatherContainerPromo = document.querySelector('.promoadd') as HTMLElement;
+      fatherContainerPromo.classList.add('promoadd-hide'); // Удалим скрытие блока
+    }
   }
 
   showPromo(promo: string) {

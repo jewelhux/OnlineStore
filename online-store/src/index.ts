@@ -7,3 +7,4 @@ import './_global.scss';
 
 const APP = new ControllerMain()
 APP.init();
+window.addEventListener("popstate", () => {console.log('123')})

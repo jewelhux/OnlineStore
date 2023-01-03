@@ -224,13 +224,20 @@ class ViewItemCardPage {
     if (!this.BascetLocalStorage) return
 
     const ButtonId = +button.id.split('|')[1];
+    console.log(this.BascetLocalStorage.length)
 
-    this.BascetLocalStorage.forEach((item) => {
-      if (item.id === ButtonId) {
+    for (let i = 0; i < this.BascetLocalStorage.length; i++) {
+      if (this.BascetLocalStorage[i].id === ButtonId) {
+        console.log('ButtonID = True', ButtonId)
         button.classList.add('red-bg');
         button.textContent = 'Drop cart';
+        return
+      } else {
+        console.log('ButtonID = False', ButtonId)
+        button.classList.remove('red-bg');
+        button.textContent = 'Add to cart';
       }
-    })
+    }
   }
 }
 

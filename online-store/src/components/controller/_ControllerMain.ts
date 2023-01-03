@@ -639,7 +639,7 @@ class ControllerMain {
     const promoCount = Number(this.promocodeInfo.count);
     this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.reduce((count, el) => count + el.count, 0));
     const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0); // возможно эти 2 надо вынести в отельный метод
-    const summTotalNew = summTotal * ((10 - promoCount) / 10 ); // Новая цена на товар
+    const summTotalNew = Math.round(summTotal * ((10 - promoCount) / 10 )); // Новая цена на товар
 
     this.ViewHEADER.updateHeaderTotalPrice(summTotalNew)// возможно эти 2 надо вынести в отельный метод
     this.ViewBASKETPAGE.summaryInfoSpanTotal.textContent = summTotal.toString();

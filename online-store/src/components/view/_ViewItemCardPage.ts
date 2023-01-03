@@ -3,6 +3,7 @@ import ControllerMain from '../controller/_ControllerMain';
 // import { stringArrayObject } from '../typingTS/_type';
 import { IitemDATA } from '../typingTS/_interfaces';
 import { createElement } from '../utils/utils';
+import { IBascetLocalStorage, IPromoList } from '../typingTS/_interfaces';
 // import { MAIN } from '../utils/const';
 
 class ViewItemCardPage {
@@ -15,10 +16,18 @@ class ViewItemCardPage {
   cardBtnButtonBuy: HTMLElement;
 
   // startServerData: IitemDATA[];
-  startServerProduct: IitemDATA
+  startServerProduct: IitemDATA;
+  BascetLocalStorage: IBascetLocalStorage[];
   EVENT: { [x: string]: Event }
 
   constructor(product: IitemDATA) {
+    const readlocalStorage = localStorage.getItem('BascetLocalStorage')
+    if (readlocalStorage) {
+      this.BascetLocalStorage = JSON.parse(readlocalStorage)
+    } else {
+      this.BascetLocalStorage = []
+    }
+
     this.startServerProduct = product;
     this.customElement = new CustomElement();
     this.pageMainItemCard = this.customElement.createElement('div', { className: 'page-main-itemCard _main-container' }); // Основная сакция картчоки
@@ -39,7 +48,8 @@ class ViewItemCardPage {
   listenersCardPage() {
 
     this.cardBtnButtonAdd.addEventListener('click', (e) => {
-      this.cardBtnButtonAdd.dispatchEvent(this.EVENT.clickOnProductAddInBascetMain)
+      this.cardBtnButtonAdd.dispatchEvent(this.EVENT.clickOnProductAddInBascetMain);
+      this.addProductForButton(e);
     });
 
     this.cardBtnButtonBuy.addEventListener('click', (e) => {
@@ -152,8 +162,10 @@ class ViewItemCardPage {
       className: 'itemCard-data__price', textContent: `Price: $ ${product.price}`
     });
 
-    this.cardBtnButtonAdd.setAttribute('id', `button-add|${product.id}`)
-    this.cardBtnButtonBuy.setAttribute('id', `button-buy|${product.id}`)
+    this.cardBtnButtonAdd.setAttribute('id', `button-add|${product.id}`);
+    this.cardBtnButtonBuy.setAttribute('id', `button-buy|${product.id}`);
+
+    this.checkProductForButton(this.cardBtnButtonAdd);
     this.customElement.addChildren(itemCardSummary, [itemCardDataPrice, this.cardBtnButtonAdd, this.cardBtnButtonBuy]);
 
     return mainItemCard
@@ -174,7 +186,51 @@ class ViewItemCardPage {
       const newSrc = target.getAttribute('src')
       if (newSrc) this.itemCardImagePhotoImg.setAttribute('src', newSrc)
     }
+  }
 
+  updateBascetFROMLocalStorage() {
+    const readlocalStorage = localStorage.getItem('BascetLocalStorage')
+    if (readlocalStorage) {
+      this.BascetLocalStorage = JSON.parse(readlocalStorage)
+    } else {
+      this.BascetLocalStorage = []
+    }
+  }
+
+  addProductForButton(event: Event) {
+    this.updateBascetFROMLocalStorage();
+
+    const target = event.target as HTMLElement;
+    const taretId = +target.id.split('|')[1];
+
+    if (!this.BascetLocalStorage.length) {
+      target.classList.remove('red-bg');
+      target.textContent = 'Add to cart';
+    }
+
+    this.BascetLocalStorage.forEach((item) => {
+      if (item.id === taretId) {
+        target.classList.add('red-bg');
+        target.textContent = 'Drop cart';
+      } else {
+        target.classList.remove('red-bg');
+        target.textContent = 'Add to cart';
+      }
+    })
+  }
+
+  checkProductForButton(button: HTMLElement) {
+    this.updateBascetFROMLocalStorage();
+    if (!this.BascetLocalStorage) return
+
+    const ButtonId = +button.id.split('|')[1];
+
+    this.BascetLocalStorage.forEach((item) => {
+      if (item.id === ButtonId) {
+        button.classList.add('red-bg');
+        button.textContent = 'Drop cart';
+      }
+    })
   }
 }
 

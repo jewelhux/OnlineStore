@@ -485,16 +485,16 @@ class ViewMainPage {
 
     if (!this.BascetLocalStorage.length) {
       target.classList.remove('red-bg');
-      target.textContent = 'Add to card';
+      target.textContent = 'Add to cart';
     }
 
     this.BascetLocalStorage.forEach((item) => {
       if (item.id === taretId) {
         target.classList.add('red-bg');
-        target.textContent = 'Drop card';
+        target.textContent = 'Drop cart';
       } else {
         target.classList.remove('red-bg');
-        target.textContent = 'Add to card';
+        target.textContent = 'Add to cart';
       }
     })
   }
@@ -508,7 +508,7 @@ class ViewMainPage {
     this.BascetLocalStorage.forEach((item) => {
       if (item.id === ButtonId) {
         button.classList.add('red-bg');
-        button.textContent = 'Drop card';
+        button.textContent = 'Drop cart';
       }
     })
   }

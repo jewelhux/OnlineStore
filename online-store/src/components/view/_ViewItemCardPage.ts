@@ -47,7 +47,7 @@ class ViewItemCardPage {
       this.addProductForButton(e);
     });
 
-    this.cardBtnButtonBuy.addEventListener('click', (e) => {
+    this.cardBtnButtonBuy.addEventListener('click', () => {
       this.cardBtnButtonBuy.dispatchEvent(this.EVENT.clickOnProductAddInBascetMain)
       this.cardBtnButtonBuy.dispatchEvent(this.EVENT.clickOnProductAddInBascetBuy)
     })

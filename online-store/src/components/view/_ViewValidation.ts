@@ -158,7 +158,7 @@ class ViewValidation {
     });
 
 
-    this.InputName.addEventListener('keyup', (e) => {
+    this.InputName.addEventListener('keyup', () => {
       this.InputName.value = this.InputName.value.replace(/[^a-z^A-Z\s^А-ЯЁ^а-яё]/g, "")
       if (this.isValidInputName()) {
         this.InputName.style.borderColor = 'green';
@@ -171,7 +171,7 @@ class ViewValidation {
       }
     })
 
-    this.InputPhone.addEventListener('keyup', (e) => {
+    this.InputPhone.addEventListener('keyup', () => {
       this.InputPhone.value = this.InputPhone.value.replace(/[^0-9+]/g, '')
       if (this.isValidInputPhone()) {
         this.InputPhone.style.borderColor = 'green';
@@ -184,7 +184,7 @@ class ViewValidation {
       }
     })
 
-    this.InputAdress.addEventListener('keyup', (e) => {
+    this.InputAdress.addEventListener('keyup', () => {
       if (this.isValidInputAdress()) {
         this.InputAdress.style.borderColor = 'green';
       } else {
@@ -196,7 +196,7 @@ class ViewValidation {
       }
     })
 
-    this.InputMail.addEventListener('keyup', (e) => {
+    this.InputMail.addEventListener('keyup', () => {
       if (this.isValidInputInputMail()) {
         this.InputMail.style.borderColor = 'green';
       } else {
@@ -208,7 +208,7 @@ class ViewValidation {
       }
     })
 
-    this.InputCardNumber.addEventListener('input', (e) => {
+    this.InputCardNumber.addEventListener('input', () => {
       const length = this.InputCardNumber.value.length;
       this.InputCardNumber.value = this.InputCardNumber.value.replace(/[^0-9+]/g, '')
 
@@ -247,7 +247,7 @@ class ViewValidation {
       }
     })
 
-    this.InputCardNumberDate.addEventListener('input', (e) => {
+    this.InputCardNumberDate.addEventListener('input', () => {
       const length = this.InputCardNumberDate.value.length;
       this.InputCardNumberDate.value = this.InputCardNumberDate.value.replace(/[^0-9+/]/g, '')
       if (length === 2) {
@@ -267,7 +267,7 @@ class ViewValidation {
       }
     })
 
-    this.InputCardNumberCVV.addEventListener('keyup', (e) => {
+    this.InputCardNumberCVV.addEventListener('keyup', () => {
       this.InputCardNumberCVV.value = this.InputCardNumberCVV.value.replace(/[^0-9+]/g, '')
       if (this.InputCardNumberCVV.value.length > 3) {
         this.InputCardNumberCVV.value = this.InputCardNumberCVV.value.slice(0, 3)

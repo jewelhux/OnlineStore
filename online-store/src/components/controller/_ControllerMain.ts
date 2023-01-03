@@ -168,7 +168,7 @@ class ControllerMain {
 
   // МЕТОД добавления и удаления  ПО ID из КОРЗИНЫ
   updateBascetLocalStorage(id: number, key: boolean = true): IBascetLocalStorage[] {
-    const index = this.BascetLocalStorage.findIndex((el, index) => {
+    const index = this.BascetLocalStorage.findIndex((el) => {
       return el.id === id
     })
     if (index === -1) {
@@ -408,7 +408,7 @@ class ControllerMain {
     })
 
     // Клик по кнопке РЕСЕТ сброса фильтров из Мейна
-    this.MAIN.addEventListener('clickOnbuttonResetMain', (e) => {
+    this.MAIN.addEventListener('clickOnbuttonResetMain', () => {
       this.MODEL.clearFILTER()
       this.rerenderMainPageComponents()
       this.pushStateFilter()
@@ -427,7 +427,7 @@ class ControllerMain {
     })
 
     // Клик по корзине из Хедера и запуск страницы корзины
-    this.BODY.addEventListener('clickOnBacket', (e) => {
+    this.BODY.addEventListener('clickOnBacket', () => {
       const basketObject = {
         items: 3,
         pages: 1,
@@ -439,7 +439,7 @@ class ControllerMain {
 
 
     // Клик по ЛОГОТИПУ из Хедера и запуск страницы main
-    this.BODY.addEventListener('clickOnLogo', (e) => {
+    this.BODY.addEventListener('clickOnLogo', () => {
       window.history.pushState({}, '', '/')
       this.rerenderMainPageComponents()
       this.pushStateFilter()
@@ -509,7 +509,7 @@ class ControllerMain {
     })
 
     // Клик по карточке для запуска страниц Validation из Мейна
-    this.MAIN.addEventListener('clickOnProductAddInBascetBuy', (e) => {
+    this.MAIN.addEventListener('clickOnProductAddInBascetBuy', () => {
       window.history.pushState({}, '', `/validation`)
       this.MAIN.innerHTML = ''
       this.MAIN.append(this.ViewValidation.create())
@@ -599,7 +599,7 @@ class ControllerMain {
           inputs[handle].textContent = String(Math.round(Number(values[handle])));
         });
 
-      (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.on('set', (values, handle) => {
+      (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.on('set', (values) => {
         const valueArray = values.map(el => Math.round(+el))
         this.MODEL.setPriceOfFILTER(valueArray)
         this.rerenderMainPageComponents()
@@ -643,7 +643,7 @@ class ControllerMain {
 
         });
 
-      (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('set', (values, handle) => {
+      (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('set', (values) => {
         const valueArray = values.map(el => Math.round(+el))
 
         this.MODEL.setStockOfFILTER(valueArray)

@@ -103,12 +103,12 @@ class ViewBasketPage {
     this.pagesButtonNext.addEventListener('click', (event) => this.changeNumberPage(event));
     this.promoSearchInput.addEventListener('input', (event) => this.searchPromo(event));
 
-    this.promoButtonAdd.addEventListener('click', (e) => {
+    this.promoButtonAdd.addEventListener('click', () => {
       this.promoButtonAdd.dispatchEvent(this.EVENT.clickOnPromoAdd);
       this.changePromoForList();
     })
 
-    this.summaryInfoDataButton.addEventListener('click', (e) => {
+    this.summaryInfoDataButton.addEventListener('click', () => {
       this.summaryInfoDataButton.dispatchEvent(this.EVENT.clickOnProductAddInBascetBuy)
     });
   }
@@ -229,11 +229,11 @@ class ViewBasketPage {
       // Навешиваем обработчики на + и - карточек
       basketDataBtnMinus.addEventListener('click', (e) => {
         basketDataBtnMinus.dispatchEvent(this.EVENT.clickOnProductMinus);
-        this.countItemMinus(e, item);
+        this.countItemMinus(e);
       })
       basketDataBtnPlus.addEventListener('click', (e) => {
         basketDataBtnPlus.dispatchEvent(this.EVENT.clickOnProductPlus);
-        this.countItemPlus(e, item);
+        this.countItemPlus(e);
       })
 
       this.customElement.addChildren(itemDataCount, [basketDataBtnMinus, itemDataCurrent, basketDataBtnPlus]);
@@ -417,7 +417,7 @@ class ViewBasketPage {
     this.changeItemsForList();
   }
 
-  countItemPlus(e: Event, itemData: IitemDATA) {
+  countItemPlus(e: Event) {
     const itemCard = (e.target as HTMLElement).closest('.product__itemBasket');
     const itemCardCount = itemCard?.querySelector('.basket-data__count-current');
     const itemCardTotal = itemCard?.querySelector('.basket-data__total');
@@ -432,7 +432,7 @@ class ViewBasketPage {
     });
   }
 
-  countItemMinus(e: Event, itemData: IitemDATA) {
+  countItemMinus(e: Event) {
     const itemCard = (e.target as HTMLElement).closest('.product__itemBasket');
     const itemCardCount = itemCard?.querySelector('.basket-data__count-current');
     const itemCardTotal = itemCard?.querySelector('.basket-data__total');

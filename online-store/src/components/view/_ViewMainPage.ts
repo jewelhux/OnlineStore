@@ -1,11 +1,9 @@
 import CustomElement from '../utils/_createCustomElement';
-// import ControllerMain from '../controller/_ControllerMain';
 import { numberArrayObject } from '../typingTS/_type';
 import { IitemDATA } from '../typingTS/_interfaces'
 import { createElement } from '../utils/utils';
 import { IBascetLocalStorage } from '../typingTS/_interfaces';
-import { target } from 'nouislider';
-// import { MAIN } from '../utils/const';
+
 
 class ViewMainPage {
   pageMain: HTMLElement;
@@ -248,7 +246,7 @@ class ViewMainPage {
     })
 
     // cлушаетль на кнопке копирования адресса
-    this.buttonCopy.addEventListener('click', (e) => {
+    this.buttonCopy.addEventListener('click', () => {
 
       this.copyPageUrl()
       setTimeout(() => {
@@ -257,7 +255,7 @@ class ViewMainPage {
     })
 
     // cлушаетль на кнопке сброса ФИЛЬТРОВ
-    this.buttonReset.addEventListener('click', (e) => {
+    this.buttonReset.addEventListener('click', () => {
       this.buttonReset.dispatchEvent(this.EVENT.clickOnbuttonResetMain)
     })
   }

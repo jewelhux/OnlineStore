@@ -53,7 +53,7 @@ class ViewHeader {
   }
 
   headerListeners() {
-    this.headerBasket.addEventListener('click', (e) => {
+    this.headerBasket.addEventListener('click', () => {
       this.headerBasket.dispatchEvent(this.EVENT.clickOnBacket)
     })
 

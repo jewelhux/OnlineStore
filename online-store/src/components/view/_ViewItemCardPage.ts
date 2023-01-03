@@ -62,6 +62,7 @@ class ViewItemCardPage {
 
   create(product: IitemDATA = this.startServerProduct) {
     this.pageMainItemCard.innerHTML = ''
+    this.updateBascetFROMLocalStorage();
     this.customElement.addChildren(this.pageMainItemCard, [this.renderCardBlock(product)]);
     // this.customElement.addChildren(MAIN, [this.pageMainItemCard]);
     return this.pageMainItemCard
@@ -69,6 +70,7 @@ class ViewItemCardPage {
 
   renderCardBlock(product: IitemDATA = this.startServerProduct): HTMLElement {
     // Создание основной секции
+    this.updateBascetFROMLocalStorage();
     const mainItemCard = this.customElement.createElement('section', { className: 'main-itemCard _container itemCard' })
     this.customElement.addChildren(this.pageMainItemCard, [mainItemCard]);
 
@@ -221,19 +223,21 @@ class ViewItemCardPage {
 
   checkProductForButton(button: HTMLElement) {
     this.updateBascetFROMLocalStorage();
-    if (!this.BascetLocalStorage) return
+    console.log(this.BascetLocalStorage)
+    if (this.BascetLocalStorage.length === 0) {
+      button.classList.remove('red-bg');
+      button.textContent = 'Add to cart';
+      return
+    }
 
     const ButtonId = +button.id.split('|')[1];
-    console.log(this.BascetLocalStorage.length)
 
     for (let i = 0; i < this.BascetLocalStorage.length; i++) {
       if (this.BascetLocalStorage[i].id === ButtonId) {
-        console.log('ButtonID = True', ButtonId)
         button.classList.add('red-bg');
         button.textContent = 'Drop cart';
         return
       } else {
-        console.log('ButtonID = False', ButtonId)
         button.classList.remove('red-bg');
         button.textContent = 'Add to cart';
       }

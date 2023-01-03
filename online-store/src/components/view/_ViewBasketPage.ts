@@ -32,6 +32,8 @@ class ViewBasketPage {
   summaryInfoSpanTotal:HTMLSpanElement;
   summaryInfoSpanTotalProducts:HTMLSpanElement;
   summaryInfoSpanTotalNew:HTMLSpanElement;
+  summaryInfoDataTotal:HTMLSpanElement;
+  summaryInfoDataTotalNew:HTMLSpanElement;
 
   EVENT: { [x: string]: Event };
   objectItemsPages: { [x: string]: number };
@@ -79,8 +81,9 @@ class ViewBasketPage {
     this.summaryInfoSpanTotal = this.customElement.createElement('span', { className: 'summaryInfo__total_span', textContent: '0' }) as HTMLSpanElement;
     this.summaryInfoSpanTotalNew = this.customElement.createElement('span', { className: 'summaryInfo__total_spanNew', textContent: '0' }) as HTMLSpanElement;
     this.summaryInfoSpanTotalProducts = this.customElement.createElement('span', { className: 'summaryInfo__total-products_span', textContent: '0' }) as HTMLSpanElement;
-    
 
+    this.summaryInfoDataTotal = this.customElement.createElement('p', { className: 'summaryInfo__total total-old', textContent: 'Total: $ ' });
+    this.summaryInfoDataTotalNew = this.customElement.createElement('p', { className: 'summaryInfo__total  total-new hide', textContent: 'New Total: $' });
 
     this.EVENT = {
       // inputOnItemsVisible: new Event('inputOnItemsVisible', { bubbles: true }),
@@ -174,6 +177,7 @@ class ViewBasketPage {
 
     // const test = document.querySelector('main') as HTMLElement;
     // this.customElement.addChildren(test,[pageMainBasket]);
+    
     return this.pageMainBasket
   }
 
@@ -291,12 +295,13 @@ class ViewBasketPage {
 
     const summaryInfoDataProducts = this.customElement.createElement('p', { className: 'summaryInfo-data__products', textContent: 'Products: ' });
     this.customElement.addChildren(summaryInfoDataProducts, [this.summaryInfoSpanTotalProducts])
-    const summaryInfoDataTotal = this.customElement.createElement('p', { className: 'summaryInfo__total total-old', textContent: 'Total: $ ' });
-    const summaryInfoDataTotalNew = this.customElement.createElement('p', { className: 'summaryInfo__total  total-new hide', textContent: 'New Total: $' });
  
-    this.customElement.addChildren(summaryInfoDataTotal, [this.summaryInfoSpanTotal]);
-    this.customElement.addChildren(summaryInfoDataTotalNew, [this.summaryInfoSpanTotalNew]);
+    this.customElement.addChildren(this.summaryInfoDataTotal, [this.summaryInfoSpanTotal]);
+    this.customElement.addChildren(this.summaryInfoDataTotalNew, [this.summaryInfoSpanTotalNew]);
     const summaryInfoDataProme = this.customElement.createElement('p', { className: 'summaryInfo__name', textContent: 'Test promo: jik, sydery' });
+
+    // Чекнем на скидку и добавим нудные классы 
+    this.checkNewPrice(this.summaryInfoDataTotal, this.summaryInfoDataTotalNew);
 
     //Div Promo Add
     const summaryInfoDataPromoAddDiv = this.customElement.createElement('div', { className: 'promoadd promoadd-hide'});
@@ -310,7 +315,7 @@ class ViewBasketPage {
     this.customElement.addChildren(this.promolistActive, [...this.renderPromoList()]); // Рендер массив примененных промокодов
 
 
-    itemContainer.push(summaryInfoDataProducts, summaryInfoDataTotal, summaryInfoDataTotalNew , this.promolistActiveFather, this.promoSearchInput, summaryInfoDataProme, summaryInfoDataPromoAddDiv, this.summaryInfoDataButton)
+    itemContainer.push(summaryInfoDataProducts, this.summaryInfoDataTotal, this.summaryInfoDataTotalNew , this.promolistActiveFather, this.promoSearchInput, summaryInfoDataProme, summaryInfoDataPromoAddDiv, this.summaryInfoDataButton)
     return itemContainer
   }
 
@@ -479,6 +484,23 @@ class ViewBasketPage {
   showNewPrice() {
     const oldPrice = document.querySelector('.total-old');
     const newPrice = document.querySelector('.total-new');
+
+    console.log(oldPrice, newPrice)
+
+    if (Number(this.promocodeInfo.count) && Number(this.promocodeInfo.count) > 0) {
+      console.log('скидка')
+      oldPrice?.classList.add('sale-redline');
+      newPrice?.classList.remove('hide');
+    } else {
+      console.log('не скидка')
+      oldPrice?.classList.remove('sale-redline');
+      newPrice?.classList.add('hide');
+    }
+  }
+
+  checkNewPrice(oldPrice: HTMLElement, newPrice: HTMLElement) {
+
+    console.log(oldPrice, newPrice)
 
     if (Number(this.promocodeInfo.count) && Number(this.promocodeInfo.count) > 0) {
       console.log('скидка')

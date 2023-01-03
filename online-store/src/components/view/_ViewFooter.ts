@@ -1,6 +1,3 @@
-import ControllerMain from "../controller/_ControllerMain";
-import { numberArrayObject } from '../typingTS/_type'
-
 import { createElement } from '../utils/utils';
 
 class ViewFooter {

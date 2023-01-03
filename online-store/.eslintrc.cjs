@@ -7,11 +7,9 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended'
   ],
-  // parser: '@typescript-eslint/parser',
   "ignorePatterns": ["**/*.js"],
   "rules": {
     "@typescript-eslint/no-inferrable-types": "off",
-    "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-explicit-any": "error"
   }
 };

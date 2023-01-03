@@ -1,18 +1,12 @@
 import CustomElement from '../utils/_createCustomElement';
-// import ControllerMain from '../controller/_ControllerMain';
-// import { stringArrayObject } from '../typingTS/_type';
 import { IitemDATA } from '../typingTS/_interfaces';
 import FormatURL from '../utils/_formatUrl';
 import { IBascetLocalStorage, IPromoList } from '../typingTS/_interfaces';
-import { doc } from 'prettier';
 import { createElement } from '../utils/utils';
-// import { createElement } from '../utils/utils';
 
 
 class ViewBasketPage {
   customElement: CustomElement;
-  // _controller: ControllerMain;
-
   pageMainBasket: HTMLElement;
   pagesButtonPrev: HTMLElement;
   pagesButtonNext: HTMLElement;
@@ -86,7 +80,6 @@ class ViewBasketPage {
     this.summaryInfoDataTotalNew = this.customElement.createElement('p', { className: 'summaryInfo__total  total-new hide', textContent: 'New Total: $' });
 
     this.EVENT = {
-      // inputOnItemsVisible: new Event('inputOnItemsVisible', { bubbles: true }),
       clickOnProductAddInBascetBuy: new Event('clickOnProductAddInBascetBuy', { bubbles: true }),
       clickOnProductPlus: new Event('clickOnProductPlus', { bubbles: true }),
       clickOnProductMinus: new Event('clickOnProductMinus', { bubbles: true }),
@@ -110,12 +103,12 @@ class ViewBasketPage {
     this.pagesButtonNext.addEventListener('click', (event) => this.changeNumberPage(event));
     this.promoSearchInput.addEventListener('input', (event) => this.searchPromo(event));
 
-    this.promoButtonAdd.addEventListener('click', (e) => {
+    this.promoButtonAdd.addEventListener('click', () => {
       this.promoButtonAdd.dispatchEvent(this.EVENT.clickOnPromoAdd);
       this.changePromoForList();
     })
 
-    this.summaryInfoDataButton.addEventListener('click', (e) => {
+    this.summaryInfoDataButton.addEventListener('click', () => {
       this.summaryInfoDataButton.dispatchEvent(this.EVENT.clickOnProductAddInBascetBuy)
     });
   }
@@ -174,10 +167,6 @@ class ViewBasketPage {
 
     // Отрисовка summaryInfo
     this.customElement.addChildren(this.summaryInfo, [...this.renderSummary()]);
-
-    // const test = document.querySelector('main') as HTMLElement;
-    // this.customElement.addChildren(test,[pageMainBasket]);
-    
     return this.pageMainBasket
   }
 
@@ -207,8 +196,6 @@ class ViewBasketPage {
 
       // Обертка карточки
       const itemBasket = this.customElement.createElement('div', { className: 'product__itemBasket itemBasket', id: `${item.id}` });
-
-      // items * pages-1 + index+1
 
       // Создание itemBasket
       const itemNumberBasket = this.customElement.createElement('div', { className: 'itemBasket__numberBasket', textContent: `${numberItem}` });
@@ -242,11 +229,11 @@ class ViewBasketPage {
       // Навешиваем обработчики на + и - карточек
       basketDataBtnMinus.addEventListener('click', (e) => {
         basketDataBtnMinus.dispatchEvent(this.EVENT.clickOnProductMinus);
-        this.countItemMinus(e, item);
+        this.countItemMinus(e);
       })
       basketDataBtnPlus.addEventListener('click', (e) => {
         basketDataBtnPlus.dispatchEvent(this.EVENT.clickOnProductPlus);
-        this.countItemPlus(e, item);
+        this.countItemPlus(e);
       })
 
       this.customElement.addChildren(itemDataCount, [basketDataBtnMinus, itemDataCurrent, basketDataBtnPlus]);
@@ -307,20 +294,13 @@ class ViewBasketPage {
     const summaryInfoDataPromoAddDiv = this.customElement.createElement('div', { className: 'promoadd promoadd-hide'});
     const promoAddText = this.customElement.createElement('p', { className: 'promodadd-txt', textContent: 'Promo jik - 10%'});
     this.customElement.addChildren(summaryInfoDataPromoAddDiv, [promoAddText, this.promoButtonAdd]);
-
-    //Active Promo List Father
-    // const promolistActiveText = this.customElement.createElement('p', { className: 'promolist_text', textContent: 'Applied codes'});
     this.customElement.addChildren(this.promolistActiveFather, [ this.promolistActive]);
-    //Active Promo List Item
     this.customElement.addChildren(this.promolistActive, [...this.renderPromoList()]); // Рендер массив примененных промокодов
-
-
     itemContainer.push(summaryInfoDataProducts, this.summaryInfoDataTotal, this.summaryInfoDataTotalNew , this.promolistActiveFather, this.promoSearchInput, summaryInfoDataProme, summaryInfoDataPromoAddDiv, this.summaryInfoDataButton)
     return itemContainer
   }
 
   changePromoForList() {
-    // this.activePromoListArray.push(this.currentPromo); //После клика по кнопке добавления мы пушим в массив промиков текущий промокод
     this.hidePromo(); // Скроем окошко промика
     this.customElement.addChildren(this.promolistActive, [...this.renderPromoList()]); // Рендер массив примененных промокодов
   }
@@ -347,7 +327,6 @@ class ViewBasketPage {
       this.objectItemsPages.items = this.serverData.length;
       this.changeItemsForList();
     }
-
   }
 
   // Пушим в историю адресной строки
@@ -381,9 +360,7 @@ class ViewBasketPage {
     const promocode = ['jik', 'syderi'];
     const targetValue = (event.target as HTMLInputElement).value;
     // Завершим, если промокод не равен указанным
-    // if (!promocode.includes(targetValue)) return
     if (this.promocodeInfo.list.includes(targetValue)) return
-    //Покажем окно для введенного промика
     if (promocode.includes(targetValue)) {
       this.showPromo(targetValue)
     } else {
@@ -396,7 +373,6 @@ class ViewBasketPage {
     //Если его нет, то продолжим
     const fatherContainerPromo = document.querySelector('.promoadd') as HTMLElement;
     const promoText = fatherContainerPromo?.querySelector('.promodadd-txt') as HTMLElement;
-
     promoText.textContent = `Promo ${promo} - 10%`; // Заменим текст
     this.currentPromo = promo; // Занесем данный промокод как текущий активный
     fatherContainerPromo.classList.remove('promoadd-hide'); // Удалим скрытие блока
@@ -441,7 +417,7 @@ class ViewBasketPage {
     this.changeItemsForList();
   }
 
-  countItemPlus(e: Event, itemData: IitemDATA) {
+  countItemPlus(e: Event) {
     const itemCard = (e.target as HTMLElement).closest('.product__itemBasket');
     const itemCardCount = itemCard?.querySelector('.basket-data__count-current');
     const itemCardTotal = itemCard?.querySelector('.basket-data__total');
@@ -456,7 +432,7 @@ class ViewBasketPage {
     });
   }
 
-  countItemMinus(e: Event, itemData: IitemDATA) {
+  countItemMinus(e: Event) {
     const itemCard = (e.target as HTMLElement).closest('.product__itemBasket');
     const itemCardCount = itemCard?.querySelector('.basket-data__count-current');
     const itemCardTotal = itemCard?.querySelector('.basket-data__total');
@@ -490,14 +466,10 @@ class ViewBasketPage {
     const oldPrice = document.querySelector('.total-old');
     const newPrice = document.querySelector('.total-new');
 
-    console.log(oldPrice, newPrice)
-
     if (Number(this.promocodeInfo.count) && Number(this.promocodeInfo.count) > 0) {
-      console.log('скидка')
       oldPrice?.classList.add('sale-redline');
       newPrice?.classList.remove('hide');
     } else {
-      console.log('не скидка')
       oldPrice?.classList.remove('sale-redline');
       newPrice?.classList.add('hide');
     }
@@ -505,14 +477,10 @@ class ViewBasketPage {
 
   checkNewPrice(oldPrice: HTMLElement, newPrice: HTMLElement) {
 
-    console.log(oldPrice, newPrice)
-
     if (Number(this.promocodeInfo.count) && Number(this.promocodeInfo.count) > 0) {
-      console.log('скидка')
       oldPrice?.classList.add('sale-redline');
       newPrice?.classList.remove('hide');
     } else {
-      console.log('не скидка')
       oldPrice?.classList.remove('sale-redline');
       newPrice?.classList.add('hide');
     }

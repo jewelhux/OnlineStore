@@ -1,5 +1,4 @@
 import { describe } from '@jest/globals';
-// import { IFilter } from '../typingTS/_interfaces';
 import CreateFilterData from './_ModelCreateFilterData';
 import { products } from '../DATA/_products'
 

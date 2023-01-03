@@ -502,7 +502,7 @@ class ControllerMain {
       }
       const params: URLSearchParams = this._formatURL.createURLSearchParamsBasket(basketObject)
       window.history.pushState({}, '', `/basket?${params}`)
-      console.log('300 =params!!', params)
+      // console.log('300 =params!!', params)
       // console.log('300 =search!!!!!!!!', search)
       // const returnbasketObject = this._formatURL.createFromURLSearchParams(search)
       // console.log('400 = returnbasketObject!!!!!!!!', returnbasketObject)
@@ -613,7 +613,7 @@ class ControllerMain {
     this.promocodeInfo.count++
     localStorage.setItem('listPromo', JSON.stringify(this.promocodeInfo));
 
-    console.log(currentCode);
+    this.updateBascetCountAndTotaPriseHeader();
   }
 
   updatePromoRemove(event: Event) {
@@ -628,15 +628,23 @@ class ControllerMain {
     this.promocodeInfo.list = [...newPromoList]
 
     localStorage.setItem('listPromo', JSON.stringify(this.promocodeInfo));
+
+    this.updateBascetCountAndTotaPriseHeader();
   }
 
   updateBascetCountAndTotaPriseHeader() {
     this.updateBascetFROMLocalStorage();
-    this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.reduce((count, el) => count + el.count, 0))
-    const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0)// возможно эти 2 надо вынести в отельный метод
-    this.ViewHEADER.updateHeaderTotalPrice(summTotal)// возможно эти 2 надо вынести в отельный метод
-    this.ViewBASKETPAGE.summaryInfoSpanTotal.textContent = summTotal.toString()
-    this.ViewBASKETPAGE.summaryInfoSpanTotalProducts.textContent = this.BascetLocalStorage.reduce((count, el) => count + el.count, 0).toString()
+    this.updatePromoFROMLocalStorage();
+
+    const promoCount = Number(this.promocodeInfo.count);
+    this.ViewHEADER.updateHeaderBasketCount(this.BascetLocalStorage.reduce((count, el) => count + el.count, 0));
+    const summTotal = this.BascetLocalStorage.reduce((summ, el) => summ + el.price * el.count, 0); // возможно эти 2 надо вынести в отельный метод
+    const summTotalNew = summTotal * ((10 - promoCount) / 10 ); // Новая цена на товар
+
+    this.ViewHEADER.updateHeaderTotalPrice(summTotalNew)// возможно эти 2 надо вынести в отельный метод
+    this.ViewBASKETPAGE.summaryInfoSpanTotal.textContent = summTotal.toString();
+    this.ViewBASKETPAGE.summaryInfoSpanTotalNew.textContent = summTotalNew.toString();
+    this.ViewBASKETPAGE.summaryInfoSpanTotalProducts.textContent = this.BascetLocalStorage.reduce((count, el) => count + el.count, 0).toString();
   }
 
 

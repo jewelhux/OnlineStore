@@ -4,6 +4,7 @@ import CustomElement from '../utils/_createCustomElement';
 import { IitemDATA } from '../typingTS/_interfaces';
 import FormatURL from '../utils/_formatUrl';
 import { IBascetLocalStorage, IPromoList } from '../typingTS/_interfaces';
+import { doc } from 'prettier';
 // import { createElement } from '../utils/utils';
 
 
@@ -29,6 +30,7 @@ class ViewBasketPage {
 
   summaryInfoSpanTotal:HTMLSpanElement;
   summaryInfoSpanTotalProducts:HTMLSpanElement;
+  summaryInfoSpanTotalNew:HTMLSpanElement;
 
   EVENT: { [x: string]: Event };
   objectItemsPages: { [x: string]: number };
@@ -71,10 +73,12 @@ class ViewBasketPage {
     this.promolistActive = this.customElement.createElement('div', { className: 'promolist'});
     this.pagesCurrent = this.customElement.createElement('p', { className: 'product__pages-current', textContent: '2' }); // Лист карточек
     this.summaryInfo = this.customElement.createElement('div', { className: 'summary__info summaryInfo' }); // Итоговая информация
-    this.promolistActiveFather = this.customElement.createElement('div', { className: 'promolist-father promolist__hide'});
+    this.promolistActiveFather = this.customElement.createElement('div', { className: 'promolist-father promolist__hide', textContent: 'Active promo'});
 
     this.summaryInfoSpanTotal = this.customElement.createElement('span', { className: 'summaryInfo__total_span', textContent: '0' }) as HTMLSpanElement;
+    this.summaryInfoSpanTotalNew = this.customElement.createElement('span', { className: 'summaryInfo__total_spanNew', textContent: '0' }) as HTMLSpanElement;
     this.summaryInfoSpanTotalProducts = this.customElement.createElement('span', { className: 'summaryInfo__total-products_span', textContent: '0' }) as HTMLSpanElement;
+    
 
 
     this.EVENT = {
@@ -239,6 +243,7 @@ class ViewBasketPage {
     this.updatePromoFROMLocalStorage();
     const itemContainer: HTMLElement[] = [];
     this.promolistActive.innerHTML = '';
+    
 
     // Проверка на пустой массив промокодов
     if (!this.promocodeInfo.list.length) {
@@ -263,6 +268,7 @@ class ViewBasketPage {
       itemContainer.push(promoItem)
     }
 
+    this.showNewPrice();
     return itemContainer
   }
 
@@ -271,10 +277,11 @@ class ViewBasketPage {
 
     const summaryInfoDataProducts = this.customElement.createElement('p', { className: 'summaryInfo-data__products', textContent: 'Products: ' });
     this.customElement.addChildren(summaryInfoDataProducts, [this.summaryInfoSpanTotalProducts])
-    const summaryInfoDataTotal = this.customElement.createElement('p', { className: 'summaryInfo__total sale-redline', textContent: 'Total: $ ' });
-    const summaryInfoDataTotalNew = this.customElement.createElement('p', { className: 'summaryInfo__total ', textContent: 'Total: $ НОВАЯ ЦЕНА' });
+    const summaryInfoDataTotal = this.customElement.createElement('p', { className: 'summaryInfo__total total-old sale-redline', textContent: 'Total: $ ' });
+    const summaryInfoDataTotalNew = this.customElement.createElement('p', { className: 'summaryInfo__total  total-new', textContent: 'New Total: $' });
  
-    this.customElement.addChildren(summaryInfoDataTotal, [this.summaryInfoSpanTotal])
+    this.customElement.addChildren(summaryInfoDataTotal, [this.summaryInfoSpanTotal]);
+    this.customElement.addChildren(summaryInfoDataTotalNew, [this.summaryInfoSpanTotalNew]);
     const summaryInfoDataProme = this.customElement.createElement('p', { className: 'summaryInfo__name', textContent: 'Test promo: jik, sydery' });
 
     //Div Promo Add
@@ -283,8 +290,8 @@ class ViewBasketPage {
     this.customElement.addChildren(summaryInfoDataPromoAddDiv, [promoAddText, this.promoButtonAdd]);
 
     //Active Promo List Father
-    const promolistActiveText = this.customElement.createElement('p', { className: 'promolist_text', textContent: 'Applied codes'});
-    this.customElement.addChildren(this.promolistActiveFather, [promolistActiveText, this.promolistActive]);
+    // const promolistActiveText = this.customElement.createElement('p', { className: 'promolist_text', textContent: 'Applied codes'});
+    this.customElement.addChildren(this.promolistActiveFather, [ this.promolistActive]);
     //Active Promo List Item
     this.customElement.addChildren(this.promolistActive, [...this.renderPromoList()]); // Рендер массив примененных промокодов
 
@@ -453,6 +460,21 @@ class ViewBasketPage {
 
     this.serverData = [...newData];
     this.changeItemsForList();
+  }
+
+  showNewPrice() {
+    const oldPrice = document.querySelector('.total-old');
+    const newPrice = document.querySelector('.total-new');
+
+    if (Number(this.promocodeInfo.count) && Number(this.promocodeInfo.count) > 0) {
+      console.log('скидка')
+      oldPrice?.classList.add('sale-redline');
+      newPrice?.classList.remove('hide');
+    } else {
+      console.log('не скидка')
+      oldPrice?.classList.remove('sale-redline');
+      newPrice?.classList.add('hide');
+    }
   }
 
   updateBascetFROMLocalStorage() {

@@ -5,6 +5,7 @@ import { IitemDATA } from '../typingTS/_interfaces';
 import FormatURL from '../utils/_formatUrl';
 import { IBascetLocalStorage, IPromoList } from '../typingTS/_interfaces';
 import { doc } from 'prettier';
+import { createElement } from '../utils/utils';
 // import { createElement } from '../utils/utils';
 
 
@@ -125,7 +126,13 @@ class ViewBasketPage {
 
     // Отрисовка контейнера (для попапа и секции)
     if (this.serverData.length === 0) {
-      return 'Нет элементов в корзине'
+      const notFound = `
+      <div class="page-main-NotFound _main-container">
+        <section class="main-NotFound _container NotFound">
+          <h3 class="NotFound__title">Basket is Empty</h3>
+        </section>
+      </div>`
+      return createElement(notFound)
     }
     // const pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
     const popupWrapper = this.customElement.createElement('div', { className: 'popup-wrapper' });
@@ -177,7 +184,14 @@ class ViewBasketPage {
     // Проверим корзину на пустоту
     if (dataServerItem.length === 0) {
       const main = document.querySelector('main') as HTMLElement;
-      return main.innerHTML = 'Нет элементов в корзине';
+      const notFound = `
+      <div class="page-main-NotFound _main-container">
+        <section class="main-NotFound _container NotFound">
+          <h3 class="NotFound__title">Basket is Empty</h3>
+        </section>
+      </div>`
+      createElement(notFound)
+      return main.innerHTML = notFound;
     }
 
     for (const item of dataServerItem) {
@@ -277,8 +291,8 @@ class ViewBasketPage {
 
     const summaryInfoDataProducts = this.customElement.createElement('p', { className: 'summaryInfo-data__products', textContent: 'Products: ' });
     this.customElement.addChildren(summaryInfoDataProducts, [this.summaryInfoSpanTotalProducts])
-    const summaryInfoDataTotal = this.customElement.createElement('p', { className: 'summaryInfo__total total-old sale-redline', textContent: 'Total: $ ' });
-    const summaryInfoDataTotalNew = this.customElement.createElement('p', { className: 'summaryInfo__total  total-new', textContent: 'New Total: $' });
+    const summaryInfoDataTotal = this.customElement.createElement('p', { className: 'summaryInfo__total total-old', textContent: 'Total: $ ' });
+    const summaryInfoDataTotalNew = this.customElement.createElement('p', { className: 'summaryInfo__total  total-new hide', textContent: 'New Total: $' });
  
     this.customElement.addChildren(summaryInfoDataTotal, [this.summaryInfoSpanTotal]);
     this.customElement.addChildren(summaryInfoDataTotalNew, [this.summaryInfoSpanTotalNew]);

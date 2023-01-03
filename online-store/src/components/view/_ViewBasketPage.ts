@@ -4,6 +4,8 @@ import CustomElement from '../utils/_createCustomElement';
 import { IitemDATA } from '../typingTS/_interfaces';
 import FormatURL from '../utils/_formatUrl';
 import { IBascetLocalStorage, IPromoList } from '../typingTS/_interfaces';
+import { doc } from 'prettier';
+import { createElement } from '../utils/utils';
 // import { createElement } from '../utils/utils';
 
 
@@ -29,6 +31,9 @@ class ViewBasketPage {
 
   summaryInfoSpanTotal:HTMLSpanElement;
   summaryInfoSpanTotalProducts:HTMLSpanElement;
+  summaryInfoSpanTotalNew:HTMLSpanElement;
+  summaryInfoDataTotal:HTMLSpanElement;
+  summaryInfoDataTotalNew:HTMLSpanElement;
 
   EVENT: { [x: string]: Event };
   objectItemsPages: { [x: string]: number };
@@ -71,11 +76,14 @@ class ViewBasketPage {
     this.promolistActive = this.customElement.createElement('div', { className: 'promolist'});
     this.pagesCurrent = this.customElement.createElement('p', { className: 'product__pages-current', textContent: '2' }); // Лист карточек
     this.summaryInfo = this.customElement.createElement('div', { className: 'summary__info summaryInfo' }); // Итоговая информация
-    this.promolistActiveFather = this.customElement.createElement('div', { className: 'promolist-father promolist__hide'});
+    this.promolistActiveFather = this.customElement.createElement('div', { className: 'promolist-father promolist__hide', textContent: 'Active promo'});
 
     this.summaryInfoSpanTotal = this.customElement.createElement('span', { className: 'summaryInfo__total_span', textContent: '0' }) as HTMLSpanElement;
+    this.summaryInfoSpanTotalNew = this.customElement.createElement('span', { className: 'summaryInfo__total_spanNew', textContent: '0' }) as HTMLSpanElement;
     this.summaryInfoSpanTotalProducts = this.customElement.createElement('span', { className: 'summaryInfo__total-products_span', textContent: '0' }) as HTMLSpanElement;
 
+    this.summaryInfoDataTotal = this.customElement.createElement('p', { className: 'summaryInfo__total total-old', textContent: 'Total: $ ' });
+    this.summaryInfoDataTotalNew = this.customElement.createElement('p', { className: 'summaryInfo__total  total-new hide', textContent: 'New Total: $' });
 
     this.EVENT = {
       // inputOnItemsVisible: new Event('inputOnItemsVisible', { bubbles: true }),
@@ -121,7 +129,13 @@ class ViewBasketPage {
 
     // Отрисовка контейнера (для попапа и секции)
     if (this.serverData.length === 0) {
-      return 'Нет элементов в корзине'
+      const notFound = `
+      <div class="page-main-NotFound _main-container">
+        <section class="main-NotFound _container NotFound">
+          <h3 class="NotFound__title">Basket is Empty</h3>
+        </section>
+      </div>`
+      return createElement(notFound)
     }
     // const pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
     const popupWrapper = this.customElement.createElement('div', { className: 'popup-wrapper' });
@@ -163,6 +177,7 @@ class ViewBasketPage {
 
     // const test = document.querySelector('main') as HTMLElement;
     // this.customElement.addChildren(test,[pageMainBasket]);
+    
     return this.pageMainBasket
   }
 
@@ -173,7 +188,14 @@ class ViewBasketPage {
     // Проверим корзину на пустоту
     if (dataServerItem.length === 0) {
       const main = document.querySelector('main') as HTMLElement;
-      return main.innerHTML = 'Нет элементов в корзине';
+      const notFound = `
+      <div class="page-main-NotFound _main-container">
+        <section class="main-NotFound _container NotFound">
+          <h3 class="NotFound__title">Basket is Empty</h3>
+        </section>
+      </div>`
+      createElement(notFound)
+      return main.innerHTML = notFound;
     }
 
     for (const item of dataServerItem) {
@@ -239,6 +261,7 @@ class ViewBasketPage {
     this.updatePromoFROMLocalStorage();
     const itemContainer: HTMLElement[] = [];
     this.promolistActive.innerHTML = '';
+    
 
     // Проверка на пустой массив промокодов
     if (!this.promocodeInfo.list.length) {
@@ -263,6 +286,7 @@ class ViewBasketPage {
       itemContainer.push(promoItem)
     }
 
+    this.showNewPrice();
     return itemContainer
   }
 
@@ -271,11 +295,13 @@ class ViewBasketPage {
 
     const summaryInfoDataProducts = this.customElement.createElement('p', { className: 'summaryInfo-data__products', textContent: 'Products: ' });
     this.customElement.addChildren(summaryInfoDataProducts, [this.summaryInfoSpanTotalProducts])
-    const summaryInfoDataTotal = this.customElement.createElement('p', { className: 'summaryInfo__total sale-redline', textContent: 'Total: $ ' });
-    const summaryInfoDataTotalNew = this.customElement.createElement('p', { className: 'summaryInfo__total ', textContent: 'Total: $ НОВАЯ ЦЕНА' });
  
-    this.customElement.addChildren(summaryInfoDataTotal, [this.summaryInfoSpanTotal])
+    this.customElement.addChildren(this.summaryInfoDataTotal, [this.summaryInfoSpanTotal]);
+    this.customElement.addChildren(this.summaryInfoDataTotalNew, [this.summaryInfoSpanTotalNew]);
     const summaryInfoDataProme = this.customElement.createElement('p', { className: 'summaryInfo__name', textContent: 'Test promo: jik, sydery' });
+
+    // Чекнем на скидку и добавим нудные классы 
+    this.checkNewPrice(this.summaryInfoDataTotal, this.summaryInfoDataTotalNew);
 
     //Div Promo Add
     const summaryInfoDataPromoAddDiv = this.customElement.createElement('div', { className: 'promoadd promoadd-hide'});
@@ -283,13 +309,13 @@ class ViewBasketPage {
     this.customElement.addChildren(summaryInfoDataPromoAddDiv, [promoAddText, this.promoButtonAdd]);
 
     //Active Promo List Father
-    const promolistActiveText = this.customElement.createElement('p', { className: 'promolist_text', textContent: 'Applied codes'});
-    this.customElement.addChildren(this.promolistActiveFather, [promolistActiveText, this.promolistActive]);
+    // const promolistActiveText = this.customElement.createElement('p', { className: 'promolist_text', textContent: 'Applied codes'});
+    this.customElement.addChildren(this.promolistActiveFather, [ this.promolistActive]);
     //Active Promo List Item
     this.customElement.addChildren(this.promolistActive, [...this.renderPromoList()]); // Рендер массив примененных промокодов
 
 
-    itemContainer.push(summaryInfoDataProducts, summaryInfoDataTotal, summaryInfoDataTotalNew , this.promolistActiveFather, this.promoSearchInput, summaryInfoDataProme, summaryInfoDataPromoAddDiv, this.summaryInfoDataButton)
+    itemContainer.push(summaryInfoDataProducts, this.summaryInfoDataTotal, this.summaryInfoDataTotalNew , this.promolistActiveFather, this.promoSearchInput, summaryInfoDataProme, summaryInfoDataPromoAddDiv, this.summaryInfoDataButton)
     return itemContainer
   }
 
@@ -453,6 +479,38 @@ class ViewBasketPage {
 
     this.serverData = [...newData];
     this.changeItemsForList();
+  }
+
+  showNewPrice() {
+    const oldPrice = document.querySelector('.total-old');
+    const newPrice = document.querySelector('.total-new');
+
+    console.log(oldPrice, newPrice)
+
+    if (Number(this.promocodeInfo.count) && Number(this.promocodeInfo.count) > 0) {
+      console.log('скидка')
+      oldPrice?.classList.add('sale-redline');
+      newPrice?.classList.remove('hide');
+    } else {
+      console.log('не скидка')
+      oldPrice?.classList.remove('sale-redline');
+      newPrice?.classList.add('hide');
+    }
+  }
+
+  checkNewPrice(oldPrice: HTMLElement, newPrice: HTMLElement) {
+
+    console.log(oldPrice, newPrice)
+
+    if (Number(this.promocodeInfo.count) && Number(this.promocodeInfo.count) > 0) {
+      console.log('скидка')
+      oldPrice?.classList.add('sale-redline');
+      newPrice?.classList.remove('hide');
+    } else {
+      console.log('не скидка')
+      oldPrice?.classList.remove('sale-redline');
+      newPrice?.classList.add('hide');
+    }
   }
 
   updateBascetFROMLocalStorage() {

@@ -141,6 +141,7 @@
 .cardlist__item {
   width: 235px;
   height: 340px;
+  margin-bottom: auto;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
@@ -311,4 +312,8 @@
   height: 25px !important;
   right: -12px !important;
   top: -5px !important;
+}
+
+.red-bg {
+  background-color: red;
 }

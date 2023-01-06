@@ -3,6 +3,7 @@ import { IitemDATA } from '../typingTS/_interfaces';
 import FormatURL from '../utils/_formatUrl';
 import { IBascetLocalStorage, IPromoList } from '../typingTS/_interfaces';
 import { createElement } from '../utils/utils';
+import { numberObject } from '../typingTS/_type';
 
 
 class ViewBasketPage {
@@ -36,7 +37,7 @@ class ViewBasketPage {
   maxPage: number;
   _formatURL: FormatURL;
 
-  constructor(serverData: IitemDATA[], objectItemPage: { [x: string]: number } = { items: 3, pages: 1 }) {
+  constructor(serverData: IitemDATA[], objectItemPage: numberObject = { items: 3, pages: 1 }) {
     this.customElement = new CustomElement();
     this._formatURL = new FormatURL();
 
@@ -113,8 +114,19 @@ class ViewBasketPage {
     });
   }
 
-  create(data: IitemDATA[], basketItem: { [x: string]: number } = { items: 3, pages: 3 }) {
+  create(data: IitemDATA[], basketItem: numberObject = { items: 3, pages: 1 }) {
+    
     this.objectItemsPages = { ...basketItem };
+
+    if (this.objectItemsPages.pages > 1) {
+      this.objectItemsPages.pages = 1
+    }
+
+    if (!this.objectItemsPages.pages || !this.objectItemsPages.items) {
+      this.objectItemsPages.items = 3
+      this.objectItemsPages.pages = 1
+    }
+
     this.pageMainBasket.innerHTML = '';
     this.productList.innerHTML = '';
     this.summaryInfo.innerHTML = '';
@@ -175,7 +187,7 @@ class ViewBasketPage {
     const itemContainer: HTMLElement[] = [];
 
     // Проверим корзину на пустоту
-    if (dataServerItem.length === 0) {
+    if (this.serverData.length === 0) {
       const main = document.querySelector('main') as HTMLElement;
       const notFound = `
       <div class="page-main-NotFound _main-container">
@@ -307,6 +319,8 @@ class ViewBasketPage {
 
   changeItemsForList() {
     this.productList.innerHTML = '';
+    console.log(this.objectItemsPages)
+
     const newListElement = this.serverData.slice((this.objectItemsPages.pages - 1) * this.objectItemsPages.items, Number(this.objectItemsPages.items) * this.objectItemsPages.pages); // Создадим новый массив из старого
     this.customElement.addChildren(this.productList, [...this.renderProductCard(newListElement)]); // Рендер массив
 

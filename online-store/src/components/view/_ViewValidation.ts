@@ -268,7 +268,7 @@ class ViewValidation {
     })
 
     this.InputCardNumberCVV.addEventListener('keyup', () => {
-      this.InputCardNumberCVV.value = this.InputCardNumberCVV.value.replace(/[^0-9+]/g, '')
+      this.InputCardNumberCVV.value = this.InputCardNumberCVV.value.replace(/[^0-9]/g, '')
       if (this.InputCardNumberCVV.value.length > 3) {
         this.InputCardNumberCVV.value = this.InputCardNumberCVV.value.slice(0, 3)
       }

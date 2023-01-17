@@ -4,7 +4,6 @@ import { IitemDATA } from '../typingTS/_interfaces'
 import { createElement } from '../utils/utils';
 import { IBascetLocalStorage } from '../typingTS/_interfaces';
 
-
 class ViewMainPage {
   pageMain: HTMLElement;
   buttonReset: HTMLElement;
@@ -64,18 +63,13 @@ class ViewMainPage {
     this.startViewOfFILTER = startViewOfFILTER;
 
     this.customElement = new CustomElement();
-
     this.pageMain = this.customElement.createElement('div', { className: 'page-main-one _main-container' });
-
     this.buttonReset = this.customElement.createElement('button', { className: 'stock__reset _btn', textContent: 'Reset Filter' }); // button Reset
     this.buttonCopy = this.customElement.createElement('button', { className: 'stock__copy _btn', textContent: 'Copy Link' }); // button Copy
-
     this.filterCategoryMain = this.customElement.createElement('div', { className: 'filter__item filter__category category filter__item-scroll' }); // Category
     this.filterBrandMain = this.customElement.createElement('div', { className: 'filter__item filter__brand brand filter__item-scroll' }); // Brand
     //------Price------//
-
     this.filterPrice = this.customElement.createElement('div', { className: 'filter__item filter__price price' });
-
     this.silderPrice = this.customElement.createElement('div', { id: 'sliderPrice' }); // No Ui Slider Price
     this.silderStock = this.customElement.createElement('div', { id: 'sliderStock' }); // No Ui Slider Stock
     this.itemPriceNumberFrom = this.customElement.createElement('div', { className: 'item-price__from' }); // Price Text Min
@@ -105,7 +99,6 @@ class ViewMainPage {
       clickOnProductAddInBascetMain: new Event('clickOnProductAddInBascetMain', { bubbles: true }),// Клик на кнопке добавить с Карточками
       clickOnbuttonResetMain: new Event('clickOnbuttonResetMain', { bubbles: true }),// Клик на кнопке сброса
       clickOnbuttonViewBlockMain: new Event('clickOnbuttonViewBlockMain', { bubbles: true }),// Клик на кнопке больших карточек
-      // clickOnbuttonRViewListMain: new Event('clickOnbuttonRViewListMain', { bubbles: true }),// Клик на кнопке маленьких карточек
     }
     this.listenersMainPage();
   }
@@ -136,11 +129,9 @@ class ViewMainPage {
     this.customElement.addChildren(containerButtons, [this.buttonReset, this.buttonCopy]);
 
     // Добавление Category
-    // this.customElement.addChildren(this.filterCategoryMain, [...this.renderCategoryBlock(startCategoryData)]);
     this.updateCategoryBlock(startCategoryData)
 
     // Добавление Brand 
-    // this.customElement.addChildren(this.filterBrandMain, [...this.renderBrandBlock(startBrandData)]);
     this.updateBrandBlock(startBrandData)
     // Добавление всего в левую часть
     this.customElement.addChildren(mainLeft, [this.filterCategoryMain, this.filterBrandMain]);
@@ -210,8 +201,6 @@ class ViewMainPage {
       target.dispatchEvent(this.EVENT.clickOnbuttonViewBlockMain)
     })
 
-
-
     this.filterCategoryMain.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       if (target.getAttribute('type') === "checkbox") {
@@ -238,7 +227,7 @@ class ViewMainPage {
       const card = target.closest('.cardlist__item')
       const addToCard = target.closest('._btn_add-to-card')
       if (card && !addToCard) {
-        card.dispatchEvent(this.EVENT.clickOnСardListMain) 
+        card.dispatchEvent(this.EVENT.clickOnСardListMain)
       } else {
         addToCard?.dispatchEvent(this.EVENT.clickOnProductAddInBascetMain);
         this.addProductForButton(e);
@@ -269,13 +258,9 @@ class ViewMainPage {
     }
   }
 
-
-
   // Создание Category
   renderCategoryBlock(dataFilterCategory: numberArrayObject = this.startCategoryData): HTMLElement[] {
     const itemContainer: HTMLElement[] = [];
-    // this.filterCategoryMain.innerHTML = '';
-
     const filterCategoryItemName = this.customElement.createElement('h3', { className: 'filter__item-name category__name', textContent: 'Category' });
     const filterCategory = this.customElement.createElement('div', { className: 'filter__item-container category__container filter__item-container-scroll' });
 
@@ -291,9 +276,6 @@ class ViewMainPage {
   // Создание Brand
   renderBrandBlock(dataFilterBrand: numberArrayObject = this.startBrandData): HTMLElement[] {
     const itemContainer: HTMLElement[] = [];
-    // this.filterBrandMain.innerHTML = '';
-
-
     const filterBrandItemName = this.customElement.createElement('h3', { className: 'filter__item-name brand__name', textContent: 'Brand' });
     const filterBrand = this.customElement.createElement('div', { className: 'filter__item-container brand__container filter__item-container-scroll' });
 
@@ -309,19 +291,15 @@ class ViewMainPage {
   // Создание Price
   renderPriceBlock(dataFilterPrice: number[] = this.startPriceOfFILTER): HTMLElement {
     this.filterPrice.innerHTML = ''
-    // const filterPrice = this.customElement.createElement('div', { className: 'filter__item filter__price price' });
     const filterPriceItemName = this.customElement.createElement('h3', { className: 'filter__item-name price__name', textContent: 'Price' });
     const filterPriceContainer = this.customElement.createElement('div', { className: 'inputRange_container price__container' });
     this.customElement.addChildren(this.filterPrice, [filterPriceItemName, filterPriceContainer]);
-
     const itemPriceNumberContainer = this.customElement.createElement('div', { className: 'filter__item-data item-price' });
     this.customElement.addChildren(filterPriceContainer, [itemPriceNumberContainer, this.silderPrice]);
-
     this.itemPriceNumberFrom.textContent = `${dataFilterPrice[0]}`;
     this.itemPriceNumberTo.textContent = `${dataFilterPrice[1]}`;
     const itemPriceNumberMid = this.customElement.createElement('div', { textContent: '⟷' });
     this.customElement.addChildren(itemPriceNumberContainer, [this.itemPriceNumberFrom, itemPriceNumberMid, this.itemPriceNumberTo]);
-
     return this.filterPrice
   }
 
@@ -361,12 +339,11 @@ class ViewMainPage {
 
       //Заполнение cardButtons
       const buttonItemAdd = this.customElement.createElement('button', { className: '_btn _btn_add-to-card', id: `_btn_add-to-card|${item.id}`, textContent: 'Add to card' });
-      
+
       this.checkProductForButton(buttonItemAdd)
-      
+
       // Кнопка добавления в корзину
       const buttonItemDetails = this.customElement.createElement('button', { className: '_btn', textContent: 'Detais' });  // Кнопка просмотра товара
-
       this.customElement.addChildren(cardButtons, [buttonItemAdd, buttonItemDetails]);
 
       //Заполнение cardInfo

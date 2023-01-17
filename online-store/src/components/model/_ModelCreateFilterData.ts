@@ -15,26 +15,21 @@ class CreateFilterData {
   private _filtredData: IitemDATA[];
   protected _FILTER: IFilter;
   private readonly _startServerFILTER: IFilter;
-
   protected readonly _startPriceOfFILTER: number[];
   protected readonly _startStockOfFILTER: number[];
   _FILTERpriceTEXT: number[];
   _FILTERstockTEXT: number[];
   protected readonly _startSearchOfFILTER: string[];
-
   protected readonly _priceOfFILTER: number[];
   protected readonly _stockOfFILTER: number[];
   protected readonly _searchOfFILTER: string[];
 
   constructor() {
     this._baseData = new CreateBaseDate();
-
     this._startCategoryArray = this.baseData.category;
     this._startBrandArray = this.baseData.brand;
     this._startServerData = this.baseData.data;
-
     this._filtredData = this.baseData.data;
-
     this._startServerFILTER =
     {
       "category": [],
@@ -47,10 +42,8 @@ class CreateFilterData {
     };
     this._FILTER = JSON.parse(JSON.stringify(this._startServerFILTER))
     this._FILTERpriceTEXT = [...this.baseData.price]
-    this._FILTERstockTEXT = [...this.baseData.stock],
-
-
-      this._startPriceOfFILTER = this._startServerFILTER.price
+    this._FILTERstockTEXT = [...this.baseData.stock]
+    this._startPriceOfFILTER = this._startServerFILTER.price
     this._startStockOfFILTER = this._startServerFILTER.stock
     this._startSearchOfFILTER = this._startServerFILTER.search
 
@@ -360,9 +353,9 @@ class CreateFilterData {
   clearFILTER() {
     this._FILTER.category = []
     this._FILTER.brand = []
-    this._FILTER.price = [...this.baseData.price],
-      this._FILTER.stock = [...this.baseData.stock],
-      this._FILTER.search = ['']
+    this._FILTER.price = [...this.baseData.price]
+    this._FILTER.stock = [...this.baseData.stock]
+    this._FILTER.search = ['']
     this._FILTER.sort = ['']
     this._FILTER.view = ['Big']
     this.updateFiltredData()

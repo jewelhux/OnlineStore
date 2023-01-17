@@ -8,7 +8,7 @@ class ViewNotBasket {
         <h3 class="NotFound__title">Basket is Empty</h3>
       </section>
     </div>`
-  return createElement(notFound)
+    return createElement(notFound)
   }
 }
 

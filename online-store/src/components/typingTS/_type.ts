@@ -1,5 +1,3 @@
-
-
 type stringObject = {
   [x: string]: string;
 }
@@ -16,5 +14,4 @@ type stringArrayObject = {
   [x: string]: string[];
 }
 
-
-export { stringObject, numberObject, numberArrayObject, stringArrayObject}
+export { stringObject, numberObject, numberArrayObject, stringArrayObject }

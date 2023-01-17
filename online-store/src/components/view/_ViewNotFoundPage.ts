@@ -8,7 +8,7 @@ class ViewNotFound {
         <h3 class="NotFound__title">404 Not Found</h3>
       </section>
     </div>`
-  return createElement(notFound)
+    return createElement(notFound)
   }
 }
 

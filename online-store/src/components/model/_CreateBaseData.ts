@@ -37,7 +37,7 @@ class CreateBaseDate {
   createCategory() {
     const setCategory: Set<string> = new Set()
     this.data.forEach((product) => {
-        if (product.category) setCategory.add(product.category)
+      if (product.category) setCategory.add(product.category)
     })
     this._category = Array.from(setCategory)
 
@@ -47,7 +47,7 @@ class CreateBaseDate {
   createBrand() {
     const setBrand: Set<string> = new Set()
     this.data.forEach((product) => {
-        if (product.brand) setBrand.add(product.brand)
+      if (product.brand) setBrand.add(product.brand)
     })
     this._brand = Array.from(setBrand)
     return this.brand
@@ -63,6 +63,5 @@ class CreateBaseDate {
     return resultArray
   }
 }
-
 
 export default CreateBaseDate

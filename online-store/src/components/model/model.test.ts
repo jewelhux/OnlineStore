@@ -51,7 +51,6 @@ describe('is setFILTERBrand update Model.Filter', () => {
 
 })
 
-
 describe('is setFILTERCategory update Model.Filter', () => {
   const Model = new CreateFilterData()
   it('is setFILTERCategory update Model.Filter1', () => {
@@ -72,7 +71,6 @@ describe('is setFILTERCategory update Model.Filter', () => {
   })
 
 })
-
 
 describe('is filtredData arrayContaining of startServerData', () => {
   const Model = new CreateFilterData()
@@ -95,5 +93,4 @@ describe('is filtredData arrayContaining of startServerData', () => {
     Model.updateFiltredData()
     expect(Model.startServerData).toEqual(expect.arrayContaining(Model.filtredData))
   })
-
 })

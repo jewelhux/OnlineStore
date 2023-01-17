@@ -1,7 +1,7 @@
 import CustomElement from '../utils/_createCustomElement';
 import { IitemDATA } from '../typingTS/_interfaces';
 import { createElement } from '../utils/utils';
-import { IBascetLocalStorage} from '../typingTS/_interfaces';
+import { IBascetLocalStorage } from '../typingTS/_interfaces';
 
 class ViewItemCardPage {
   customElement: CustomElement;

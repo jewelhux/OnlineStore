@@ -70,8 +70,6 @@ import FreckleTreatment1 from '../../assets/img/product/20/1.jpg'
 import FreckleTreatment2 from '../../assets/img/product/20/2.jpg'
 import FreckleTreatment3 from '../../assets/img/product/20/3.jpg'
 
-
-
 export const products: Array<IitemDATA> = [
   {
     "id": 1,

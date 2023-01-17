@@ -21,9 +21,8 @@ class ViewFooter {
       <a href="https://rs.school/index.html" class="footer__link footer__rsschool"></a>
     </div>
   </section>`
-  return createElement(footer)
-}
-
+    return createElement(footer)
+  }
 }
 
 export default ViewFooter

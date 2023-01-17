@@ -3,7 +3,6 @@ import { stringObject, numberObject, stringArrayObject } from "../typingTS/_type
 
 class FormatURL {
 
-
   createURLSearchParams(obj: IFilter) {
     const result: stringObject = {}
     let prop: keyof typeof obj
@@ -24,12 +23,12 @@ class FormatURL {
 
   createFromURLSearchParams<T>(params: T) {
     const result: numberObject = {}
-if (params instanceof URLSearchParams) {
-  for (const [key, value] of params.entries()) {
-    result[key] = +value
-  }
+    if (params instanceof URLSearchParams) {
+      for (const [key, value] of params.entries()) {
+        result[key] = +value
+      }
 
-}
+    }
 
     return result
   }
@@ -49,27 +48,25 @@ if (params instanceof URLSearchParams) {
       "price": [],
       "stock": [],
       "search": [],
-      "sort":[],
-      "view":[],
+      "sort": [],
+      "view": [],
     };
 
     let key: string
     for (key in obj) {
       if (key === "price" || key === "stock") {
         result[key] = obj[key].map((item) => +item)
-      } else 
-      if (key === "brand" || key === "category" ) {
-        result[key] = obj[key][0] === '' ? [] : obj[key]
+      } else
+        if (key === "brand" || key === "category") {
+          result[key] = obj[key][0] === '' ? [] : obj[key]
 
-      }
+        }
       if (key === "search" || key === "sort" || key === "view") {
         result[key] = obj[key]
+      }
     }
-    }
-
     return result
   }
-
 }
 
 export default FormatURL

@@ -62,8 +62,6 @@ class ViewHeader {
       this.logoTitle.dispatchEvent(this.EVENT.clickOnLogo)
     })
   }
-
-
 }
 
 export default ViewHeader

@@ -115,7 +115,7 @@ class ViewBasketPage {
   }
 
   create(data: IitemDATA[], basketItem: numberObject = { items: 3, pages: 1 }) {
-    
+
     this.objectItemsPages = { ...basketItem };
 
     if (this.objectItemsPages.pages > 1) {
@@ -246,9 +246,7 @@ class ViewBasketPage {
         basketDataBtnPlus.dispatchEvent(this.EVENT.clickOnProductPlus);
         this.countItemPlus(e);
       })
-
       this.customElement.addChildren(itemDataCount, [basketDataBtnMinus, itemDataCurrent, basketDataBtnPlus]);
-
       itemContainer.push(itemBasket)
     }
 
@@ -259,7 +257,6 @@ class ViewBasketPage {
     this.updatePromoFROMLocalStorage();
     const itemContainer: HTMLElement[] = [];
     this.promolistActive.innerHTML = '';
-
 
     // Проверка на пустой массив промокодов
     if (!this.promocodeInfo.list.length) {
@@ -279,7 +276,6 @@ class ViewBasketPage {
         promoItemButton.dispatchEvent(this.EVENT.clickOnPromoRemove);
         this.deletePromo(event);
       })
-
       this.customElement.addChildren(promoItem, [promoItemText, promoItemSale, promoItemButton]);
       itemContainer.push(promoItem)
     }
@@ -290,17 +286,13 @@ class ViewBasketPage {
 
   renderSummary() {
     const itemContainer: HTMLElement[] = [];
-
     const summaryInfoDataProducts = this.customElement.createElement('p', { className: 'summaryInfo-data__products', textContent: 'Products: ' });
     this.customElement.addChildren(summaryInfoDataProducts, [this.summaryInfoSpanTotalProducts])
-
     this.customElement.addChildren(this.summaryInfoDataTotal, [this.summaryInfoSpanTotal]);
     this.customElement.addChildren(this.summaryInfoDataTotalNew, [this.summaryInfoSpanTotalNew]);
     const summaryInfoDataProme = this.customElement.createElement('p', { className: 'summaryInfo__name', textContent: 'Test promo: jik, syderi' });
-
     // Чекнем на скидку и добавим нудные классы 
     this.checkNewPrice(this.summaryInfoDataTotal, this.summaryInfoDataTotalNew);
-
     //Div Promo Add
     const summaryInfoDataPromoAddDiv = this.customElement.createElement('div', { className: 'promoadd promoadd-hide' });
     const promoAddText = this.customElement.createElement('p', { className: 'promodadd-txt', textContent: 'Promo jik - 10%' });
@@ -365,7 +357,6 @@ class ViewBasketPage {
         this.pushState()
       }
     }
-
     this.changeItemsForList();
   }
 
@@ -521,7 +512,6 @@ class ViewBasketPage {
       };
     }
   }
-
 }
 
 export default ViewBasketPage

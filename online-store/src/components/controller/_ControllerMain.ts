@@ -179,7 +179,7 @@ class ControllerMain {
     localStorage.setItem('BascetLocalStorage', JSON.stringify(this.BascetLocalStorage));
     localStorage.setItem('listPromo', JSON.stringify(this.promocodeInfo));
     return this.BascetLocalStorage
-  } ///////
+  }
 
   // МЕТОД возврата ОБЪЕКТА ПО ID для КОРЗИНЫ
   convertIDtoBascetObject(id: number): IBascetLocalStorage {

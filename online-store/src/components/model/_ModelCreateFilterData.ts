@@ -287,7 +287,6 @@ class CreateFilterData {
 
   // возвращает измененный Объект Фильтра
   public get FILTER() {
-    // this.updateFILTER_Price_Stock()
     return this._FILTER
   }
 
@@ -348,7 +347,6 @@ class CreateFilterData {
       }
     })
 
-
     filter.brand.forEach((item) => {
       if (result[item]) {
         result[item][2] += 1
@@ -357,20 +355,18 @@ class CreateFilterData {
     return result
   }
 
-
   // Метод очищающий Объект фильтра до стартового
   // и обновляющий отфильтрованный Объект c данными ПРОДУКТА
   clearFILTER() {
     this._FILTER.category = []
     this._FILTER.brand = []
     this._FILTER.price = [...this.baseData.price],
-    this._FILTER.stock = [...this.baseData.stock],
-    this._FILTER.search = ['']
+      this._FILTER.stock = [...this.baseData.stock],
+      this._FILTER.search = ['']
     this._FILTER.sort = ['']
     this._FILTER.view = ['Big']
     this.updateFiltredData()
   }
-
 }
 
 export default CreateFilterData

@@ -6,7 +6,6 @@ import { IitemDATA, IFilter, IBascetLocalStorage, IPromoList } from '../typingTS
 import CreateFilterData from '../model/_ModelCreateFilterData'
 
 // VIEWS
-
 import ViewHeader from '../view/_ViewHeader';
 import ViewMainPage from '../view/_ViewMainPage';
 import ViewFooter from '../view/_ViewFooter';

@@ -26,20 +26,20 @@ describe('ViewValidation input adress', () => {
   const Validation = new ViewValidation()
 
   it('is adress valid', () => {
-    Validation.InputAdress.value = 'strit pervomaidka seven'
+    Validation.inputAdress.value = 'strit pervomaidka seven'
     expect(Validation.isValidInputAdress()).toBeTruthy()
   })
   it('is adress valid', () => {
-    Validation.InputAdress.value = 'Kazan cove15/58 corpus2'
+    Validation.inputAdress.value = 'Kazan cove15/58 corpus2'
     
     expect(Validation.isValidInputAdress()).toBeTruthy()
   })
   it('is adress valid', () => {
-    Validation.InputAdress.value = 'qwe asd zxc'
+    Validation.inputAdress.value = 'qwe asd zxc'
     expect(Validation.isValidInputAdress()).not.toBeTruthy()
   })
   it('is adress valid', () => {
-    Validation.InputAdress.value = '12 12'
+    Validation.inputAdress.value = '12 12'
     expect(Validation.isValidInputAdress()).not.toBeTruthy()
   })
 })
@@ -49,20 +49,20 @@ describe('ViewValidation input email', () => {
   const Validation = new ViewValidation()
 
   it('is email valid', () => {
-    Validation.InputMail.value = 'asdf@zxcv.com'
+    Validation.inputMail.value = 'asdf@zxcv.com'
     expect(Validation.isValidInputInputMail()).toBeTruthy()
   })
   it('is email  valid', () => {
-    Validation.InputMail.value = 'ASDFC/55/55@XXXX.YTREWQ'
+    Validation.inputMail.value = 'ASDFC/55/55@XXXX.YTREWQ'
     
     expect(Validation.isValidInputInputMail()).toBeTruthy()
   })
   it('is email  valid', () => {
-    Validation.InputMail.value = 'caty@geniy'
+    Validation.inputMail.value = 'caty@geniy'
     expect(Validation.isValidInputInputMail()).not.toBeTruthy()
   })
   it('is email  valid', () => {
-    Validation.InputMail.value = 'sdfsgs fdsgdf@sdfgdfg.ru'
+    Validation.inputMail.value = 'sdfsgs fdsgdf@sdfgdfg.ru'
     expect(Validation.isValidInputInputMail()).not.toBeTruthy()
   })
 })

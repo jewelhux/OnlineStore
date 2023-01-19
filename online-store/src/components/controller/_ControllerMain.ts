@@ -443,7 +443,7 @@ class ControllerMain {
 
 
     // Клик по карточке для запуска страницы продукта из Мейна
-    this.MAIN.addEventListener('clickOnСardListMain', (e) => {
+    this.MAIN.addEventListener('clickOnCardListMain', (e) => {
       const target = e.target as HTMLElement;
       const id = target.id
       this.MAIN.innerHTML = ''

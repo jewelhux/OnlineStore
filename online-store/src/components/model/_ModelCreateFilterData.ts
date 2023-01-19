@@ -298,17 +298,14 @@ class CreateFilterData {
 
   // возвращает массив цен из Фильтра
   public get priceOfFILTER() {
-    // this.updateFILTER_Price_Stock()
     return this._FILTER.price
   }
   // возвращает массив количества товаров из Фильтра
   public get stockOfFILTER() {
-    // this.updateFILTER_Price_Stock()
     return this._FILTER.stock
   }
   // возвращает  строку поиска из Фильтра
   public get searchOfFILTER() {
-    // this.updateFILTER_Price_Stock()
     return this._FILTER.search
   }
 

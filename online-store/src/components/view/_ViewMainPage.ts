@@ -95,11 +95,12 @@ class ViewMainPage {
       clickOnBrandMain: new Event('clickOnBrandMain', { bubbles: true }),
       changeOnSearchMain: new Event('changeOnSearchMain', { bubbles: true }),
       choiceOnSortMain: new Event('choiceOnSortMain', { bubbles: true }),// в процессе 
-      clickOnСardListMain: new Event('clickOnСardListMain', { bubbles: true }),// Клик на контейнере с Карточками
+      clickOnCardListMain: new Event('clickOnCardListMain', { bubbles: true }),// Клик на контейнере с Карточками
       clickOnProductAddInBascetMain: new Event('clickOnProductAddInBascetMain', { bubbles: true }),// Клик на кнопке добавить с Карточками
       clickOnbuttonResetMain: new Event('clickOnbuttonResetMain', { bubbles: true }),// Клик на кнопке сброса
       clickOnbuttonViewBlockMain: new Event('clickOnbuttonViewBlockMain', { bubbles: true }),// Клик на кнопке больших карточек
     }
+
     this.listenersMainPage();
   }
 
@@ -227,7 +228,7 @@ class ViewMainPage {
       const card = target.closest('.cardlist__item')
       const addToCard = target.closest('._btn_add-to-card')
       if (card && !addToCard) {
-        card.dispatchEvent(this.EVENT.clickOnСardListMain)
+        card.dispatchEvent(this.EVENT.clickOnCardListMain)
       } else {
         addToCard?.dispatchEvent(this.EVENT.clickOnProductAddInBascetMain);
         this.addProductForButton(e);

@@ -1,7 +1,7 @@
 import CustomElement from '../utils/_createCustomElement';
 import { numberArrayObject } from '../typingTS/_type';
 import { IitemDATA } from '../typingTS/_interfaces'
-import { createElement } from '../utils/utils';
+import { createElement, getLocalStorageValue } from '../utils/utils';
 import { IBascetLocalStorage } from '../typingTS/_interfaces';
 
 class ViewMainPage {
@@ -47,12 +47,7 @@ class ViewMainPage {
     startViewOfFILTER: string[],
   ) {
 
-    const readlocalStorage = localStorage.getItem('BascetLocalStorage')
-    if (readlocalStorage) {
-      this.BascetLocalStorage = JSON.parse(readlocalStorage)
-    } else {
-      this.BascetLocalStorage = []
-    }
+    this.BascetLocalStorage = getLocalStorageValue('BascetLocalStorage');
 
     this.startServerData = startServerData;
     this.startCategoryData = startCategoryData;
@@ -413,12 +408,7 @@ class ViewMainPage {
   }
 
   updateBascetFROMLocalStorage() {
-    const readlocalStorage = localStorage.getItem('BascetLocalStorage')
-    if (readlocalStorage) {
-      this.BascetLocalStorage = JSON.parse(readlocalStorage)
-    } else {
-      this.BascetLocalStorage = []
-    }
+    this.BascetLocalStorage = getLocalStorageValue('BascetLocalStorage');
   }
 
   addProductForButton(event: Event) {

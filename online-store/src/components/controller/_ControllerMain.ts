@@ -568,7 +568,7 @@ class ControllerMain {
           inputs[handle].textContent = String(Math.round(Number(values[handle])));
         });
 
-      (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.on('set', (values: any[]) => {
+      (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.on('set', (values: (string | number)[]) => {
         const valueArray = values.map((el: string | number) => Math.round(+el))
         this.MODEL.setPriceOfFILTER(valueArray)
         this.rerenderMainPageComponents()
@@ -612,7 +612,7 @@ class ControllerMain {
 
         });
 
-      (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('set', (values: any[]) => {
+      (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('set', (values: (string | number)[]) => {
         const valueArray = values.map((el: string | number) => Math.round(+el))
 
         this.MODEL.setStockOfFILTER(valueArray)

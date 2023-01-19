@@ -18,7 +18,7 @@ const getLocalStorageValue = (name: string): IBascetLocalStorage[] => {
 }
 
 const getLocalStoragePromo = (name: string): IPromoList => {
-  const readlocalStoragePromoCount = localStorage.getItem('listPromo')
+  const readlocalStoragePromoCount = localStorage.getItem(name)
   if (readlocalStoragePromoCount) {
     return JSON.parse(readlocalStoragePromoCount);
   } else {

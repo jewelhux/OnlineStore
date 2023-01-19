@@ -2,7 +2,7 @@ import CustomElement from '../utils/_createCustomElement';
 import { IitemDATA } from '../typingTS/_interfaces';
 import FormatURL from '../utils/_formatUrl';
 import { IBascetLocalStorage, IPromoList } from '../typingTS/_interfaces';
-import { createElement } from '../utils/utils';
+import { createElement, getLocalStorageValue, getLocalStoragePromo } from '../utils/utils';
 import { numberObject } from '../typingTS/_type';
 
 
@@ -40,24 +40,8 @@ class ViewBasketPage {
   constructor(serverData: IitemDATA[], objectItemPage: numberObject = { items: 3, pages: 1 }) {
     this.customElement = new CustomElement();
     this._formatURL = new FormatURL();
-
-    const readlocalStorage = localStorage.getItem('BascetLocalStorage')
-    if (readlocalStorage) {
-      this.BascetLocalStorage = JSON.parse(readlocalStorage)
-    } else {
-      this.BascetLocalStorage = []
-    }
-
-    // Значение для количества промокодов
-    const readlocalStoragePromoCount = localStorage.getItem('listPromo')
-    if (readlocalStoragePromoCount) {
-      this.promocodeInfo = JSON.parse(readlocalStoragePromoCount);
-    } else {
-      this.promocodeInfo = {
-        count: 0,
-        list: []
-      };
-    }
+    this.BascetLocalStorage = getLocalStorageValue('BascetLocalStorage');
+    this.promocodeInfo = getLocalStoragePromo('listPromo');
 
     this.pageMainBasket = this.customElement.createElement('div', { className: 'page-main-basket _main-container' });
     this.summaryInfoDataButton = this.customElement.createElement('button', { className: 'card__btn-button _btn', textContent: 'Buy now' });
@@ -493,24 +477,11 @@ class ViewBasketPage {
   }
 
   updateBascetFROMLocalStorage() {
-    const readlocalStorage = localStorage.getItem('BascetLocalStorage')
-    if (readlocalStorage) {
-      this.BascetLocalStorage = JSON.parse(readlocalStorage)
-    } else {
-      this.BascetLocalStorage = []
-    }
+    this.BascetLocalStorage = getLocalStorageValue('BascetLocalStorage');
   }
 
   updatePromoFROMLocalStorage() {
-    const readlocalStoragePromoCount = localStorage.getItem('listPromo')
-    if (readlocalStoragePromoCount) {
-      this.promocodeInfo = JSON.parse(readlocalStoragePromoCount);
-    } else {
-      this.promocodeInfo = {
-        count: 0,
-        list: []
-      };
-    }
+    this.promocodeInfo = getLocalStoragePromo('listPromo');
   }
 }
 

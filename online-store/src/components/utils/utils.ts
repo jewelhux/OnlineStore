@@ -1,5 +1,5 @@
 
-import { IBascetLocalStorage } from '../typingTS/_interfaces';
+import { IBascetLocalStorage,IPromoList } from '../typingTS/_interfaces';
 
 // Функция получения HTML элемента из строки
 const createElement = (template: string): HTMLElement => {
@@ -17,4 +17,17 @@ const getLocalStorageValue = (name: string): IBascetLocalStorage[] => {
   }
 }
 
-export { createElement, getLocalStorageValue }
+const getLocalStoragePromo = (name: string): IPromoList => {
+  const readlocalStoragePromoCount = localStorage.getItem('listPromo')
+  if (readlocalStoragePromoCount) {
+    return JSON.parse(readlocalStoragePromoCount);
+  } else {
+     return {
+      count: 0,
+      list: []
+    };
+  }
+}
+
+
+export { createElement, getLocalStorageValue, getLocalStoragePromo }

@@ -20,7 +20,7 @@ import CustomElement from '../utils/_createCustomElement';
 import FormatURL from '../utils/_formatUrl';
 import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
-import { getLocalStorageValue } from '../utils/utils';
+import { getLocalStorageValue, getLocalStoragePromo } from '../utils/utils';
 
 class ControllerMain {
 
@@ -74,15 +74,7 @@ class ControllerMain {
     this.BascetLocalStorage = getLocalStorageValue('BascetLocalStorage');
 
     // Значение для количества промокодов
-    const readlocalStoragePromoCount = localStorage.getItem('listPromo')
-    if (readlocalStoragePromoCount) {
-      this.promocodeInfo = JSON.parse(readlocalStoragePromoCount);
-    } else {
-      this.promocodeInfo = {
-        count: 0,
-        list: []
-      };
-    }
+    this.promocodeInfo = getLocalStoragePromo('listPromo');
 
     this.customElement = new CustomElement();
     this._formatURL = new FormatURL();
@@ -284,15 +276,7 @@ class ControllerMain {
   }
 
   updatePromoFROMLocalStorage() {
-    const readlocalStoragePromoCount = localStorage.getItem('listPromo')
-    if (readlocalStoragePromoCount) {
-      this.promocodeInfo = JSON.parse(readlocalStoragePromoCount);
-    } else {
-      this.promocodeInfo = {
-        count: 0,
-        list: []
-      };
-    }
+    this.promocodeInfo = getLocalStoragePromo('listPromo');
   }
 
   // Метод получения товаров в корзину по Списку из ЛОКАЛ СТОРИДЖ
@@ -506,7 +490,7 @@ class ControllerMain {
   }
 
   updatePromoAdd(event: Event) {
-    // this.updatePromoFROMLocalStorage()
+    this.updatePromoFROMLocalStorage();
     const target = event.target as HTMLElement;
     const summaryInfo = target.closest('.summaryInfo');
     const currentCodeElement = summaryInfo?.querySelector('.summaryInfo__search');
@@ -523,7 +507,7 @@ class ControllerMain {
   }
 
   updatePromoRemove(event: Event) {
-    // this.updatePromoFROMLocalStorage()
+    this.updatePromoFROMLocalStorage();
     const target = event.target as HTMLElement;
     const targetItem = target.closest('.promoItem');
     const targetCode = targetItem?.querySelector('.promoItem__text');

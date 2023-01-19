@@ -1,4 +1,6 @@
 
+import { IBascetLocalStorage } from '../typingTS/_interfaces';
+
 // Функция получения HTML элемента из строки
 const createElement = (template: string): HTMLElement => {
   const newElement = document.createElement('div');
@@ -6,4 +8,13 @@ const createElement = (template: string): HTMLElement => {
   return newElement.firstElementChild as HTMLElement
 };
 
-export { createElement }
+const getLocalStorageValue = (name: string): IBascetLocalStorage[] => {
+  const readlocalStorage = localStorage.getItem(name)
+  if (readlocalStorage) {
+    return JSON.parse(readlocalStorage);
+  } else {
+    return [];
+  }
+}
+
+export { createElement, getLocalStorageValue }

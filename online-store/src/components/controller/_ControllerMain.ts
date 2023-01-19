@@ -20,6 +20,7 @@ import CustomElement from '../utils/_createCustomElement';
 import FormatURL from '../utils/_formatUrl';
 import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
+import { getLocalStorageValue } from '../utils/utils';
 
 class ControllerMain {
 
@@ -70,12 +71,7 @@ class ControllerMain {
 
   constructor() {
 
-    const readlocalStorage = localStorage.getItem('BascetLocalStorage')
-    if (readlocalStorage) {
-      this.BascetLocalStorage = JSON.parse(readlocalStorage)
-    } else {
-      this.BascetLocalStorage = []
-    }
+    this.BascetLocalStorage = getLocalStorageValue('BascetLocalStorage');
 
     // Значение для количества промокодов
     const readlocalStoragePromoCount = localStorage.getItem('listPromo')
@@ -284,12 +280,7 @@ class ControllerMain {
 
 
   updateBascetFROMLocalStorage() {
-    const readlocalStorage = localStorage.getItem('BascetLocalStorage')
-    if (readlocalStorage) {
-      this.BascetLocalStorage = JSON.parse(readlocalStorage)
-    } else {
-      this.BascetLocalStorage = []
-    }
+    this.BascetLocalStorage = getLocalStorageValue('BascetLocalStorage');
   }
 
   updatePromoFROMLocalStorage() {
@@ -570,10 +561,10 @@ class ControllerMain {
         start: [this.priceOfFILTER[0], this.priceOfFILTER[1]],
         tooltips: true,
         format: {
-          to: function (value) {
+          to: function (value: string | number) {
             return Math.ceil(+value);
           },
-          from: function (value) {
+          from: function (value: string | number) {
             return Math.ceil(+value);
           }
         },
@@ -593,8 +584,8 @@ class ControllerMain {
           inputs[handle].textContent = String(Math.round(Number(values[handle])));
         });
 
-      (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.on('set', (values) => {
-        const valueArray = values.map(el => Math.round(+el))
+      (this.ViewMainPAGE.silderPrice as noUiSlider.target).noUiSlider?.on('set', (values: any[]) => {
+        const valueArray = values.map((el: string | number) => Math.round(+el))
         this.MODEL.setPriceOfFILTER(valueArray)
         this.rerenderMainPageComponents()
         this.pushStateFilter()
@@ -613,11 +604,11 @@ class ControllerMain {
         start: [this.stockOfFILTER[0], this.stockOfFILTER[1]],
         tooltips: true,
         format: {
-          to: function (value) {
+          to: function (value: string | number) {
             return Math.ceil(+value);
           },
 
-          from: function (value) {
+          from: function (value: string | number) {
             return Math.ceil(+value);
           }
         },
@@ -637,8 +628,8 @@ class ControllerMain {
 
         });
 
-      (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('set', (values) => {
-        const valueArray = values.map(el => Math.round(+el))
+      (this.ViewMainPAGE.silderStock as noUiSlider.target).noUiSlider?.on('set', (values: any[]) => {
+        const valueArray = values.map((el: string | number) => Math.round(+el))
 
         this.MODEL.setStockOfFILTER(valueArray)
         this.rerenderMainPageComponents()
